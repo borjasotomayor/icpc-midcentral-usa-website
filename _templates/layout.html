@@ -1,0 +1,20 @@
+{# Import the theme's layout. #}
+{% extends "!layout.html" %}
+
+{# Custom CSS overrides #}
+{% set bootswatch_css_custom = ['_static/mcpc.css'] %}
+
+{% block extrahead %}
+{{ super() }}
+<!-- TODO: Google Analytics -->
+{% endblock %}
+
+
+{% block htmltitle %}
+{%- if pagename == master_doc %}
+<title>{{ docstitle|e }}</title>
+{%- else %}
+<title>{{ title|striptags|e }}{{ titlesuffix }}</title>
+{%- endif %}
+{% endblock %}
+

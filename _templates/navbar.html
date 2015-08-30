@@ -1,0 +1,47 @@
+{# Import the theme's layout. #}
+{% extends "!navbar.html" %}
+
+{% block navbartoc %}
+
+<li><a href="{{ pathto("about") }}">About</a></li>
+
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  Information for... <span class="caret"></span></b>
+  </a>
+  <ul class="dropdown-menu">
+      
+      <li><a href="{{ pathto("info/coaches") }}">Coaches</a></li>
+      <li><a href="{{ pathto("info/contestants") }}">Contestants</a></li>
+      <li><a href="{{ pathto("info/judges") }}">Judges</a></li> 
+      <li><a href="{{ pathto("info/problem_authors") }}">Problem Authors</a></li>
+      <li><a href="{{ pathto("info/site_directors") }}">Site Directors</a></li>      
+  </ul>
+</li>
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  Contest <span class="caret"></span></b>
+  </a>
+  <ul class="dropdown-menu">
+      
+      <li><a href="{{ pathto("contest/registration" ) }}">Registration</a></li>
+      <li><a href="{{ pathto("contest/rules" ) }}">Rules</a></li>
+      <li><a href="{{ pathto("contest/notes" ) }}">Notes to Teams</a></li>
+      <li><a href="{{ pathto("contest/environment" ) }}">Contest Environment</a></li>
+      <li><a href="{{ pathto("contest/schedule" ) }}">Schedule</a></li> 
+      <li><a href="{{ pathto("contest/site_facilities" ) }}">Site Facilities</a></li>
+      <li><a href="{{ pathto("contest/faq" ) }}">FAQ</a></li>
+  </ul>
+</li>
+
+<li><a href="{{ pathto("archive/index") }}">Problem Archive</a></li>
+
+<li><a href="{{ pathto("contact") }}">Contact</a></li>
+
+{% endblock %}
+
+{% block navbarsearch %}
+{% endblock %}
+
