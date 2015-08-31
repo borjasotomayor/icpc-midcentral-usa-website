@@ -64,7 +64,7 @@ Site Directors will have access to the unfrozen scoreboard on the Kattis site.
 However, You should not reveal this scoreboard until the Regional Contest 
 Director sends out an "all clear". In that message, the RCD will include an
 XML file that you can use to run ICPC's scoreboard resolver (see the 
-`ICPC Tools page<http://icpc.baylor.edu/icpctools/>`_. We encourage you
+`ICPC Tools page <http://icpc.baylor.edu/icpctools/>`_. We encourage you
 to use this tool, as it makes for a very exciting reveal of the final results
 for the entire region.
 

@@ -40,23 +40,27 @@ Understanding Your Programming Language
 Obviously the better you know your language the better you'll do. Here are some suggestions about what you should know.
 
 All Languages
+
 * File I/O: opening, closing, reading, and writing files.
 * Character classification and case conversion.
 * String handling, including converting between strings and numbers.
 * Using arrays.
 
 C
+
 * The formatted file I/O functions fprintf and fscanf, and the corresponding string functions sprintf and sscanf, which are much more powerful than most people realize.
 * The string functions strchr, strrchr, strspn, strcspn, strpbrk, strstr, and strtok.
 * The binary search function bsearch and the quicksort function qsort.
 
 C++
+
 * The STL classes bitset, deque, list, map, priority_queue, queue, set, stack, and vector.
 * The STL algorithms accumulate, adjacent_find, binary_search, copy, count, equal, fill, find, for_each, generate, includes, inner_product, lexicographical_compare, max_element, merge, min_element, mismatch, next_permutation, prev_permutation, remove, replace, reverse, rotate, set_difference, set_intersection, set_symmetric_difference, set_union, sort, swap, transform, and unique.
 * The STL function objects such as equal_to, logical_not, and plus.
 * The string stream classes istringstream and ostringstream.
 
 Java
+
 * The Scanner and Formatter classes, plus printf.
 * The wrapper classes Boolean, Character, Double, and Integer, which have a number of useful methods.
 * The java.util collection classes ArrayList, BitSet, HashMap, HashSet, LinkedList, Stack, TreeMap, and TreeSet.
