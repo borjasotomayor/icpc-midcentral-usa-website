@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+<title>Mad Scientist</title><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Author" content="Michael Goldwasser">
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier, monospace;
+}
+</style></head>
+<body style="background-color: white;" lang="EN-US">
+
+<h1 style="text-align: center;" align="center">Problem B: Mad Scientist</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td style="font-family: monospace;">mad.{c, cpp, java}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td style="font-family: monospace;">mad.in</td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>
+
+A mad scientist performed a series of experiments, each having
+<em>n</em> phases. During each phase, a measurement was taken,
+resulting in a positive integer of magnitude at
+most&nbsp;<em>k</em>. The scientist knew that an individual experiment was
+designed in a way such that its measurements were monotonically
+increasing, that is, each measurement would be at least as big as all
+that precede it.  For example, here is a sequence of measurements for
+one such experiment with <em>n=13</em> and <em>k=6</em>: <blockquote>
+<nobr>1, 1, 2, 2, 2, 2, 2, 4, 5, 5, 5, 5, 6</nobr> </blockquote> </p>
+
+
+<p>
+It was also the case that <em>n</em> was to be larger than
+<em>k</em>, and so there were typically many repeated values in the
+measurement sequence.   Being mad, the scientist chose a somewhat unusual way to
+record the data.  Rather than record each of <em>n</em>&nbsp;measurements, the scientist
+recorded a sequence&nbsp;<em>P</em> of <em>k</em> values defined as follows.
+For <nobr><em>1 &le; j &le; k</em></nobr>,
+<em>P(j)</em> denoted the number of phases having a measurement of
+<em>j</em> or less.  For example, the original measurements from the above
+experiment were recorded as the <nobr><em>P</em>-sequence</nobr>:
+<blockquote>
+<nobr>2, 7, 7, 8, 12, 13</nobr>
+</blockquote>
+as there were two measurements less than or equal to 1, seven
+measurements less than or equal to 2, seven measurement less than or
+equal to 3, and so on.
+</p>
+
+
+<p>
+Unfortunately, the scientist eventually went insane, leaving behind a
+notebook of these <nobr><em>P</em>-sequences</nobr> for a series of
+experiments.  Your job is to write a program that recovers the
+original measurements for the experiments.
+</p>
+
+
+
+
+<p><b>Input:</b>  The input contains a series of
+<nobr><em>P</em>-sequences</nobr>, one per line.
+Each line starts with the integer&nbsp;<em>k</em>, which
+is the length of the <nobr><em>P</em>-sequence</nobr>.  Following that
+are the <em>k</em> values of the <nobr><em>P</em>-sequence</nobr>.
+
+The end of the input will be designated with a line containing the
+number <em>0</em>.
+
+All of the original experiments were designed with <nobr><em>1 &le; k &lt; n &le; 26</em></nobr>.
+
+<p><b>Output:</b>  For each <nobr><em>P</em>-sequence</nobr>, you are
+to output one line containing the original experiment measurements
+separated by spaces.
+</p>
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;" valign="top">
+6 2 7 7 8 12 13<br>
+1 4<br>
+3 4 4 5<br>      
+3 0 4 5<br>      
+5 2 2 4 7 7<br>      
+0</td>
+       <td style="font-family: monospace;" valign="top">
+1 1 2 2 2 2 2 4 5 5 5 5 6<br>
+1 1 1 1<br>
+1 1 1 1 3<br>
+2 2 2 2 3<br>
+1 1 3 3 4 4 4<br>
+      </td>
+    </tr>
+</tbody>
+</table>
+</body></html>

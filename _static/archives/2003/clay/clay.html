@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<title>Clay Bully</title>
+<meta name=Author content="John Cigas">
+</head>
+
+<body bgcolor=white lang=EN-US style='tab-interval:.5in'>
+
+<h1 align=center style='text-align:center'>Problem A: Clay Bully</h1>
+
+<center><table>
+  <tr><td>Source file:</td><td><tt>clay.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>, <tt>pas</tt>}</td></tr>
+  <tr><td>Input file:</td><td><tt>clay.in</tt></td></tr>
+  <tr><td>Output file:</td><td><tt>clay.out</tt></td></tr>
+</table></center>
+
+
+<p>
+Ms. Terry is a pre-school art teacher who likes to have her students work
+with clay. One of her assignments is to form a lump of clay into a block and
+then measure the dimensions of the block.
+However, in every class, there is always one child who insists on taking some
+clay from some other child. Since Ms. Terry always gives every child in
+a class the same amount of clay to begin with, you can write a program
+that helps Ms. Terry find the bully and victim after she measures each 
+child's finished block.
+</p>
+
+<p>There are one or more classes of students, followed by a final line
+containing only the value -1. Each class starts with a line containing an 
+integer, <i>n</i>, which is the number of students in the class, followed by 
+<I>n</I> lines of student information. Each line of student information consists
+of three positive integers, representing the dimensions of the clay block,
+followed by the student's first name. There can never be more than 9 students
+nor less than 2 students in any class. Each student's name is at most 8
+characters. Ms. Terry always gives each student at most 250 cubic units
+of clay. There is exactly one bully and one victim in each class.
+</p>
+
+<p>For each class print a single line exactly as shown in the 
+sample output.
+</p>
+
+<table border=1 cellpadding=10>
+ <thead>
+ <tr>
+  <td><b>Example input:</b><td><b>Example output:</b></td>
+ </thead>
+ <tbody>
+ <tr>
+  <td> <tt>
+    3<br>
+    10 10 2 Jill<br>
+    5 3 10 Will<br>
+    5 5 10 Bill<br>
+    4<br>
+    2 4 10 Cam<br>
+    4 3 7 Sam<br>
+    8 11 1 Graham<br>
+    6 2 7 Pam<br>
+    -1</tt>
+  </td>
+  <td valign="top"> <tt>
+    Bill took clay from Will.<br>
+    Graham took clay from Cam.</tt>
+  </td>
+ </tr>
+ </tbody>
+</table>
+<p><small><i>Last modified on October 24, 2003 at 8:29 AM.</i></small></p>
+</body>
+
+</html>

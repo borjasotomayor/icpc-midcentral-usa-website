@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Problem F: Instruens Fabulam</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Problem F: Instruens Fabulam</H1>
+
+<CENTER><TABLE>
+<TR><TD>Source file:</TD><TD><TT>fab.</TT>{<TT>c</TT>, <TT>cpp</TT>, <TT>java</TT>, <TT>pas</TT>}</TD></TR>
+<TR><TD>Input file:</TD><TD><TT>fab.in</TT></TD></TR>
+<TR><TD>Output file:</TD><TD><TT>fab.out</TT></TD></TR>
+</TABLE></CENTER>
+
+<P><I>Instruens Fabulam</I> means <I>drawing a chart</I> (or table) in Latin.
+That's what you will do for this problem.</P>
+
+<P>The input consists of one or more table descriptions, followed by a line
+whose first character is '<TT>*</TT>', which signals the end of the file. Each
+description begins with a header line containing one or more characters that
+define the number and alignment of columns in the table. Each character in the
+header line is either '<TT>&lt;</TT>', '<TT>=</TT>', or '<TT>&gt;</TT>', and indicates a left-justified,
+centered, or right-justified column. Following the header are at least two and
+at most 21 data lines that contain the entries for each row.  Each data line
+consists of one or more nonempty entries separated by an ampersand ('<TT>&amp;</TT>'),
+where the number of entries is equal to the number of columns defined in the
+header line.  The first data line contains entries for the column titles, and
+the remaining data lines contain entries for the body of the table. Spaces may
+appear within an entry, but never at the beginning or end of an entry. The
+characters '<TT>&lt;</TT>', '<TT>=</TT>', '<TT>&gt;</TT>', '<TT>&amp;</TT>', and '<TT>*</TT>' will not appear in the input
+except where indicated above.</P>
+
+<P>For each table description, output the table using the exact format 
+shown in the examples. Note that</P>
+
+<UL>
+<LI>The total width of the table will never exceed 79 characters
+(not counting end-of-line).</LI>
+<LI>Dashes ('<TT>-</TT>') are used to draw horizontal lines, not underscores
+('<TT>_</TT>'). 'At' signs ('<TT>@</TT>') appear at each of the four outer corners. Plus
+signs ('<TT>+</TT>') appear at intersections <EM>within</EM> the line separating the title
+from the body.</LI>
+<LI>The largest entry in a column is always separated from the enclosing
+bars ('<TT>|</TT>') by exactly one space.</LI>
+<LI>If a centered entry cannot be <EM>exactly</EM> centered within a
+column, the extra space goes on the right of the entry.</LI>
+</UL>
+
+<P>Input and correct output files satisfy all the requirements listed
+in <I>Notes to Teams</I>, <B>except</B> that the output may contain two or
+more consecutive spaces.  There are no spaces at the beginning or end of
+lines, and only spaces are used (never tabs).</P>
+
+<P><B>Example input:</B></P>
+
+<BLOCKQUOTE><PRE>&lt;&gt;=&gt;
+TITLE&amp;VERSION&amp;OPERATING SYSTEM&amp;PRICE
+Slug Farm&amp;2.0&amp;FreeBSD&amp;49.99
+Figs of Doom&amp;1.7&amp;Linux&amp;9.98
+Smiley Goes to Happy Town&amp;11.0&amp;Windows&amp;129.25
+Wheelbarrow Motocross&amp;1.0&amp;BeOS&amp;34.97
+&gt;
+What is the answer?
+42
+&lt;&gt;
+Tweedledum&amp;Tweedledee
+&#34;Knock, knock.&#34;&amp;&#34;Who's there?&#34;
+&#34;Boo.&#34;&amp;&#34;Boo who?&#34;
+&#34;Don't cry, it's only me.&#34;&amp;(groan)
+*
+</PRE></BLOCKQUOTE>
+
+<P><B>Example output:</B></P>
+
+<BLOCKQUOTE><PRE>@-----------------------------------------------------------------@
+| TITLE                     | VERSION | OPERATING SYSTEM |  PRICE |
+|---------------------------+---------+------------------+--------|
+| Slug Farm                 |     2.0 |     FreeBSD      |  49.99 |
+| Figs of Doom              |     1.7 |      Linux       |   9.98 |
+| Smiley Goes to Happy Town |    11.0 |     Windows      | 129.25 |
+| Wheelbarrow Motocross     |     1.0 |       BeOS       |  34.97 |
+@-----------------------------------------------------------------@
+@---------------------@
+| What is the answer? |
+|---------------------|
+|                  42 |
+@---------------------@
+@---------------------------------------------@
+| Tweedledum                 |     Tweedledee |
+|----------------------------+----------------|
+| &#34;Knock, knock.&#34;            | &#34;Who's there?&#34; |
+| &#34;Boo.&#34;                     |     &#34;Boo who?&#34; |
+| &#34;Don't cry, it's only me.&#34; |        (groan) |
+@---------------------------------------------@
+</PRE></BLOCKQUOTE>
+<P><SMALL><I>Last modified Mon Oct 16 09:37:25 2000
+</I></SMALL></BODY></HTML>

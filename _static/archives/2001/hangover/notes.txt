@@ -1,0 +1,3 @@
+The judge's input data was chosen to be at least .001 away from the
+overhang for any number of cards.  This should eliminate wrong answers
+due to floating point inaccuracy.

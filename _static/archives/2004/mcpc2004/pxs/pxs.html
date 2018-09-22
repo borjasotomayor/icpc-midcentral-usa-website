@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Primary X-Subfactor Series</title>
+
+  <meta name="Author" content="Eric Shade">
+
+  <meta name="author" content="Eric Shade">
+</head>
+  <body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem A:  Primary X-Subfactor
+Series</h1>
+
+<center>
+<table>
+     <tbody>
+       <tr>
+         <td>Source file:</td>
+         <td><tt>pxs.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td><tt>pxs.in</tt></td>
+       </tr>
+       <tr>
+         <td>Output file:</td>
+         <td><tt>pxs.out</tt></td>
+       </tr>
+
+  </tbody>
+</table>
+ </center>
+
+<p>   Let <i>n</i> be any positive integer. A <i>factor</i> of   <i>n</i>
+is any number that divides evenly into   <i>n</i>, without leaving a remainder.
+ For example, 13 is a factor   of 52, since 52/13 = 4.  A <i>subsequence</i>
+of <i>n</i>   is a number without a leading zero that can be obtained from
+  <i>n</i> by discarding one or more of its digits.  For example, 2,   13,
+801, 882, and 1324 are subsequences of 8013824, but 214 is not   (you can't
+rearrange digits), 8334 is not (you can't have more   occurrences of a digit
+than appear in the original number), 8013824   is not (you must discard at
+least one digit), and 01 is not (you   can't have a leading zero).  A <i>subfactor</i>
+of <i>n</i> is an   integer greater than 1 that is both a factor and a subsequence
+of   <i>n</i>.  8013824 has subfactors 8, 13, and 14.  Some numbers do
+not have a subfactor; for example, 6341 is not divisible by 6, 3, 4,   63,
+64, 61, 34, 31, 41, 634, 631, 641, or 341. </p>
+
+<p>An <i>x-subfactor series</i> of <i>n</i> is a decreasing series of
+ integers <i>n<sub>1</sub></i>, ..., <i>n<sub>k</sub></i>, in which
+ (1)
+<i>n</i> = <i>n<sub>1</sub></i>, (2) <i>k</i> &#8805; 1, (3) for   all 1 &#8804; <i>i</i>
+&lt; <i>k</i>, <i>n<sub>i+1</sub></i> is   obtained from <i>n<sub>i</sub></i>
+by first discarding the digits of   a subfactor of <i>n<sub>i</sub></i>,
+and then discarding leading   zeros, if any, and (4) <i>n<sub>k</sub></i>
+has no subfactor.  The   term "x-subfactor" is meant to suggest that a subfactor
+  gets x'ed, or discarded, as you go from one number to the next.  For
+example, 2004 has two distinct x-subfactor series, the second of which
+can be obtained in two distinct ways.  The highlighted digits show the   subfactor
+that was removed to produce the next number in the series. </p>
+
+<blockquote>     <u><b><i>2</i></b></u>004 &nbsp; 4<br>
+     200<u><b><i>4</i></b></u> &nbsp; <u><b><i>20</i></b></u>0 &nbsp; 0<br>
+     200<u><b><i>4</i></b></u> &nbsp; <u><b><i>2</i></b></u>00 &nbsp; 0   </blockquote>
+
+<p>   The <i>primary</i> x-subfactor series has maximal length (the   largest
+<i>k</i> possible, using the notation above). If there are   two or more
+maximal-length series, then the one with the smallest   second number is
+primary; if all maximal-length series have the same   first and second numbers,
+then the one with the smallest third   number is primary; and so on.  Every
+positive integer has a unique   primary x-subfactor series, although it may
+be possible to obtain it   in more than one way, as is the case with 2004.
+</p>
+
+<p>   <b>Input:</b> The input consists of one or more positive   integers,
+each less than one billion, without leading zeroes, and on   a line by itself.
+ Following is a line containing only "0"   that signals the end of the input.
+</p>
+
+<p>   <b>Output:</b> For each positive integer, output its primary   x-subfactor
+series using the exact format shown in the examples below. </p>
+
+<table border="1" cellpadding="10">
+   <thead>     <tr>
+       <td><b>Example input:</b></td>
+       <td><b>Example output:</b></td>
+     </tr>
+   </thead>   <tbody>
+     <tr>
+       <td style="font-family: monospace;">         123456789<br>
+         7<br>
+         2004<br>
+         6341<br>
+         8013824<br>
+         0<br>
+       </td>
+       <td valign="top" style="font-family: monospace;">         123456789
+12345678 1245678 124568 12456 1245 124 12 1<br>
+         7<br>
+         2004 200 0<br>
+         6341<br>
+         8013824 13824 1324 132 12 1<br>
+       </td>
+     </tr>
+
+  </tbody>
+</table>
+
+<p><small><i>Last modified on October 22, 2004 at 6:10 PM.</i></small></p>
+
+</body>
+</html>

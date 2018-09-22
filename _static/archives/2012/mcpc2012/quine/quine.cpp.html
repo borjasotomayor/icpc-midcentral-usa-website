@@ -1,0 +1,49 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  quine.cpp
+  Is the Name of This Problem, MCPC 2012 Problem D
+  C++ solution by Gabriel Foust
+*/</span>
+
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;string&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;quine.in&quot; );
+
+<span class=keyword>int</span> main()
+{
+  string line;
+
+  <span class=keyword>while</span> (getline( fin, line ) &amp;&amp; line != &quot;END&quot;)
+  {
+    cerr &lt;&lt; &quot;ECHO (&quot; &lt;&lt; line.size() &lt;&lt; &quot;): &quot; &lt;&lt; line &lt;&lt; endl;
+    <span class=keyword>if</span> (line.length() &gt;= 5 &amp;&amp;
+        line[0] == '&quot;' &amp;&amp;
+        line[line.length()/2] == '&quot;' &amp;&amp;
+        line[line.length()/2 + 1] == ' ')
+    {
+      string A= line.substr( 1,                   line.length()/2 - 1);
+      string B= line.substr( line.length()/2 + 2, line.length()/2 - 1);
+      <span class=keyword>if</span> (A == B &amp;&amp; A.find( &quot;\&quot;&quot; ) == string::npos)
+        cout &lt;&lt; &quot;Quine(&quot; &lt;&lt; A &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+      <span class=keyword>else</span>
+        cout &lt;&lt; &quot;not a quine&quot; &lt;&lt; endl;
+    }
+    <span class=keyword>else</span>
+      cout &lt;&lt; &quot;not a quine&quot; &lt;&lt; endl;
+  }
+
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

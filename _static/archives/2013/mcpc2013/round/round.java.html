@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title></title>
+  <style type="text/css">
+    <!--code { font-family: Courier New, Courier; font-size: 10pt; margin: 0px; }-->
+  </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head><body>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter 5.0 [2006-02-26] by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<font color="#3f7f5f">/*&nbsp;&nbsp;ACM&nbsp;Mid-Central&nbsp;Programming&nbsp;competition&nbsp;2013&nbsp;Problem&nbsp;B:&nbsp;Round&nbsp;Robin</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">solution&nbsp;by&nbsp;Andy&nbsp;Harrington</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">If&nbsp;anyone&nbsp;has&nbsp;an&nbsp;excess&nbsp;of&nbsp;turns,&nbsp;the&nbsp;person&nbsp;with&nbsp;the&nbsp;latest&nbsp;turn&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">must&nbsp;be&nbsp;one&nbsp;of&nbsp;them,&nbsp;so&nbsp;if&nbsp;only&nbsp;one&nbsp;person&nbsp;has&nbsp;an&nbsp;extra&nbsp;turn,&nbsp;it&nbsp;is&nbsp;the&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">one&nbsp;quitting,&nbsp;and&nbsp;everyone&nbsp;else&nbsp;has&nbsp;the&nbsp;same&nbsp;number,&nbsp;so&nbsp;we&nbsp;track&nbsp;the</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">number&nbsp;of&nbsp;players&nbsp;with&nbsp;one&nbsp;excess&nbsp;turn.&nbsp;&nbsp;Of&nbsp;course&nbsp;if&nbsp;every&nbsp;player</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">including&nbsp;the&nbsp;one&nbsp;about&nbsp;to&nbsp;quit&nbsp;has&nbsp;the&nbsp;same&nbsp;number&nbsp;of&nbsp;turns,&nbsp;we&nbsp;are&nbsp;also&nbsp;done.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">It&nbsp;is&nbsp;unnecessary&nbsp;to&nbsp;process&nbsp;a&nbsp;single&nbsp;turn&nbsp;at&nbsp;a&nbsp;time:&nbsp;use&nbsp;division&nbsp;and</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">remainders.&nbsp;&nbsp;Alternate,&nbsp;turn&nbsp;by&nbsp;turn&nbsp;processing&nbsp;is&nbsp;shown&nbsp;in&nbsp;slowSolve</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">and&nbsp;the&nbsp;C++&nbsp;solution.</font><br />
+<font color="#3f7f5f">*/</font><br />
+<font color="#ffffff"></font><br />
+<font color="#7f0055"><b>import&nbsp;</b></font><font color="#000000">java.util.*;</font><br />
+<font color="#7f0055"><b>import&nbsp;</b></font><font color="#000000">java.io.*;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">round</font><br />
+<font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">main</font><font color="#000000">(</font><font color="#000000">String</font><font color="#000000">[]&nbsp;</font><font color="#000000">args</font><font color="#000000">)&nbsp;</font><font color="#7f0055"><b>throws&nbsp;</b></font><font color="#000000">Exception&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">String&nbsp;file&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">args.length&nbsp;&gt;&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;</font><font color="#000000">?&nbsp;args</font><font color="#000000">[</font><font color="#990000">0</font><font color="#000000">]&nbsp;</font><font color="#000000">:&nbsp;</font><font color="#2a00ff">&#34;round.in&#34;</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Scanner&nbsp;in&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Scanner</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font color="#000000">(</font><font color="#000000">file</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">N&nbsp;=&nbsp;in.nextInt</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>while&nbsp;</b></font><font color="#000000">(</font><font color="#000000">N&nbsp;!=&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">solve</font><font color="#000000">(</font><font color="#000000">N,&nbsp;in.nextInt</font><font color="#000000">())</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">N&nbsp;=&nbsp;in.nextInt</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">solve</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">N,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">T</font><font color="#000000">)&nbsp;{&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">judgeCheck</font><font color="#000000">(</font><font color="#000000">N,&nbsp;T</font><font color="#000000">)</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//judge&nbsp;testing</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">minTurns&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">,&nbsp;</font><font color="#3f7f5f">//&nbsp;minimum&nbsp;turns&nbsp;for&nbsp;all&nbsp;player&nbsp;in&nbsp;game</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">excess&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;number&nbsp;of&nbsp;players&nbsp;with&nbsp;one&nbsp;more&nbsp;than&nbsp;the&nbsp;min.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>while</b></font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">minTurns&nbsp;+=&nbsp;</font><font color="#000000">(</font><font color="#000000">excess&nbsp;+&nbsp;T</font><font color="#000000">)&nbsp;</font><font color="#000000">/&nbsp;N;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">excess&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">excess&nbsp;+&nbsp;T</font><font color="#000000">)&nbsp;</font><font color="#000000">%&nbsp;N;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">N--;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;person&nbsp;leaving</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">excess&nbsp;&lt;&nbsp;</font><font color="#990000">2</font><font color="#000000">)&nbsp;{&nbsp;</font><font color="#3f7f5f">//at&nbsp;most&nbsp;the&nbsp;person&nbsp;leaving&nbsp;has&nbsp;excess</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#000000">N&nbsp;+&nbsp;</font><font color="#2a00ff">&#34;&nbsp;&#34;&nbsp;</font><font color="#000000">+&nbsp;minTurns</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">excess--;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;person&nbsp;leaving&nbsp;among&nbsp;those&nbsp;with&nbsp;the&nbsp;excess&nbsp;turn</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;Done&nbsp;with&nbsp;quick&nbsp;solution:&nbsp;now&nbsp;an&nbsp;alternate&nbsp;to&nbsp;solve,&nbsp;one&nbsp;turn&nbsp;at&nbsp;a&nbsp;time</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">slowSolve</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">N,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">T</font><font color="#000000">)&nbsp;{&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">turns&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[</font><font color="#000000">N</font><font color="#000000">]</font><font color="#000000">;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;count&nbsp;individual&nbsp;turns&nbsp;for&nbsp;all</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;=&nbsp;-</font><font color="#990000">1</font><font color="#000000">;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;initialize&nbsp;so&nbsp;next&nbsp;turn&nbsp;at&nbsp;i+1</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>while</b></font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">j&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;j&nbsp;&lt;&nbsp;T;&nbsp;j++</font><font color="#000000">)&nbsp;{&nbsp;</font><font color="#3f7f5f">//&nbsp;add&nbsp;turn&nbsp;for&nbsp;T&nbsp;players</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">i&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">i+</font><font color="#990000">1</font><font color="#000000">)&nbsp;</font><font color="#000000">%&nbsp;N&nbsp;;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">turns</font><font color="#000000">[</font><font color="#000000">i</font><font color="#000000">]</font><font color="#000000">++;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;i&nbsp;in&nbsp;position&nbsp;of&nbsp;last&nbsp;turn</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">j&nbsp;=&nbsp;i;&nbsp;j&nbsp;&lt;&nbsp;N-</font><font color="#990000">1</font><font color="#000000">;&nbsp;j++</font><font color="#000000">)&nbsp;</font><font color="#3f7f5f">//&nbsp;remove&nbsp;ith,&nbsp;shift</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">turns</font><font color="#000000">[</font><font color="#000000">j</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;turns</font><font color="#000000">[</font><font color="#000000">j+</font><font color="#990000">1</font><font color="#000000">]</font><font color="#000000">;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">N--;&nbsp;</font><font color="#3f7f5f">//&nbsp;no&nbsp;longer&nbsp;use&nbsp;all&nbsp;of&nbsp;the&nbsp;array&nbsp;turns</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">allSame</font><font color="#000000">(</font><font color="#000000">turns,&nbsp;N</font><font color="#000000">))&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#000000">N&nbsp;+&nbsp;</font><font color="#2a00ff">&#34;&nbsp;&#34;&nbsp;</font><font color="#000000">+&nbsp;turns</font><font color="#000000">[</font><font color="#990000">0</font><font color="#000000">])</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">i--;&nbsp;</font><font color="#3f7f5f">//&nbsp;now&nbsp;next&nbsp;turn&nbsp;at&nbsp;i+1&nbsp;again</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">allSame</font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">turns,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">N</font><font color="#000000">)&nbsp;{&nbsp;</font><font color="#3f7f5f">//&nbsp;used&nbsp;by&nbsp;slowSolve</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;true&nbsp;if&nbsp;turns[0]&nbsp;==&nbsp;turns[1]&nbsp;==...==turns[N-1]</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;=&nbsp;</font><font color="#990000">1</font><font color="#000000">;&nbsp;i&nbsp;&lt;&nbsp;N;&nbsp;i++</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">turns</font><font color="#000000">[</font><font color="#990000">0</font><font color="#000000">]&nbsp;</font><font color="#000000">!=&nbsp;turns</font><font color="#000000">[</font><font color="#000000">i</font><font color="#000000">])</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//////////&nbsp;rest&nbsp;for&nbsp;judges'&nbsp;testing&nbsp;///////////</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">MAX_T&nbsp;=&nbsp;</font><font color="#990000">100</font><font color="#000000">,&nbsp;MAX_N&nbsp;=&nbsp;</font><font color="#990000">100</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//&nbsp;&nbsp;judge&nbsp;problem&nbsp;limits</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">judgeCheck</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">N,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">T</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">N&nbsp;&gt;&nbsp;MAX_N&nbsp;||&nbsp;T&nbsp;&gt;&nbsp;MAX_T</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.err.println</font><font color="#000000">(</font><font color="#2a00ff">&#34;bad&nbsp;parameters&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#000000">}</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+
+</body></html>

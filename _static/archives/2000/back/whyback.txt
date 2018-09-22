@@ -1,0 +1,1 @@
+The back directory will receive backups of all submissions.  See util.html.

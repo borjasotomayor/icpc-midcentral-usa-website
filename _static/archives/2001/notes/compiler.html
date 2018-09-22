@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Site Compiler Requirements</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Site Compiler Requirements</H1>
+
+<P>Teams may elect to program in C, C++, Java, or Pascal. You must provide
+compilers for these languages.
+
+<H3>General Requirements</H3>
+
+<OL>
+<LI>You may <EM>not</EM> have more than one compiler per language.  For
+example, you cannot provide both Visual C++ and gcc.  Sometimes code
+that works fine with one compiler will not work with a different
+compiler, and we can't risk that happening during the contest. (It
+actually <EM>has</EM> happened in the past, hence the rule.)  Since most
+modern C++ compilers also compile C, in practice most sites will have
+three compilers: a Pascal compiler, a C/C++ compiler, and a Java
+compiler.
+
+<LI>If a compiler has an IDE, it must also have a command-line
+equivalent. Contestants will prefer to use the IDE, but the judging
+utilities require a command-line compiler.  Most modern IDEs also
+provide a command-line equivalent.  <EM>It is your responsibility to
+ensure that the default settings for both the IDE and command-line
+compiler match!</EM>  If they use different settings for optimization,
+debugging, memory model, etc., it may happen that a program will work
+correctly for the contestant when using the IDE but fail when the
+judges test it.  This too has happened in a previous contest.
+
+<LI>You may <EM>not</EM> provide teams with a CD-ROM or other removable
+media that contains the compiler to be used during the contest.  (Of
+course you may distribute whatever you want <EM>after</EM> the contest.)
+Some books and promotional materials contain CDs with a working
+compiler, and in the past at least one site asked to use such a CD
+during the contest.  The idea was to give each team a CD that they
+would then use during the contest, rather than installing a compiler
+on each machine. The problem is that all CDs (and Zip disks, etc)
+look alike, so it is very difficult to ensure that teams don't have a
+CD that they're not supposed to.
+
+<LI>You are not required to provide a symbolic debugger for each
+language.  Virtually all IDEs provide one, but many command-line-only
+compilers do not.
+
+<LI>You must provide compilers for all supported languages unless you
+have written confirmation from all team moderators attending your site
+that a particular language will not be used.
+
+</OL>
+
+<H3>Language-Specific Requirements</H3>
+
+<DL>
+<DT>C
+<DD>The compiler must conform to the ANSI C specification.  All modern
+compilers do.
+<DT>C++
+<DD>The compiler must support the Standard Template Library as defined
+in Stroustrup's <I>The C++ Programming Language 3/e</I>.  There are at
+least three different implementations of the STL in use by the major
+C++ compilers, each with its own idiosyncracies, so expecting 100%
+conformance is unrealistic at present.  As a practical matter it is
+sufficient for the implementation to support the modern iostream
+library, strings, and the basic containers (including <I>vector</I>,
+<I>list</I>, <I>stack</I>, <I>queue</I>, <I>deque</I>, <I>priority</I>_<I>queue</I>, <I>set</I>, and <I>map</I>).
+<DT>Java
+<DD>The minimum requirement is compatibility with Sun's Java 2 SDK 1.2 or
+higher.  Note that Microsoft's Visual J++ 6.0 is <em>not</em> acceptable,
+since it is based on SDK 1.1.
+<DT>Pascal
+<DD>Select either Turbo Pascal 5.5 or Turbo Pascal 7.0 for MS-DOS.
+</DL>
+
+<H3>Free Compilers</H3>
+
+<P>You will probably just use the compilers that you normally provide
+for your students. If they are not acceptable, or if you want to
+consider other alternatives, here are a few free compilers.
+
+<DL>
+<DT><A HREF="http://www.borland.com/bcppbuilder/freecompiler/">Borland
+C++ 5.5</A>
+<DD>A very good C/C++ compiler. No debugger. For Win 9x/NT/2000.
+<DT><A HREF="http://www.delorie.com/djgpp/">djgpp</A>
+<DD>A version of GNU <I>gcc</I> (a C/C++ compiler) that runs under plain old
+DOS.  Make sure you get the latest release, which is based on <I>gcc</I>
+2.95.3.
+<DT><A HREF="http://www.borland.com/jbuilder/personal">JBuilder 5.0
+Personal</A>
+<DD>A nice Java IDE that uses SDK 1.3.  For Windows, Linux, and Solaris.
+<DT><A HREF="http://www.mingw.org/">MinGW (Minimalist GNU for Windows)</A>
+<DD>A native Win9x/ME/NT/2000 version of <I>gcc</I> and friends.
+Get version 2.95.3 or higher.
+<DT><A HREF="http://java.sun.com/j2se/1.3">Sun's Java 2 SDK 1.3.1_01</A>
+<DD>The latest version of Sun's Java Development Kit, the standard by
+which others are judged.  For Win 9x/ME/NT/2000.
+<DT><A HREF="http://community.borland.com/article/0,1410,20803,00.html">Turbo
+Pascal 5.5</A>
+<DD>A bit long in the tooth, but supports all the important features
+of Turbo Pascal 7.0.  For DOS.
+</DL>
+
+<P><SMALL><I>Last modified Mon Oct 01 11:27:56 2001
+</I></SMALL></BODY></HTML>

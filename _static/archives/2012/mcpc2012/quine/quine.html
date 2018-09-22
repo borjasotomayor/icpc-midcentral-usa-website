@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Gabriel Foust">
+    <title>Is the Name of This Problem</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      .aside { border: 1px dashed black; padding: 0 1em; }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          font-size: 85%;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.figure
+      {
+          margin: auto;
+          border-spacing: 1em;
+      }
+      table.figure td
+      {
+          border: 1px solid black;
+          padding: 1em;
+          width: 220px;
+          text-align: center;
+      }
+      table.figure td.caption
+      {
+          border-style: none;
+          font-style: italic;
+          padding-top: 0;
+          vertical-align: top;
+          text-align: center;
+      }
+      pre
+      {
+        margin-left: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem D: Is the Name of This Problem</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>quine.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>quine.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The philosopher Willard Van Orman Quine (1908&ndash;2000) described a
+      novel method of constructing a sentence in order to illustrate the
+      contradictions that can arise from self-reference.  This operation takes
+      as input a single phrase and produces a sentence from that phrase.  (The
+      author Douglas R. Hofstadter refers to this process as <dfn>to Quine a
+      phrase</dfn>.)  We can define the Quine operation like so:
+    </p>
+<pre>
+Quine(<dfn>A</dfn>) = "<dfn>A</dfn>" <dfn>A</dfn>
+</pre>
+    <p>
+      In other words, if A is a phrase, then Quine(A) is A enclosed in quotes
+      (&quot;), followed by a space, followed by A.  For example:
+    </p>
+<pre>
+Quine(HELLO WORLD) = "HELLO WORLD" HELLO WORLD
+</pre>
+    <p>
+      Below are some other examples of sentences that can be created by the
+      Quine operation.  Note that Quining allows sentences to be indirectly
+      self-referential, such as the last sentence below.
+    </p>
+<pre>
+"IS A SENTENCE FRAGMENT" IS A SENTENCE FRAGMENT
+"IS THE NAME OF THIS PROBLEM" IS THE NAME OF THIS PROBLEM
+"YIELDS FALSEHOOD WHEN QUINED" YIELDS FALSEHOOD WHEN QUINED
+</pre>
+    <p>
+      Your goal for this problem is to take a sentence and decide whether the
+      sentence is the result of a Quine operation.
+    </p>
+    <p>
+      <b>Input:</b>&nbsp; The input will consist of a sequence of sentences,
+      one sentence per line, ending with a line that has the single word,
+      <b><tt>END</tt></b>.  Each sentence will contain only uppercase letters,
+      spaces, and quotation marks.  Each sentence will contain between 1 and
+      80 characters and will not have any leading, trailing, or consecutive
+      spaces.
+    </p>
+    <p>
+      You must decide whether each sentence is the result of a Quine
+      operation.  To be a Quine, a sentence must match the following
+      pattern <em>exactly</em>:
+    </p>
+    <ol>
+      <li>A quotation mark</li>
+      <li>
+        Any nonempty sequence of letters and spaces (call this
+        phrase <var>A</var>)
+      </li>
+      <li>A quotation mark</li>
+      <li>A space</li>
+      <li>
+        Phrase <var>A</var>&mdash;exactly as it appeared in (2)
+      </li>
+    </ol>
+    <p>
+      If it matches this pattern, the sentence is a Quine of the
+      phrase <var>A</var>.  Note that phrase A must contain the exact same
+      sequence of characters both times it appears.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; There will be one line of output for each sentence
+      in the data set.  If the sentence is the result of a Quine operation,
+      your output should be of the form, <code>Quine(<var>A</var>)</code>,
+      where <var>A</var> is the phrase to Quine to create the sentence.
+    </p>
+    <p>
+      If the sentence is not the result of a Quine operation, your
+    output should be the phrase,
+    <b><tt>not a quine</tt></b>.
+    </p>
+    <p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"HELLO WORLD" HELLO WORLD
+"IS A SENTENCE FRAGMENT" IS A SENTENCE FRAGMENT
+"IS THE NAME OF THIS PROBLEM" IS THE NAME OF THIS PROBLEM
+"YIELDS FALSEHOOD WHEN QUINED" YIELDS FALSEHOOD WHEN QUINED
+"HELLO" I SAID
+WHAT ABOUT "WHAT ABOUT"
+" NO EXTRA SPACES " NO EXTRA SPACES
+"NO"QUOTES" NO"QUOTES
+""
+END</td>
+          <td>Quine(HELLO WORLD)
+Quine(IS A SENTENCE FRAGMENT)
+Quine(IS THE NAME OF THIS PROBLEM)
+Quine(YIELDS FALSEHOOD WHEN QUINED)
+not a quine
+not a quine
+not a quine
+not a quine
+not a quine</td>
+        </tr>
+      </tbody>
+    </table>
+    </p>
+
+    <div class="aside">
+    <p>
+      <b>A review of quotation marks in strings:</b>&nbsp; As a reminder, the
+      quotation mark character is a regular character, and can be referred to
+      in C, C++, and Java using the standard single-quote notation, like so:
+    </p>
+    <pre>'"'</pre>
+    <p>
+      However, to place a quotation mark inside a double-quoted string in C,
+      C++, and Java, you must place a backslash (<code>\</code>) in front of
+      it.  If you do not it will be interpreted as the end of the string,
+      causing syntax errors.  For example:
+    </p>
+<pre>
+"This quotation mark \" is inside the string"
+"\""
+"\"SAID SHE\" SAID SHE"
+</pre>
+    </div>
+
+    </body>
+</html>

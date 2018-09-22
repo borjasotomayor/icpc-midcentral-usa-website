@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="John Cigas and Michael Goldwasser">
+    <title>Pizza Pricing</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem C: Pizza Pricing</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>pizza.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>pizza.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+    Pizza has always been a staple on college campuses. After
+    the downturn in the economy, it is more important than ever to get the
+    best deal, namely the lowest cost per square inch.
+    Consider, for example, the following menu for a store selling circular
+    pizzas of varying diameter and price:
+    </p>
+    <p>
+    <center>
+    <table border="1" cellpadding="5">
+      <tr>
+	<th colspan="2">Menu</th>
+      </tr>
+      <tr>
+	<th>Diameter</th>
+	<th>Price</th>
+      </tr>
+      <tr>
+	<td>5 inch</td>
+	<td>$2</td>
+      </tr>
+      <tr>
+	<td>10 inch</td>
+	<td>$6</td>
+      </tr>
+      <tr>
+	<td>12 inch</td>
+	<td>$8</td>
+      </tr>
+    </table>
+  </center>
+
+    <p>
+    One could actually compute the costs per square inch, which would be approximately
+    10.2&cent;, 7.6&cent;, and 7.1&cent; respectively, so the <nobr>12-inch</nobr>
+    pizza is the best value.
+    However, if the <nobr>10-inch</nobr> had been sold for $5, it would
+    have been the best value, at approximately 6.4&cent; per square inch.
+    </p>
+
+    <p>
+    Your task is to analyze a menu and to report the <em>diameter</em> of
+    the pizza that is the best value.
+    Note that no two pizzas on a menu will have the same diameter or the
+    same inherent cost per square inch.
+    </p>
+
+
+    <p>
+    <b>Input:</b>  The input contains a series of one or more menus</nobr>.
+    Each menu starts with the number of options <var>N</var>,
+    1&nbsp;&le;&nbsp;<var>N</var>&nbsp;&le;&nbsp;10,
+    followed by <var>N</var> lines, each containing two integers
+    respectively designating a pizza's 
+    diameter&nbsp;<var>D</var> (in inches) and price&nbsp;<var>P</var> (in dollars), with
+    1&nbsp;&le;&nbsp;<var>D</var>&nbsp;&le;&nbsp;36 and
+    1&nbsp;&le;&nbsp;<var>P</var>&nbsp;&le;&nbsp;100. 
+    The end of the input will be designated with a line containing the
+    number&nbsp;0.
+    </p>
+
+    <p>
+    <b>Output:</b>  For each menu, print a line identifying the menu
+    number and the diameter&nbsp;<var>D</var> of the pizza with
+    the best value, using the format shown below.
+    </p>
+
+        <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+	<tr>
+          <td>3
+5 2
+10 6
+12 8
+3
+5 2
+10 5
+12 8
+4
+1 1
+24 33
+13 11
+6 11
+0</td>
+    <td>Menu 1: 12
+Menu 2: 10
+Menu 3: 24</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

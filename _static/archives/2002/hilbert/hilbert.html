@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (Windows NT 5.0; I) [Netscape]">
+   <meta name="Author" content="Andrew Harrington">
+   <title>Problem B: Hilbert Curve Intersections</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<center>
+<h1>Problem B: Hilbert Curve Intersections</h1></center>
+
+<center><table>
+<tr>
+<td>Source file:</td>
+
+<td><tt>hilbert.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>, <tt>pas</tt>}</td>
+</tr>
+
+<tr>
+<td>Input file:</td>
+
+<td><tt>hilbert.in</tt></td>
+</tr>
+
+<tr>
+<td>Output file:</td>
+
+<td><tt>hilbert.out</tt></td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 CELLSPACING=0 WIDTH="665"  >
+<tr>
+<td ALIGN=CENTER VALIGN=BOTTOM WIDTH="20" HEIGHT="20"> </td>
+
+<td ALIGN=CENTER VALIGN=BOTTOM>Starting curve</td>
+
+<td ALIGN=CENTER VALIGN=BOTTOM>Transformation 1</td>
+
+<td ALIGN=CENTER VALIGN=BOTTOM>Transformation 2</td>
+
+<td ALIGN=CENTER VALIGN=BOTTOM>Transformation 3</td>
+
+<td ALIGN=CENTER VALIGN=BOTTOM>Transformation 4</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER>H<sub><small>1</small></sub></td>
+
+<td><img SRC="h1.gif" height=130 width=130 alt="h1"></td>
+
+<td><img SRC="h21.gif" height=130 width=130 alt="h2-1"></td>
+
+<td><img SRC="h22.gif" height=130 width=130 alt="h2-2"></td>
+
+<td><img SRC="h23.gif" height=130 width=130 alt="h2-3"></td>
+
+<td><img SRC="h24.gif" height=130 width=130 alt="h2-4"></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER>H<sub><small>2</small></sub></td>
+
+<td><img SRC="h2.gif" height=130 width=130 alt="h2"></td>
+
+<td><img SRC="h31.gif" height=130 width=130 alt="h3-1"></td>
+
+<td><img SRC="h32.gif" height=130 width=130 alt="h3-2"></td>
+
+<td><img SRC="h33.gif" height=130 width=130 alt="h3-3"></td>
+
+<td><img SRC="h34.gif" height=130 width=130 alt="h3-4"></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER>H<sub><small>3</small></sub></td>
+
+<td><img SRC="h3.gif" height=130 width=130 alt="h3"></td>
+
+<td><img SRC="h41.gif" height=130 width=130 alt="h4-1"></td>
+
+<td><img SRC="h42.gif" height=130 width=130 alt="h4-2"></td>
+
+<td><img SRC="h43.gif" height=130 width=130 alt="h4-3"></td>
+
+<td><img SRC="h44.gif" height=130 width=130 alt="h4-4"></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER>H<sub><small>4</small></sub></td>
+
+<td><img SRC="h4.gif" height=130 width=130 alt="h4"></td>
+
+<td><img SRC="h51.gif" height=130 width=130 alt="h5-1"></td>
+
+<td><img SRC="h52.gif" height=130 width=130 alt="h5-2"></td>
+
+<td><img SRC="h53.gif" height=130 width=130 alt="h5-3"></td>
+
+<td><img SRC="h54.gif" height=130 width=130 alt="h5-4"></td>
+</tr>
+</table></center>
+
+<p>David Hilbert proved the existence of a very counter-intuitive curve
+that fills space.  The construction of the Hilbert curve is based
+on a sequence of curves, H<small><sub>1</sub></small>, H<small><sub>2</sub></small>, H<small><sub>3</sub></small>, H<small><sub>4</sub></small>,
+... composed of horizontal and vertical segments.  Each curve lies
+in the unit square <tt>[0, 1]</tt> &times; <tt>[0, 1]</tt>. H<sub><small>1</small></sub> contains
+just three
+segments, connecting the points (&frac14;, &frac34;) to (&frac14;, &frac14;) to (&frac34;, &frac14;)
+to (&frac34;, &frac34;). H<i><small><sub>n</sub></small></i> is defined recursively in terms of
+H<small><sub><i>n</i>-1</sub></small>, for <i>n</i> = 2, 3, ... by four transformations:
+<ol>
+<li>
+Halve all coordinates in H<small><sub><i>n</i>-1</sub></small>.</li>
+
+<li>
+Add a copy rotated 90 degrees counterclockwise about the point
+(<tt>0</tt>, &frac12;).</li>
+
+<li>
+Add the reflection across the line <i>x</i> = &frac12;.</li>
+
+<li>
+Let <i>m</i> = &frac12;<sup><small><i>n</i>+1</small></sup>.  Add segments connecting
+endpoints (&frac12; - <i>m</i>, &frac12; - <i>m</i>) to (&frac12; + <i>m</i>, &frac12; - <i>m</i>),
+(<i>m</i>, &frac12; - <i>m</i>) to (<i>m</i>, &frac12; + <i>m</i>), and (<tt>1</tt> - <i>m</i>,
+&frac12; - <i>m</i>) to (<tt>1</tt> - <i>m</i>, &frac12; + <i>m</i>).</li>
+</ol>
+Your job is to count the number of intersections of horizontal line segments
+with these curves.  For example, consider Figures 1 and 2, which illustrate
+the first two example input data sets below.
+<br> 
+<table BORDER=0 CELLSPACING=10 WIDTH="90%">
+<tr ALIGN=CENTER VALIGN=MIDDLE>
+<td ALIGN=CENTER VALIGN=MIDDLE>Figure 1</td>
+
+<td>Figure 2</td>
+</tr>
+
+<tr ALIGN=CENTER>
+<td ALIGN=CENTER><img SRC="h3line.gif" BORDER=0 height=130 width=130 alt="h3line"></td>
+
+<td ALIGN=CENTER><img SRC="h4line.gif" height=130 width=130 alt="h4line"></td>
+</tr>
+
+<tr ALIGN=CENTER>
+<td>Segment from 
+(<tt>2/8</tt>, <tt>7/8</tt>) to (<tt>7/8</tt>, <tt>7/8</tt>)<br> crossing
+H<small><sub>3</sub></small> three times.</td>
+
+<td>Segment from 
+(<tt>0/16</tt>, <tt>1/16</tt>) to (<tt>16/16</tt>, <tt>1/16</tt>)<br> crossing H<small><sub>4</sub></small> sixteen times.</td>
+</tr>
+</table>
+
+<p>The coordinates of vertices of H<small><sub><i>n</i></sub></small> are odd multiples
+of &frac12;<small><sup><i>n</i>+1</sup></small>. The coordinates of horizontal segment
+endpoints will always be multiples of &frac12;<small><sup><i>n</i></sup></small>.  Hence
+the specified horizontal segment can only cross vertical segments in H<small><sub><i>n</i></sub></small>.
+
+<p>
+Input consists of one to 100 data sets, one per line, followed by a final line containing
+only 0.  Each data set consists of four integers separated by blanks
+in the form
+<p><center>
+<i>n</i> <i>x</i><small><sub>1</sub></small> <i>x</i><small><sub>2</sub></small> <i>y</i></center>
+
+<p>which represents H<small><sub><i>n</i></sub></small> and the segment from (<i>x</i><small><sub>1</sub></small>/<tt>2</tt><i><small><sup>n</sup></small></i>,
+<i>y</i>/<tt>2</tt><i><small><sup>n</sup></small></i>)
+to (<i>x</i><small><sub>2</sub></small>/<tt>2</tt><i><small><sup>n</sup></small></i>,
+<i>y</i>/<tt>2</tt><i><small><sup>n</sup></small></i>),
+where 0 &lt; <i>n</i> &lt; 31, <i>x</i><small><sub>1</sub></small> &lt; <i>x</i><small><sub>2</sub></small>,
+and each of <i>x</i><small><sub>1</sub></small>, <i>x</i><small><sub>2</sub></small>, and <i>y</i> lie
+in the range 0 to 2<i><small><sup>n</sup></small></i>, inclusive.
+
+<p>
+The output is one integer per line for each data set: the number of
+intersections
+of H<i><small><sub>n</sub></small></i> with the segment.  <b>Caution</b>: A
+brute force solution that computes each intersection individually will
+not finish within the one minute time limit.  As you can see below,
+there may be more than one billion intersections for any data set.
+
+<p>
+<table BORDER="1"  CELLPADDING="20" WIDTH="60%">
+<tr>
+<td VALIGN=TOP><b>Example input:</b>
+<PRE>3 2 7 7
+4 0 16 1
+30 1 1073741823 1
+0
+</PRE>
+</td>
+
+<td VALIGN=TOP><b>Example output:</b>
+<PRE>3
+16
+1073741822
+</PRE>
+</td>
+</tr>
+</table>
+
+<p><small><i>Last modified on October 26, 2002 at 7:25 PM.</i></small></p>
+
+</body>
+</html>

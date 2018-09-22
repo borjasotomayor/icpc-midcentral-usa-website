@@ -1,0 +1,181 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Quick Search, MCPC 2010 Problem G, C++ solution  by Michael Goldwasser */</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;queue&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=pp>#include</span> &lt;algorithm&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>//#define DEBUG
+</span>
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_SITES(20);
+
+<span class=comment>// globals are our friends
+</span>fstream fin(&quot;search.in&quot;);
+<span class=keyword>int</span> numSites, numPolice, numEdges;
+vector&lt;<span class=keyword>int</span>&gt; graph[MAX_SITES];
+
+<span class=comment>// utility function
+</span><span class=keyword>bool</span> next_setting(vector&lt;<span class=keyword>int</span>&gt;&amp; choices, vector&lt;<span class=keyword>int</span>&gt;&amp; limits) {
+  <span class=keyword>int</span> k=choices.size();
+  <span class=keyword>do</span> {
+    --k;
+    <span class=keyword>if</span> (choices[k] &lt; limits[k]-1) {
+      choices[k]++;
+      <span class=keyword>return</span> <span class=keyword>true</span>;
+    } <span class=keyword>else</span>
+      choices[k] = 0;
+  } <span class=keyword>while</span> (k &gt; 0);
+  <span class=keyword>return</span> <span class=keyword>false</span>;
+}
+
+
+<span class=keyword>class</span> State {
+<span class=keyword>private</span>:
+  vector&lt;<span class=keyword>bool</span>&gt; visited;  <span class=comment>// locations that have already been visited
+</span>  vector&lt;<span class=keyword>int</span>&gt; police;    <span class=comment>// stored in sorted order
+</span>  <span class=keyword>int</span> depth;
+
+<span class=keyword>public</span>:
+  State(<span class=keyword>int</span> s, <span class=keyword>int</span> n) : visited(s,<span class=keyword>false</span>), police(n,0), depth(0) {
+    visited[0] = <span class=keyword>true</span>;
+  }
+
+  <span class=keyword>int</span> getDepth() <span class=keyword>const</span> { <span class=keyword>return</span> depth;}
+
+  vector&lt;State&gt; neighbors() <span class=keyword>const</span> {
+    vector&lt;State&gt; neigh;
+
+    vector&lt;<span class=keyword>int</span>&gt; edgeChoice(numPolice,0);
+    vector&lt;<span class=keyword>int</span>&gt; choiceCounts(numPolice);
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;numPolice; k++)
+      choiceCounts[k] = graph[police[k]].size();
+    <span class=keyword>do</span> {
+      State temp(*<span class=keyword>this</span>);
+      temp.depth++;
+      <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; police.size(); k++) {
+        temp.police[k] = graph[police[k]][edgeChoice[k]];
+        temp.visited[temp.police[k]] = <span class=keyword>true</span>;
+      }
+      sort(temp.police.begin(), temp.police.end());
+      neigh.push_back(temp);
+    } <span class=keyword>while</span> (next_setting(edgeChoice, choiceCounts));
+
+<span class=comment>// #ifdef DEBUG
+</span><span class=comment>//     cout &lt;&lt; &quot;current state&quot; &lt;&lt; endl;
+</span><span class=comment>//     dump();
+</span><span class=comment>//     cout &lt;&lt; &quot;has following neighbors:&quot; &lt;&lt; endl;
+</span><span class=comment>//     for (int k=0; k&lt;neigh.size(); k++)
+</span><span class=comment>//       neigh[k].dump();
+</span><span class=comment>//#endif
+</span>
+    <span class=keyword>return</span> neigh;
+  }
+
+  <span class=keyword>bool</span> solved() <span class=keyword>const</span> {
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; visited.size(); k++)
+      <span class=keyword>if</span> (!visited[k])
+        <span class=keyword>return</span> <span class=keyword>false</span>;
+    <span class=keyword>return</span> <span class=keyword>true</span>;
+  }
+
+  pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; code() <span class=keyword>const</span> {
+    <span class=comment>// computes a unique code to identify a state.  We use two ints,
+</span>    <span class=comment>// where first is the binary value based on 'visited' (but
+</span>    <span class=comment>// ignoring site A which is always visted) , and the second is the
+</span>    <span class=comment>// &quot;base b&quot; value based on police vector, where 'b' is the number
+</span>    <span class=comment>// of sites.
+</span>    <span class=keyword>int</span> first = 0;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=1; k &lt; visited.size(); k++)  <span class=comment>// intentionally ignore 'A' as its always covered
+</span>      <span class=keyword>if</span> (visited[k])
+        first += 1&lt;&lt;(visited.size() - 1 - k);
+
+    <span class=keyword>int</span> second(0);
+    <span class=keyword>int</span> digit = 1;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; police.size(); k++) {
+      second += police[k] * digit;
+      digit *= numSites;
+    }
+
+    <span class=keyword>return</span> make_pair(first,second);
+  }
+
+<span class=pp>#ifdef</span> DEBUG
+  <span class=keyword>void</span> dump() <span class=keyword>const</span> {
+    cout &lt;&lt; &quot;visited: &quot;;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; visited.size(); k++)  <span class=comment>// intentionally ignore 'A' as its always covered
+</span>      <span class=keyword>if</span> (visited[k])
+        cout &lt;&lt; <span class=keyword>char</span>('A' + k);
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;police: &quot;;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; police.size(); k++)
+      cout &lt;&lt; <span class=keyword>char</span>('A' + police[k]);
+    cout &lt;&lt; endl;
+  }
+<span class=pp>#endif</span>
+
+};
+
+<span class=keyword>int</span> solve() {
+  set&lt;pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; &gt; familiar;
+  queue&lt;State&gt; fringe;
+  State initial(numSites, numPolice);
+  fringe.push(initial);
+  familiar.insert(initial.code());
+
+  <span class=keyword>while</span> (fringe.size() &gt; 0) {
+    State next(fringe.front());
+    fringe.pop();
+
+<span class=pp>#ifdef</span> DEBUG
+    cout &lt;&lt; &quot;Considering fringe state:&quot; &lt;&lt; endl;
+    next.dump();
+<span class=pp>#endif</span>    
+
+    vector&lt;State&gt; others = next.neighbors();
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; others.size(); k++) {
+      pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; id = others[k].code();
+      <span class=keyword>if</span> (familiar.find(id) == familiar.end()) {
+        <span class=comment>// new state
+</span>        familiar.insert(id);
+        <span class=keyword>if</span> (others[k].solved())
+          <span class=keyword>return</span> others[k].getDepth();
+        fringe.push(others[k]);
+      }
+    }
+  }
+  cout &lt;&lt; &quot;Unsolvable&quot; &lt;&lt; endl;    <span class=comment>// hopefully never happens
+</span>}
+
+<span class=keyword>int</span> main() {
+  <span class=keyword>while</span> (<span class=keyword>true</span>) {
+    fin &gt;&gt; numSites;
+    <span class=keyword>if</span> (numSites==0) <span class=keyword>break</span>;    <span class=comment>// all done
+</span>
+    fin &gt;&gt; numPolice &gt;&gt; numEdges;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; numSites; k++)
+      graph[k].clear();
+
+    string edge;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;numEdges; k++) {
+      fin &gt;&gt; edge;
+      graph[edge[0]-'A'].push_back(edge[1]-'A');
+      graph[edge[1]-'A'].push_back(edge[0]-'A');
+    }
+
+    cout &lt;&lt; solve() &lt;&lt; endl;
+  }
+}
+</pre></body>
+</html>

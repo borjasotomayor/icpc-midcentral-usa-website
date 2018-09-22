@@ -1,0 +1,42 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Refrigerator Magnets, MCPC 2011 Problem E, C++ solution by Gabriel Foust */</span>
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;string&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;magnets.in&quot; );
+
+<span class=keyword>int</span> main()
+{
+    string line;
+    <span class=keyword>while</span> (<span class=keyword>true</span>)
+    {
+        getline(fin,line);
+        <span class=keyword>if</span> (line[line.size()-1] == '\r') line.resize(line.size()-1);  <span class=comment>// portability
+</span>        <span class=keyword>if</span> (line == &quot;END&quot;) <span class=keyword>break</span>;
+        <span class=keyword>bool</span> duplicate= <span class=keyword>false</span>;
+        <span class=keyword>int</span> count[26]= {0};
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; line.length(); ++i)
+        {
+            <span class=keyword>char</span> c= line[i];
+            <span class=keyword>if</span> (c != ' '  &amp;&amp; ++count[c - 'A'] &gt; 1)
+                duplicate= <span class=keyword>true</span>;
+        }
+
+        <span class=keyword>if</span> (!duplicate)
+            cout &lt;&lt; line &lt;&lt; endl;
+    }
+    <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

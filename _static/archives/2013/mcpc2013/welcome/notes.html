@@ -1,0 +1,256 @@
+<p>
+This problem is precisely equivalent to the Vertex Cover problem on a
+bipartite graph, with a vertex on one side for each first-name
+initial, and a vertex on the other side for each last-name initial.
+Each person is an edge from the "first name" vertex to the "second
+name" vertex.
+</p>
+
+<p>
+While vertex cover is NP-hard in general, it turns out to be
+polynomially solvable on a bipartite graph. Konig's theorem says the
+minimal vertex cover size is equal to the maximum matching size (and
+the matching can be found by standard max flow).
+</p>
+
+<p>
+However, this problem is also solvable by enumeration. If we correctly
+guess the set of last-name initials that groups are formed around,
+then it is clear how many first-name groups are needed to complete the
+partition (by looking at the first names for all people whose last
+initial was not chosen). There are 2^18 = 262,144 choices for the
+last-name groups, so we can afford to try them all.
+</p>
+
+The remainder of this file provides solutions, and proof of optimality,
+for the judge's data sets.
+<ul>
+  <li>
+      <p>
+      Year 1.
+      <br>
+      Answer: 3
+      <br>
+      This can be achieved using first initials (JS) and last initials (C)
+      <br>
+      This is required because of following incompatible people:
+      EC JP SG
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 2.
+      <br>
+      Answer: 6
+      <br>
+      This can be achieved using first initials (DEJMRT) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      DK ED JB MM RF TH
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 3.
+      <br>
+      Answer: 18
+      <br>
+      This can be achieved using first initials (GHIJKLMNOPQRSTUVWX) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      GA HB IC JD KE LF MG NH OI PJ QK RL SM TN UO VP WQ XR
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 4.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials (A) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      AA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 5.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials (Z) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      ZR
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 6.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials (A) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      AR
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 7.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials (Z) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      ZA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 8.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials (A) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      AA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 9.
+      <br>
+      Answer: 1
+      <br>
+      This can be achieved using first initials () and last initials (R)
+      <br>
+      This is required because of following incompatible people:
+      AR
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 10.
+      <br>
+      Answer: 5
+      <br>
+      This can be achieved using first initials () and last initials (BCDEF)
+      <br>
+      This is required because of following incompatible people:
+      AF BB CC DD EE
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 11.
+      <br>
+      Answer: 5
+      <br>
+      This can be achieved using first initials (BCDEF) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      BB CC DD EE FA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 12.
+      <br>
+      Answer: 5
+      <br>
+      This can be achieved using first initials (BCDEF) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      BB CC DD EE FA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 13.
+      <br>
+      Answer: 10
+      <br>
+      This can be achieved using first initials (GHIJK) and last initials (BCDEF)
+      <br>
+      This is required because of following incompatible people:
+      AF BB CC DD EE GH HI IJ JK KG
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 14.
+      <br>
+      Answer: 10
+      <br>
+      This can be achieved using first initials () and last initials (ABCDEFGHIJ)
+      <br>
+      This is required because of following incompatible people:
+      AB BA CD DC EF FE GH HG IJ JI
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 15.
+      <br>
+      Answer: 10
+      <br>
+      This can be achieved using first initials (ABCDEFGHIJ) and last initials ()
+      <br>
+      This is required because of following incompatible people:
+      AB BA CD DC EF FE GH HG IJ JI
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 16.
+      <br>
+      Answer: 14
+      <br>
+      This can be achieved using first initials (ABDJYZ) and last initials (BEGIKLOP)
+      <br>
+      This is required because of following incompatible people:
+      AF BN CP DA EE FL HO IG JC KI MK NB YH ZD
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 17.
+      <br>
+      Answer: 15
+      <br>
+      This can be achieved using first initials (GIKLTXYZ) and last initials (DGIKNOP)
+      <br>
+      This is required because of following incompatible people:
+      AN BP CG DO EI FK GL IB JD KE LJ TF XC YH ZA
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 18.
+      <br>
+      Answer: 16
+      <br>
+      This can be achieved using first initials (CDMORXY) and last initials (ABCFHIJLN)
+      <br>
+      This is required because of following incompatible people:
+      AF BC CD DP EL FH GN HI JJ KB LA MO OM RK XG YE
+      </p>
+  </li>
+  <li>
+      <p>
+      Year 19.
+      <br>
+      Answer: 17
+      <br>
+      This can be achieved using first initials (ADELORWXZ) and last initials (ACDFIMNR)
+      <br>
+      This is required because of following incompatible people:
+      AL BR CN DK EP FC GM HI IF JD KA LO OG RB WJ XH ZE
+      </p>
+  </li>
+</ul>

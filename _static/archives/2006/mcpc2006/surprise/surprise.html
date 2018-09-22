@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Surprising Strings</title>
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Eric Shade">
+</head>
+
+<body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem C: Surprising Strings</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td><tt>surprise.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td><tt>surprise.in</tt></td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>The <dfn>D-pairs</dfn> of a string of letters are the ordered pairs
+of letters that are distance D from each other.  A string is
+<dfn>D-unique</dfn> if all of its D-pairs are different.  A string is
+<dfn>surprising</dfn> if it is D-unique for every possible distance
+D.</p>
+
+<p>Consider the string ZGBG. Its 0-pairs are ZG, GB, and BG. Since
+these three pairs are all different, ZGBG is 0-unique. Similarly, the
+1-pairs of ZGBG are ZB and GG, and since these two pairs are
+different, ZGBG is 1-unique.  Finally, the only 2-pair of ZGBG is ZG,
+so ZGBG is 2-unique.  Thus ZGBG is surprising.  (Note that the fact
+that ZG is both a 0-pair and a 2-pair of ZGBG is irrelevant, because
+0 and 2 are different distances.)</p>
+
+<p><b>Input:</b> The input consists of one or more nonempty strings of
+at most 79 uppercase letters, each string on a line by itself,
+followed by a line containing only an asterisk that signals the end of
+the input.</p>
+
+<p><b>Output:</b> For each string of letters, output whether or not it
+is surprising using the <em>exact</em> output format shown below.</p>
+
+<p><b>Acknowledgement:</b> This problem is inspired by the
+&quot;Puzzling Adventures&quot; column in the December 2003 issue of
+<i>Scientific American</i>.</p>
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;">
+        ZGBG<br>
+        X<br>
+        EE<br>
+        AAB<br>
+        AABA<br>
+        AABB<br>
+        BCBABCC<br>
+        *<br>
+       </td>
+       <td valign="top" style="font-family: monospace;">
+        ZGBG is surprising.<br>
+        X is surprising.<br>
+        EE is surprising.<br>
+        AAB is surprising.<br>
+        AABA is surprising.<br>
+        AABB is NOT surprising.<br>
+        BCBABCC is NOT surprising.<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+
+<p><small><i>Last modified on October 28, 2006 at 8:49 PM.</i></small></p>
+
+</body>
+</html>

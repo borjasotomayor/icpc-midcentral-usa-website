@@ -1,0 +1,341 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/maze/maze.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Statement { color: #7e75b5; font-weight: bold; }
+.Constant { color: #72a5e4; font-weight: bold; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="Comment">/* maze.java Solution by Ron Pacheco &lt;ron@pacheco.net&gt; </span>
+<span class="lnr">  2 </span><span class="Comment">   2008 ACM Mid-Central Regional Contest</span>
+<span class="lnr">  3 </span><span class="Comment">   Problem G: Line &amp; Circle Maze */</span>
+<span class="lnr">  4 </span>
+<span class="lnr">  5 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr">  6 </span><span class="PreProc">import</span> java.util.*;
+<span class="lnr">  7 </span>
+<span class="lnr">  8 </span><span class="Comment">/* The endpoints of all line segments along with all object intersections form</span>
+<span class="lnr">  9 </span><span class="Comment">   a weighted graph on which we use an all-pairs shortest path algorithm. A</span>
+<span class="lnr"> 10 </span><span class="Comment">   conceptually easy solution but challenging to implement! </span>
+<span class="lnr"> 11 </span><span class="Comment">   </span>
+<span class="lnr"> 12 </span><span class="Comment">   Here is a sketch of this program's approach:</span>
+<span class="lnr"> 13 </span><span class="Comment">   </span>
+<span class="lnr"> 14 </span><span class="Comment">   1) Construct a set of points containing all line endpoints and all object</span>
+<span class="lnr"> 15 </span><span class="Comment">      intersections.</span>
+<span class="lnr"> 16 </span><span class="Comment">      </span>
+<span class="lnr"> 17 </span><span class="Comment">   2) Compute the distances (either linear distance or circular arc length)</span>
+<span class="lnr"> 18 </span><span class="Comment">      between all pairs of points that lie on the same object. To facilitate</span>
+<span class="lnr"> 19 </span><span class="Comment">      this, Step 1 keeps a list of all the objects incident to each point.</span>
+<span class="lnr"> 20 </span><span class="Comment">      </span>
+<span class="lnr"> 21 </span><span class="Comment">   3) Construct an adjacency matrix from the distances found in Step 2.</span>
+<span class="lnr"> 22 </span><span class="Comment">   </span>
+<span class="lnr"> 23 </span><span class="Comment">   4) Use the simple Floyd-Warshall all-pairs shortest path algorithm.</span>
+<span class="lnr"> 24 </span><span class="Comment">   </span>
+<span class="lnr"> 25 </span><span class="Comment">   5) Search all pairs for the longest minimum path.</span>
+<span class="lnr"> 26 </span><span class="Comment"> */</span>
+<span class="lnr"> 27 </span>
+<span class="lnr"> 28 </span><span class="Type">class</span> maze {
+<span class="lnr"> 29 </span>
+<span class="lnr"> 30 </span>  <span class="Comment">// The critical data structure! The points object is a mapping of points to</span>
+<span class="lnr"> 31 </span>  <span class="Comment">// the set of objects incident to that point.</span>
+<span class="lnr"> 32 </span>  <span class="Type">static</span><span class=""> TreeMap&lt;Point,HashSet&lt;Object&gt;&gt; points;</span>
+<span class="lnr"> 33 </span>
+<span class="lnr"> 34 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class=""> String</span>[]<span class=""> args </span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr"> 35 </span>
+<span class="lnr"> 36 </span>    <span class="Comment">// Open file specified on command line, else &quot;maze.in&quot;</span>
+<span class="lnr"> 37 </span>    Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class=""> </span><span class="Statement">new</span><span class=""> File</span>(<span class=""> args.length &gt; </span><span class="Constant">0</span><span class=""> ? args</span>[<span class="Constant">0</span><span class="javaParen2">]</span><span class=""> : </span><span class="Constant">&quot;maze.in&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 38 </span>
+<span class="lnr"> 39 </span>    <span class="Comment">// Track the input case number</span>
+<span class="lnr"> 40 </span>    <span class="Type">int</span><span class=""> caseNumber = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 41 </span>
+<span class="lnr"> 42 </span>    <span class="Comment">// First character of input case; &quot;*&quot; means end of input</span>
+<span class="lnr"> 43 </span>    <span class="Type">char</span><span class=""> ch = in.next</span>()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 44 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> ch != </span><span class="Constant">'*'</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 45 </span>
+<span class="lnr"> 46 </span>      <span class="Comment">// The shapes object holds all the input shapes. When I first coded this</span>
+<span class="lnr"> 47 </span>      <span class="Comment">// solution there wasn't a cap on the number of objects. Later we</span>
+<span class="lnr"> 48 </span>      <span class="Comment">// introduced a maximum of 25 objects, so this could just as easily now</span>
+<span class="lnr"> 49 </span>      <span class="Comment">// be a simple array.</span>
+<span class="lnr"> 50 </span>      ArrayList&lt;Object&gt; shapes = <span class="Statement">new</span><span class=""> ArrayList&lt;Object&gt;</span>()<span class="">;</span>
+<span class="lnr"> 51 </span>
+<span class="lnr"> 52 </span>      <span class="Comment">// Loop through all the input lines and add the shapes</span>
+<span class="lnr"> 53 </span>      <span class="Statement">while</span><span class=""> </span>(<span class=""> ch == </span><span class="Constant">'L'</span><span class=""> || ch == </span><span class="Constant">'C'</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 54 </span>        shapes.add(<span class=""> ch == </span><span class="Constant">'L'</span>
+<span class="lnr"> 55 </span>          ? <span class="Statement">new</span><span class=""> Line</span>(<span class=""> in.nextInt</span>()<span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class=""> </span><span class="javaParen1">)</span>
+<span class="lnr"> 56 </span>          : <span class="Statement">new</span><span class=""> Circle</span>(<span class=""> in.nextInt</span>()<span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span>)<span class="">;</span>
+<span class="lnr"> 57 </span>        in.nextLine()<span class="">;</span>
+<span class="lnr"> 58 </span>        ch = in.next()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 59 </span>      }
+<span class="lnr"> 60 </span>
+<span class="lnr"> 61 </span>      <span class="Comment">// Init points structure for the new test case</span>
+<span class="lnr"> 62 </span>      points = <span class="Statement">new</span><span class=""> TreeMap&lt;Point,HashSet&lt;Object&gt;&gt;</span>(<span class=""> </span><span class="Statement">new</span><span class=""> PointComparator</span>()<span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 63 </span>
+<span class="lnr"> 64 </span>      <span class="Comment">// Look for intersections between every possible pair of objects</span>
+<span class="lnr"> 65 </span>      <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; shapes.size</span>()<span class="">; i++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 66 </span>        Object s = shapes.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 67 </span>
+<span class="lnr"> 68 </span>        <span class="Comment">// For line objects, add their endpoints to the points map</span>
+<span class="lnr"> 69 </span>        <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 70 </span>          addPoint(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> </span>(<span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.x1, </span><span class="javaParen2">(</span><span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.y1 </span><span class="javaParen1">)</span><span class="">, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 71 </span>          addPoint(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> </span>(<span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.x2, </span><span class="javaParen2">(</span><span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.y2 </span><span class="javaParen1">)</span><span class="">, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 72 </span>        }
+<span class="lnr"> 73 </span>
+<span class="lnr"> 74 </span>        <span class="Comment">// Inner loop comparing all pairs of shapes</span>
+<span class="lnr"> 75 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = i + </span><span class="Constant">1</span><span class="">; j &lt; shapes.size</span>()<span class="">; j++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 76 </span>          Object t = shapes.get(<span class="">j</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 77 </span>
+<span class="lnr"> 78 </span>          <span class="Comment">// Two line segments</span>
+<span class="lnr"> 79 </span>          <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line &amp;&amp; t </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 80 </span>            Point p = MyMath.xLineLine(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Line</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 81 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> p != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 82 </span>              addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 83 </span>              addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 84 </span>            }
+<span class="lnr"> 85 </span>          }
+<span class="lnr"> 86 </span>
+<span class="lnr"> 87 </span>          <span class="Comment">// Two circles</span>
+<span class="lnr"> 88 </span>          <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Circle &amp;&amp; t </span><span class="Statement">instanceof</span><span class=""> Circle </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 89 </span>            ArrayList&lt;Point&gt; intersections = MyMath.xCircleCircle(<span class=""> </span>(<span class="">Circle</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 90 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> intersections != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 91 </span>              Iterator k = intersections.iterator()<span class="">;</span>
+<span class="lnr"> 92 </span>              <span class="Statement">while</span><span class=""> </span>(<span class=""> k.hasNext</span>()<span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 93 </span>                Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">k.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr"> 94 </span>                addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 95 </span>                addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 96 </span>              }
+<span class="lnr"> 97 </span>            }
+<span class="lnr"> 98 </span>          }
+<span class="lnr"> 99 </span>
+<span class="lnr">100 </span>          <span class="Comment">// A line and a circle</span>
+<span class="lnr">101 </span>          <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">102 </span>            ArrayList&lt;Point&gt; intersections;
+<span class="lnr">103 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span>
+<span class="lnr">104 </span>              intersections = MyMath.xLineCircle(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">105 </span>            <span class="Statement">else</span>
+<span class="lnr">106 </span>              intersections = MyMath.xLineCircle(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">t, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">107 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> intersections != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">108 </span>              Iterator k = intersections.iterator()<span class="">;</span>
+<span class="lnr">109 </span>              <span class="Statement">while</span><span class=""> </span>(<span class=""> k.hasNext</span>()<span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">110 </span>                Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">k.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">111 </span>                addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">112 </span>                addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">113 </span>              }
+<span class="lnr">114 </span>            }
+<span class="lnr">115 </span>          }
+<span class="lnr">116 </span>        }
+<span class="lnr">117 </span>      }
+<span class="lnr">118 </span>
+<span class="lnr">119 </span>      <span class="Comment">// Initialize the graph to infinitely weighted edges</span>
+<span class="lnr">120 </span>      <span class="Type">int</span><span class=""> N = points.size</span>()<span class="">;</span>
+<span class="lnr">121 </span>      <span class="Type">double</span><span class=""> graph</span>[][]<span class=""> = </span><span class="Statement">new</span><span class=""> </span><span class="Type">double</span><span class="javaParen">[</span><span class="">N</span><span class="javaParen">][</span><span class="">N</span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr">122 </span>      <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">123 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">124 </span>          <span class="Statement">if</span><span class=""> </span>(<span class=""> i == j </span><span class="javaParen">)</span>
+<span class="lnr">125 </span>            graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">126 </span>          <span class="Statement">else</span>
+<span class="lnr">127 </span>            graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = MyMath.INFINITY;</span>
+<span class="lnr">128 </span>
+<span class="lnr">129 </span>      <span class="Comment">// For every point...</span>
+<span class="lnr">130 </span>      <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i1 = points.keySet</span>()<span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i1.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">131 </span>        Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">i1.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">132 </span>
+<span class="lnr">133 </span>        <span class="Comment">// and every object the point intersects...</span>
+<span class="lnr">134 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i2 = points.get</span>(<span class="">p</span><span class="javaParen1">)</span><span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i2.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">135 </span>          Object s = i2.next()<span class="">;</span>
+<span class="lnr">136 </span>
+<span class="lnr">137 </span>          <span class="Comment">// and every other point on the same object . . .</span>
+<span class="lnr">138 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i3 = points.keySet</span>()<span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i3.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">139 </span>            Point q = (<span class="">Point</span><span class="javaParen">)</span><span class="">i3.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">140 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> p.n != q.n &amp;&amp; points.get</span>(<span class="">q</span><span class="javaParen1">)</span><span class="">.contains</span><span class="javaParen1">(</span><span class=""> s </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">141 </span>              <span class="Comment">// find the distance between the points.</span>
+<span class="lnr">142 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span>
+<span class="lnr">143 </span>                graph[<span class="">p.n</span><span class="javaParen">][</span><span class="">q.n</span><span class="javaParen">]</span><span class=""> = graph</span><span class="javaParen">[</span><span class="">q.n</span><span class="javaParen">][</span><span class="">p.n</span><span class="javaParen">]</span><span class=""> = MyMath.linearDistance</span><span class="javaParen">(</span><span class=""> p, q </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">144 </span>              <span class="Statement">else</span>
+<span class="lnr">145 </span>                graph[<span class="">p.n</span><span class="javaParen">][</span><span class="">q.n</span><span class="javaParen">]</span><span class=""> = graph</span><span class="javaParen">[</span><span class="">q.n</span><span class="javaParen">][</span><span class="">p.n</span><span class="javaParen">]</span><span class=""> = MyMath.arcLength</span><span class="javaParen">(</span><span class=""> </span>(<span class="">Circle</span><span class="javaParen1">)</span><span class="">s, p, q </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">146 </span>            }
+<span class="lnr">147 </span>          }
+<span class="lnr">148 </span>        }
+<span class="lnr">149 </span>      }
+<span class="lnr">150 </span>
+<span class="lnr">151 </span>      <span class="Comment">// Finally, the easiest part of the whole thing! Run the Floyd-Warshall</span>
+<span class="lnr">152 </span>      <span class="Comment">// all pairs shortest path algorithm.</span>
+<span class="lnr">153 </span>      <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> k = </span><span class="Constant">0</span><span class="">; k &lt; N; k++ </span><span class="javaParen">)</span>
+<span class="lnr">154 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">155 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">156 </span>            graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = Math.min</span><span class="javaParen">(</span><span class=""> graph</span>[<span class="">i</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class="">, graph</span><span class="javaParen1">[</span><span class="">i</span><span class="javaParen1">][</span><span class="">k</span><span class="javaParen1">]</span><span class=""> + graph</span><span class="javaParen1">[</span><span class="">k</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">157 </span>
+<span class="lnr">158 </span>      <span class="Comment">// If no lines and no intersection just say &quot;No Solution&quot;. (Note that this</span>
+<span class="lnr">159 </span>      <span class="Comment">// situation is prevented from occuring in the offical problem statement.)</span>
+<span class="lnr">160 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> N == </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">161 </span>        System.out.format(<span class=""> </span><span class="Constant">&quot;Case %d: No Solution%n&quot;</span><span class="">, ++caseNumber </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">162 </span>      }
+<span class="lnr">163 </span>
+<span class="lnr">164 </span>      <span class="Comment">// Otherwise find the longest of the shortest paths and output its length</span>
+<span class="lnr">165 </span>      <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">166 </span>        <span class="Type">double</span><span class=""> m = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">167 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">168 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">169 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> !MyMath.isInfinite</span>(<span class=""> graph</span>[<span class="">i</span><span class="javaParen2">][</span><span class="">j</span><span class="javaParen2">]</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">170 </span>              m = Math.max(<span class=""> m, graph</span>[<span class="">i</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">171 </span>        System.out.format(<span class=""> </span><span class="Constant">&quot;Case %d: %.1f%n&quot;</span><span class="">, ++caseNumber, m </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">172 </span>      }
+<span class="lnr">173 </span>
+<span class="lnr">174 </span>      <span class="Comment">// Try for another test case</span>
+<span class="lnr">175 </span>      in.nextLine()<span class="">;</span>
+<span class="lnr">176 </span>      ch = in.next()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">177 </span>    }
+<span class="lnr">178 </span>  }
+<span class="lnr">179 </span>
+<span class="lnr">180 </span>  <span class="Comment">// Utility function to add to the points data structure. If the point is</span>
+<span class="lnr">181 </span>  <span class="Comment">// is already in the map, just add the object to the set of objects this</span>
+<span class="lnr">182 </span>  <span class="Comment">// point intersects, otherwise add a new mapping with this point and object.</span>
+<span class="lnr">183 </span>
+<span class="lnr">184 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> addPoint</span>(<span class=""> Point p, Object s </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">185 </span>    HashSet&lt;Object&gt; on;
+<span class="lnr">186 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> points.containsKey</span>(<span class=""> p </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">187 </span>      on = points.get(<span class=""> p </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">188 </span>    <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">189 </span>      p = <span class="Statement">new</span><span class=""> Point</span>(<span class=""> points.size</span>()<span class="">, p </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">190 </span>      on = <span class="Statement">new</span><span class=""> HashSet&lt;Object&gt;</span>()<span class="">;</span>
+<span class="lnr">191 </span>    }
+<span class="lnr">192 </span>    on.add(<span class=""> s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">193 </span>    points.put(<span class=""> p, on </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">194 </span>  }
+<span class="lnr">195 </span>
+<span class="lnr">196 </span>}
+<span class="lnr">197 </span>
+<span class="lnr">198 </span><span class="Comment">// Classes for Line and Circle so that they can be stored in the same</span>
+<span class="lnr">199 </span><span class="Comment">// collections.</span>
+<span class="lnr">200 </span>
+<span class="lnr">201 </span><span class="Type">class</span> Line {
+<span class="lnr">202 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> x1, y1, x2, y2;</span>
+<span class="lnr">203 </span>  <span class="Type">public</span><span class=""> Line</span>(<span class=""> </span><span class="Type">int</span><span class=""> x1, </span><span class="Type">int</span><span class=""> y1, </span><span class="Type">int</span><span class=""> x2, </span><span class="Type">int</span><span class=""> y2 </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x1 = x1; </span><span class="Type">this</span><span class="">.y1 = y1; </span><span class="Type">this</span><span class="">.x2 = x2; </span><span class="Type">this</span><span class="">.y2 = y2; }</span>
+<span class="lnr">204 </span>}
+<span class="lnr">205 </span>
+<span class="lnr">206 </span><span class="Type">class</span> Circle {
+<span class="lnr">207 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> x, y, r;</span>
+<span class="lnr">208 </span>  <span class="Type">public</span><span class=""> Circle</span>(<span class=""> </span><span class="Type">int</span><span class=""> x, </span><span class="Type">int</span><span class=""> y, </span><span class="Type">int</span><span class=""> r </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x = x; </span><span class="Type">this</span><span class="">.y = y; </span><span class="Type">this</span><span class="">.r = r; }</span>
+<span class="lnr">209 </span>}
+<span class="lnr">210 </span>
+<span class="lnr">211 </span><span class="Comment">// Point class. In addition to (x,y), we store n, which is just a unique index</span>
+<span class="lnr">212 </span><span class="Comment">// number assigned to the point so that later we can easily create an adjacency</span>
+<span class="lnr">213 </span><span class="Comment">// matrix from the points map.</span>
+<span class="lnr">214 </span>
+<span class="lnr">215 </span><span class="Type">class</span> Point {
+<span class="lnr">216 </span>  <span class="Type">int</span><span class=""> n;</span>
+<span class="lnr">217 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">double</span><span class=""> x, y;</span>
+<span class="lnr">218 </span>  <span class="Type">public</span><span class=""> Point</span>(<span class=""> </span><span class="Type">double</span><span class=""> x, </span><span class="Type">double</span><span class=""> y </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x = x; </span><span class="Type">this</span><span class="">.y = y; }</span>
+<span class="lnr">219 </span>  <span class="Type">public</span><span class=""> Point</span>(<span class=""> </span><span class="Type">int</span><span class=""> n, Point p </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.n = n; </span><span class="Type">this</span><span class="">.x = p.x; </span><span class="Type">this</span><span class="">.y = p.y; }</span>
+<span class="lnr">220 </span>}
+<span class="lnr">221 </span>
+<span class="lnr">222 </span><span class="Comment">// Since we're dealing with floating point approximations to real numbers, use</span>
+<span class="lnr">223 </span><span class="Comment">// a comparator for points that takes our float epsilon into account.</span>
+<span class="lnr">224 </span>
+<span class="lnr">225 </span><span class="Type">class</span> PointComparator <span class="Type">implements</span><span class=""> Comparator&lt;Point&gt; {</span>
+<span class="lnr">226 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> compare</span>(<span class=""> Point a, Point b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">227 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.ltDouble</span>(<span class=""> a.x, b.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">228 </span>      <span class="Statement">return</span><span class=""> -</span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">229 </span>    <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.gtDouble</span>(<span class=""> a.x, b.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">230 </span>      <span class="Statement">return</span><span class=""> </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">231 </span>    <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">232 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.ltDouble</span>(<span class=""> a.y, b.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">233 </span>        <span class="Statement">return</span><span class=""> -</span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">234 </span>      <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.gtDouble</span>(<span class=""> a.y, b.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">235 </span>        <span class="Statement">return</span><span class=""> </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">236 </span>      <span class="Statement">else</span>
+<span class="lnr">237 </span>        <span class="Statement">return</span><span class=""> </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">238 </span>    }
+<span class="lnr">239 </span>  }
+<span class="lnr">240 </span>}
+<span class="lnr">241 </span>
+<span class="lnr">242 </span><span class="Comment">// There was enough math in this problem that I decided to pull it all out into</span>
+<span class="lnr">243 </span><span class="Comment">// a separate class because it was cluttering up the main algorithm.</span>
+<span class="lnr">244 </span>
+<span class="lnr">245 </span><span class="Type">class</span> MyMath {
+<span class="lnr">246 </span>
+<span class="lnr">247 </span>  <span class="Comment">// Epsilon and infinity constants sufficient for this problem</span>
+<span class="lnr">248 </span>
+<span class="lnr">249 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">final</span><span class=""> </span><span class="Type">double</span><span class=""> EPSILON = </span><span class="Constant">1E-8</span><span class="">;</span>
+<span class="lnr">250 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">final</span><span class=""> </span><span class="Type">double</span><span class=""> INFINITY = </span><span class="Constant">1E+8</span><span class="">;</span>
+<span class="lnr">251 </span>
+<span class="lnr">252 </span>  <span class="Comment">// Floating point epsilon-based comparisons</span>
+<span class="lnr">253 </span>
+<span class="lnr">254 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> eqDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> a &gt;= b - EPSILON &amp;&amp; a &lt;= b - EPSILON; }</span>
+<span class="lnr">255 </span>
+<span class="lnr">256 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> ltDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> b - a &gt; EPSILON; }</span>
+<span class="lnr">257 </span>
+<span class="lnr">258 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> gtDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> a - b &gt; EPSILON; }</span>
+<span class="lnr">259 </span>
+<span class="lnr">260 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> isInfinite</span>(<span class=""> </span><span class="Type">double</span><span class=""> a </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> !ltDouble</span><span class="javaParen">(</span><span class=""> a, INFINITY </span><span class="javaParen">)</span><span class="">; }</span>
+<span class="lnr">261 </span>
+<span class="lnr">262 </span>  <span class="Comment">// The math algorithms. Many other implementations are possible. See any</span>
+<span class="lnr">263 </span>  <span class="Comment">// decent reference on geometric algorithms.</span>
+<span class="lnr">264 </span>
+<span class="lnr">265 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> Point xLineLine</span>(<span class=""> Line l1, Line l2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">266 </span>    <span class="Type">int</span><span class=""> x1 = l1.x1, y1 = l1.y1, x2 = l1.x2, y2 = l1.y2, x3 = l2.x1, y3 = l2.y1, x4 = l2.x2, y4 = l2.y2;</span>
+<span class="lnr">267 </span>    <span class="Type">int</span><span class=""> d = </span>(<span class=""> y4 - y3 </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> x2 - x1 </span><span class="javaParen">)</span><span class=""> - </span><span class="javaParen">(</span><span class=""> x4 - x3 </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> y2 - y1 </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">268 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> d == </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">269 </span>    <span class="Type">double</span><span class=""> a = </span>(<span class=""> </span>(<span class=""> x4 - x3 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> y1 - y3 </span><span class="javaParen1">)</span><span class=""> - </span><span class="javaParen1">(</span><span class=""> y4 - y3 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> x1 - x3 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class="Type">double</span><span class="javaParen">)</span><span class="">d;</span>
+<span class="lnr">270 </span>    <span class="Type">double</span><span class=""> b = </span>(<span class=""> </span>(<span class=""> x2 - x1 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> y1 - y3 </span><span class="javaParen1">)</span><span class=""> - </span><span class="javaParen1">(</span><span class=""> y2 - y1 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> x1 - x3 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class="Type">double</span><span class="javaParen">)</span><span class="">d;</span>
+<span class="lnr">271 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> a &lt; </span><span class="Constant">0</span><span class=""> || a &gt; </span><span class="Constant">1</span><span class=""> || b &lt; </span><span class="Constant">0</span><span class=""> || b &gt; </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">272 </span>    <span class="Statement">return</span><span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x1 + a * </span>(<span class=""> x2 - x1 </span><span class="javaParen1">)</span><span class="">, y1 + a * </span><span class="javaParen1">(</span><span class=""> y2 - y1 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">273 </span>  }
+<span class="lnr">274 </span>
+<span class="lnr">275 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> ArrayList&lt;Point&gt; xLineCircle</span>(<span class=""> Line l, Circle c </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">276 </span>    <span class="Type">int</span><span class=""> dx = l.x2 - l.x1;</span>
+<span class="lnr">277 </span>    <span class="Type">int</span><span class=""> dy = l.y2 - l.y1;</span>
+<span class="lnr">278 </span>    <span class="Type">int</span><span class=""> A = dx * dx + dy * dy;</span>
+<span class="lnr">279 </span>    <span class="Type">int</span><span class=""> B = </span><span class="Constant">2</span><span class=""> * </span>(<span class=""> dx * </span>(<span class=""> l.x1 - c.x </span><span class="javaParen1">)</span><span class=""> + dy * </span><span class="javaParen1">(</span><span class=""> l.y1 - c.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">280 </span>    <span class="Type">int</span><span class=""> C = </span>(<span class=""> l.x1 - c.x </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> l.x1 - c.x </span><span class="javaParen">)</span><span class=""> + </span><span class="javaParen">(</span><span class=""> l.y1 - c.y </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> l.y1 - c.y </span><span class="javaParen">)</span><span class=""> - c.r * c.r;</span>
+<span class="lnr">281 </span>    <span class="Type">int</span><span class=""> D = B * B - </span><span class="Constant">4</span><span class=""> * A * C;</span>
+<span class="lnr">282 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> D &lt;= </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">283 </span>    ArrayList&lt;Point&gt; points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point&gt;</span>(<span class=""> </span><span class="Constant">2</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">284 </span>    <span class="Type">double</span><span class=""> t = </span>(<span class=""> -B + Math.sqrt</span>(<span class=""> D </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * A </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">285 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> t &gt;= </span><span class="Constant">0</span><span class=""> &amp;&amp; t &lt;= </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> points.add</span><span class="javaParen">(</span><span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> l.x1 + t * dx, l.y1 + t * dy </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">286 </span>    t = (<span class=""> -B - Math.sqrt</span>(<span class=""> D </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * A </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">287 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> t &gt;= </span><span class="Constant">0</span><span class=""> &amp;&amp; t &lt;= </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> points.add</span><span class="javaParen">(</span><span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> l.x1 + t * dx, l.y1 + t * dy </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">288 </span>    <span class="Statement">return</span><span class=""> points;</span>
+<span class="lnr">289 </span>  }
+<span class="lnr">290 </span>
+<span class="lnr">291 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> ArrayList&lt;Point&gt; xCircleCircle</span>(<span class=""> Circle c1, Circle c2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">292 </span>    <span class="Type">int</span><span class=""> dx = c2.x - c1.x;</span>
+<span class="lnr">293 </span>    <span class="Type">int</span><span class=""> dy = c2.y - c1.y;</span>
+<span class="lnr">294 </span>    <span class="Type">double</span><span class=""> d = Math.sqrt</span>(<span class=""> dx * dx + dy * dy </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">295 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> d &gt; c1.r + c2.r || d &lt; Math.abs</span>(<span class=""> c1.r - c2.r </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">296 </span>    <span class="Type">double</span><span class=""> a = </span>(<span class=""> c1.r * c1.r  - c2.r * c2.r  + d * d </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * d </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">297 </span>    <span class="Type">double</span><span class=""> x = c1.x + dx * a / d;</span>
+<span class="lnr">298 </span>    <span class="Type">double</span><span class=""> y = c1.y + dy * a / d;</span>
+<span class="lnr">299 </span>    <span class="Type">double</span><span class=""> h = Math.sqrt</span>(<span class=""> c1.r * c1.r - a * a </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">300 </span>    <span class="Type">double</span><span class=""> rx = -dy * h / d;</span>
+<span class="lnr">301 </span>    <span class="Type">double</span><span class=""> ry = dx * h / d;</span>
+<span class="lnr">302 </span>    ArrayList&lt;Point&gt; points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point&gt;</span>(<span class=""> </span><span class="Constant">2</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">303 </span>    points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x + rx, y + ry </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">304 </span>    points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x - rx, y - ry </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">305 </span>    <span class="Statement">return</span><span class=""> points;</span>
+<span class="lnr">306 </span>  }
+<span class="lnr">307 </span>
+<span class="lnr">308 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">double</span><span class=""> linearDistance</span>(<span class=""> Point p, Point q </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">309 </span>    <span class="Statement">return</span><span class=""> Math.sqrt</span>(<span class=""> </span>(<span class=""> p.x - q.x </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> p.x - q.x </span><span class="javaParen1">)</span><span class=""> + </span><span class="javaParen1">(</span><span class=""> p.y - q.y </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> p.y - q.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">310 </span>  }
+<span class="lnr">311 </span>
+<span class="lnr">312 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">double</span><span class=""> arcLength</span>(<span class=""> Circle c, Point p, Point q </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">313 </span>    <span class="Type">double</span><span class=""> theta = Math.abs</span>(<span class=""> Math.atan2</span>(<span class=""> p.y - c.y, p.x - c.x </span><span class="javaParen1">)</span><span class=""> - Math.atan2</span><span class="javaParen1">(</span><span class=""> q.y - c.y, q.x - c.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">314 </span>    <span class="Statement">return</span><span class=""> c.r * Math.min</span>(<span class=""> theta, </span><span class="Constant">2</span><span class=""> * Math.PI - theta </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">315 </span>  }
+<span class="lnr">316 </span>
+<span class="lnr">317 </span>}
+</pre>
+</body>
+</html>

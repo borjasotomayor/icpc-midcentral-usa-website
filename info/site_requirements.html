@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Site Requirements &#8212; ICPC Mid-Central USA Regional Contest 2018  documentation</title>
+
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mcpc.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- TODO: Google Analytics -->
+
+  </head><body>
+<header class="masthead container">
+  <div class="jumbotron hidden-xs hidden-sm"></div>
+</header>	 
+
+
+
+  <div id="navbar" class="navbar navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          ICPC Mid-Central USA 2018</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+
+<li><a href="../about.html">About</a></li>
+
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  Information for... <span class="caret"></span></b>
+  </a>
+  <ul class="dropdown-menu">
+      
+      <li><a href="coaches.html">Coaches</a></li>
+      <li><a href="contestants.html">Contestants</a></li>
+      <li><a href="site_directors.html">Site Directors</a></li>      
+  </ul>
+</li>
+
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  Contest <span class="caret"></span></b>
+  </a>
+  <ul class="dropdown-menu">
+      
+      <li><a href="../contest/registration.html">Registration</a></li>
+      <li><a href="../contest/rules.html">Rules</a></li>
+      <li><a href="../contest/notes.html">Notes to Teams</a></li>
+      <li><a href="../contest/schedule.html">Schedule</a></li> 
+      <li><a href="../contest/site_facilities.html">Site Facilities</a></li>
+      <li><a href="../contest/faq.html">FAQ</a></li>
+  </ul>
+</li>
+
+<li><a href="../archive/index.html">Problem Archive</a></li>
+
+<li><a href="../contact.html">Contact</a></li>
+
+
+            
+            
+            
+            
+          </ul>
+
+          
+
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="site-requirements">
+<h1>Site Requirements<a class="headerlink" href="#site-requirements" title="Permalink to this headline">¶</a></h1>
+<p>Sites must meet three types of requirements:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#requirements-software"><span class="std std-ref">Software</span></a></li>
+<li><a class="reference internal" href="#requirements-network"><span class="std std-ref">Network Security</span></a> (including access to the central judging server)</li>
+<li><a class="reference internal" href="#requirements-physical"><span class="std std-ref">Physical Configuration</span></a></li>
+</ul>
+<div class="section" id="software">
+<span id="requirements-software"></span><h2>Software<a class="headerlink" href="#software" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="operating-systems">
+<h3>Operating Systems<a class="headerlink" href="#operating-systems" title="Permalink to this headline">¶</a></h3>
+<p>One of the following is required: Windows XP/Vista or higher, Mac OS 10.4 or higher,
+or any *NIX variant that will fully support the compilers specified below.</p>
+</div>
+<div class="section" id="compilers">
+<h3>Compilers<a class="headerlink" href="#compilers" title="Permalink to this headline">¶</a></h3>
+<p>Sites must provide the following freely-available compilers. These are the same
+compilers used by the Kattis site, and will ensure that students do not run into
+situations where code compiles fine on the site, but then doesn’t compile when
+submitted to the Kattis site.</p>
+<ul>
+<li><p class="first"><strong>C/C++</strong></p>
+<p>A compiler (and corresponding debugger) supporting C++14 is required.</p>
+<p>We recommend using GNU’s gcc 5.4 or higher plus a compatible version
+of GNU’s gdb debugger. Windows sites should use the MinGW port. Mac
+OS 10.4 and higher have a suitable gcc and gdb available as part of
+the developer tools, which ship with the OS but are not installed by
+default.</p>
+</li>
+<li><p class="first"><strong>Java</strong></p>
+<p>The Java 8 SDK or higher is required (make sure you have the
+<code class="docutils literal notranslate"><span class="pre">java</span></code>, <code class="docutils literal notranslate"><span class="pre">javac</span></code>, and <code class="docutils literal notranslate"><span class="pre">jdb</span></code> commands). Either the Sun or OpenJDK
+version is acceptable, but take into account that Kattis uses the
+OpenJDK compiler. Java 7 can be used if using Java 8 is not possible.</p>
+</li>
+<li><p class="first"><strong>Python</strong></p>
+<p>The official Python 3.5 interpreter (as available on Python.org) must
+be installed. Alternative interpreters like PyPy are not acceptable.</p>
+</li>
+</ul>
+<p>If your site includes multiple version of a given compiler, your site-specific documentation
+must specify how to invoke the correct compiler.</p>
+<p>The exact compiler flags are specified in the <a class="reference internal" href="../contest/notes.html"><span class="doc">notes to teams</span></a>.
+Although the teams are told to use these commands, you may optionally want to
+provide command aliases (e.g., <code class="docutils literal notranslate"><span class="pre">icpc-gcc</span></code>, <code class="docutils literal notranslate"><span class="pre">icpc-javac</span></code>, etc.) that invoke
+the correct compiler with all the correct flags.</p>
+</div>
+<div class="section" id="integrated-development-environments-ides">
+<h3>Integrated Development Environments (IDEs)<a class="headerlink" href="#integrated-development-environments-ides" title="Permalink to this headline">¶</a></h3>
+<p>GNU’s gcc and Sun’s javac (from the JDK) are command-line compilers,
+and gdb and jdb are command-line debuggers, so graphical IDEs are not
+required. It is sufficient to provide one or more good text editors and
+a command line. Emacs, Vim, and jEdit are powerful editors that support
+all required languages and work on virtually all operating systems.</p>
+<p>However, sites are encouraged to provide IDEs if possible. C/C++ IDEs
+must work with gcc, and Java IDEs must work with the provided JDK.
+In addition, IDEs must be freely available so teams can practice
+with them in advance before the contest. The following IDEs meet
+these requirements, and are also used in the World Finals:</p>
+<ul class="simple">
+<li>Eclipse 4.7 (Java, C/C++, and Python)</li>
+<li>IntelliJ (Java)</li>
+<li>CLion (C/C++)</li>
+<li>Pycharm Community Edition (Python)</li>
+<li>Code::Blocks (C/C++ and Java)</li>
+</ul>
+<p>Note: IDEs must ideally be configured to use the same compilers and the same
+compiler flags specified in the <a class="reference internal" href="../contest/notes.html"><span class="doc">notes to teams</span></a>.
+If that is not possible, please make sure you inform teams in the site-specific
+instructions, so they know to test their code with the right flags from
+the command line.</p>
+</div>
+<div class="section" id="computers">
+<h3>Computers<a class="headerlink" href="#computers" title="Permalink to this headline">¶</a></h3>
+<p>Computers must support the software required above, and must be configured
+so that they are all functionally identical. If possible, they should also
+be physically identical, although it is sufficient to have the same CPU and RAM.</p>
+</div>
+</div>
+<div class="section" id="network-security">
+<span id="requirements-network"></span><h2>Network Security<a class="headerlink" href="#network-security" title="Permalink to this headline">¶</a></h2>
+<p>We use a central judging system called
+<a class="reference external" href="https://open.kattis.com/">Kattis</a>, the same system used at the World
+Finals. With Kattis, there is a single central server that does all the
+judging. Teams make their submissions via a web interface, so it is
+important that the machines are configured to access only that web
+interface, but not the rest of the Internet.</p>
+<p>To do this, your site must limit Internet access to just the Kattis
+site, as well as a regional site where we will post reference
+documentation.</p>
+<p>There are two mechanisms to accomplish this:</p>
+<ul>
+<li><p class="first"><strong>Using the regional proxy</strong></p>
+<p>We will be running an HTTP proxy for the region that will ensure that
+teams can only access the Kattis site. On the site, you will only
+need to limit IP access to that HTTP proxy. The web browsers on the
+contest machines must also be configured to use this proxy by default
+(or you must give teams instructions on how to setup the browsers
+accordingly).</p>
+<p>This is our preferred mechanism for limiting access to Kattis.</p>
+</li>
+<li><p class="first"><strong>Running your own proxy</strong></p>
+<p>It is also possible for your site to limit access to Kattis by
+setting up your own web proxy. However, doing this requires a
+non-trivial setup. If this option is preferable, please <a class="reference internal" href="../contact.html"><span class="doc">Contact</span></a>
+the Director of Systems and we’ll send you more details (we can also
+share the regional web proxy’s configuration file; we use Squid so,
+if your site does too, it may make your setup easier).</p>
+</li>
+</ul>
+<div class="section" id="id1">
+<h3>Network Security<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>In the weeks before the contest, we will be running a number of dry runs
+using the exact same configuration we will use during the actual
+contest. We encourage you to make use of these dry runs to ensure that
+everything is working correctly on your end. In particular, you should
+check that:</p>
+<ul class="simple">
+<li>You can access the regional Kattis site but not any other kattis.com
+sites (you can test <code class="docutils literal notranslate"><span class="pre">open.kattis.com</span></code> and <code class="docutils literal notranslate"><span class="pre">uchicago.kattis.com</span></code>).</li>
+<li>You cannot access any other hosts on the Internet.</li>
+<li>You can log into Kattis and submit solutions to problems.</li>
+<li>You can submit clarifications, and receive responses (someone will be
+supervising the dry run, and will respond to clarification requests).</li>
+</ul>
+<p>Please note that, at any other time, the regional proxy will be left
+running so you can run tests. However, there will be no one actively
+monitoring the proxy or the Kattis site if any issues arise.</p>
+</div>
+</div>
+<div class="section" id="physical-configuration">
+<span id="requirements-physical"></span><h2>Physical Configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Teams must have a workstation (which may consist of more than one desk) large enough to allow all three team members to work simultaneously, one using the computer while the other two work on paper. Teams must be separated from each other far enough so that team members may talk quietly among themselves without risk of being overheard by nearby teams. Many configurations are possible. Some sites put each team in a classroom by themselves, and at the World Finals all teams are together in a large hall.</p>
+<p>If teams do not have a room to themselves, it is desirable to provide one or more additional large common rooms with several large whiteboards or chalkboards where team members may go to discuss ideas.</p>
+<p>Regardless of physical configuration, sites must take reasonable steps to ensure that there is no physical communication between a contestant and anyone but his or her team members.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div> 	
+
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018, ICPC Mid-Central USA Regional Contest.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

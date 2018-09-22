@@ -1,0 +1,91 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Crash and Go(relians), MCPC 2011 Problem H, C++ solution by Gabriel Foust */</span>
+<span class=pp>#include</span> &lt;cmath&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;list&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;crash.in&quot; );
+
+<span class=keyword>struct</span> Point { <span class=keyword>double</span> x, y, r; };
+list&lt;Point&gt; points;
+
+<span class=keyword>bool</span> InRange( Point one, Point two )
+{
+    <span class=keyword>double</span> dx= one.x - two.x;
+    <span class=keyword>double</span> dy= one.y - two.y;
+    <span class=keyword>double</span> distance= sqrt( dx*dx + dy*dy );
+
+    <span class=comment>// This is just to ensure that our test cases stay far away from rounding error
+</span>    <span class=keyword>if</span> (abs( distance - one.r  ) &lt; 1 || abs( distance - two.r ) &lt; 1)
+        cerr &lt;&lt; &quot;Warning: cutting it a little close\n&quot;;
+
+    <span class=keyword>return</span> (round( distance ) &lt;= round( one.r ) || round( distance ) &lt;= round( two.r ));
+}
+
+<span class=keyword>void</span> AddPoint( Point s )
+{
+    list&lt;Point&gt; group;
+    group.push_back( s );
+
+    list&lt;Point&gt;::iterator i= points.begin();
+    <span class=keyword>while</span> (i != points.end())
+    {
+        <span class=keyword>if</span> (InRange( s, *i ))
+        {
+            group.push_back( *i );
+            points.erase( i++ );
+        }
+        <span class=keyword>else</span>
+            ++i;
+    }
+
+    <span class=keyword>if</span> (group.size() == 1)
+        points.push_back( s );
+    <span class=keyword>else</span>
+    {
+        Point combined;
+        combined.x= combined.y= combined.r= 0.0;
+        <span class=keyword>for</span> (i= group.begin(); i != group.end(); ++i)
+        {
+            combined.x+= i-&gt;x;
+            combined.y+= i-&gt;y;
+            combined.r+= i-&gt;r*i-&gt;r;
+        }
+        combined.x/= group.size();
+        combined.y/= group.size();
+        combined.r= sqrt( combined.r );
+        AddPoint( combined );
+    }
+}
+
+<span class=keyword>int</span> main( <span class=keyword>int</span> argc, <span class=keyword>char</span>** argv )
+{
+    <span class=keyword>int</span> point_count;
+    <span class=keyword>while</span> (fin &gt;&gt; point_count &amp;&amp; point_count &gt; 0)
+    {
+        <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; point_count; ++i)
+        {
+            Point s;
+            fin &gt;&gt; s.x &gt;&gt; s.y &gt;&gt; s.r;
+            AddPoint( s );
+        }
+
+        cout &lt;&lt; points.size() &lt;&lt; endl;
+        points.clear();
+    }
+
+    <span class=keyword>return</span> 0;
+}
+
+</pre></body>
+</html>

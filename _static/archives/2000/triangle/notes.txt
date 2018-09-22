@@ -1,0 +1,11 @@
+Judge's notes on Triangle:
+
+The judge's solution produces the legal scores shown, 
+one test set per line, in this order:
+
+ 42
+ 21 21
+
+ 30 72 42
+ 35 41 35 57 37 37
+

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/steg/steg.cpp.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Constant { color: #72a5e4; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr"> 1 </span><span class="Comment">// 2008 ACM Mid-Central USA Regional Programming Contest</span>
+<span class="lnr"> 2 </span><span class="Comment">// Solution to Problem H: &quot;Steganography&quot; [easy/moderate]</span>
+<span class="lnr"> 3 </span><span class="Comment">// Eric Shade, Missouri State University</span>
+<span class="lnr"> 4 </span>
+<span class="lnr"> 5 </span><span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+<span class="lnr"> 6 </span><span class="PreProc">#include </span><span class="Constant">&lt;fstream&gt;</span>
+<span class="lnr"> 7 </span><span class="Statement">using</span> <span class="Type">namespace</span><span class=""> std;</span>
+<span class="lnr"> 8 </span>
+<span class="lnr"> 9 </span><span class="Type">char</span> decode[] = <span class="Constant">&quot; ABCDEFGHIJKLMNOPQRSTUVWXYZ',-.?&quot;</span><span class="">;</span>
+<span class="lnr">10 </span>
+<span class="lnr">11 </span><span class="Type">int</span> main() {
+<span class="lnr">12 </span>    ifstream in(<span class="Constant">&quot;steg.in&quot;</span><span class="">);</span>
+<span class="lnr">13 </span>    <span class="Type">int</span><span class=""> spaces = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">14 </span>    <span class="Type">int</span><span class=""> bits = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">15 </span>    <span class="Type">int</span><span class=""> code = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">16 </span>    <span class="Type">char</span><span class=""> c;</span>
+<span class="lnr">17 </span>
+<span class="lnr">18 </span>    <span class="Statement">while</span><span class=""> ((c = in.get()) != </span><span class="Constant">'#'</span><span class="">) {</span>
+<span class="lnr">19 </span>        <span class="Statement">if</span><span class=""> (c == </span><span class="Constant">' '</span><span class="">) {</span>
+<span class="lnr">20 </span>            ++spaces;
+<span class="lnr">21 </span>        } <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">22 </span>            <span class="Statement">if</span><span class=""> (spaces &gt; </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr">23 </span>                code = (code &lt;&lt; <span class="Constant">1</span><span class="">) + </span><span class="Constant">1</span><span class=""> - (spaces &amp; </span><span class="Constant">1</span><span class="">);</span>
+<span class="lnr">24 </span>                spaces = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr">25 </span>                <span class="Statement">if</span><span class=""> (++bits == </span><span class="Constant">5</span><span class="">) {</span>
+<span class="lnr">26 </span>                    cout &lt;&lt; decode[code];
+<span class="lnr">27 </span>                    code = bits = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr">28 </span>                }
+<span class="lnr">29 </span>            }
+<span class="lnr">30 </span>            <span class="Statement">if</span><span class=""> (c == </span><span class="Constant">'*'</span><span class="">) {</span>
+<span class="lnr">31 </span>                <span class="Statement">if</span><span class=""> (bits &gt; </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr">32 </span>                    cout &lt;&lt; decode[code &lt;&lt; (<span class="Constant">5</span><span class=""> - bits)];</span>
+<span class="lnr">33 </span>                    code = bits = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr">34 </span>                }
+<span class="lnr">35 </span>                cout &lt;&lt; endl;
+<span class="lnr">36 </span>            }
+<span class="lnr">37 </span>        }
+<span class="lnr">38 </span>    }
+<span class="lnr">39 </span>
+<span class="lnr">40 </span>    in.close();
+<span class="lnr">41 </span>}
+</pre>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Bright Bracelet</title>
+  <meta name="Author" content="Andrew Harrington">
+</head>
+<body bgcolor="white" lang="EN-US" style="">
+<h1 align="center" style="text-align: center;">Problem C: Bright Bracelet</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>bracelet.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>,
+      <tt>pas</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>bracelet.in</tt></td>
+    </tr>
+    <tr>
+      <td>Output file:</td>
+      <td><tt>bracelet.out</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<center>
+<table border="0" cellpadding="5">
+  <tbody>
+    <tr>
+      <td><img src="bracelet1.gif" ALT="Bracelet 1"></td>
+    </tr>
+    <tr>
+      <td align="center">Bracelet 1</td>
+    </tr>
+    <tr>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="bracelet2.gif" ALT="Bracelet 2"></td>
+    </tr>
+    <tr>
+      <td align="center">Bracelet 2</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p>Bracelets can be made from a collection of octagonal pieces, with
+two opposite sides of an octagon attached to octagons on either
+side. The colors of the edges of the octagons vary. The
+different colors are labeled with different letters in the
+diagrams. Bracelets only look good if the connecting sides of two
+adjacent octagons are the same color. Above are two possible
+bracelets. (The ends also get fastened together.) These two
+bracelets could be made from the same four octagons, reordered and
+rotated. Assume that the octagons are never flipped over.</p>
+<p>It happens that the better selling bracelets are those with the
+darker colors on the edges connecting the bracelet.
+The brightness of each lettered color is a positive integer, with
+higher numbers being brighter.
+Suppose the brightness of the labeled colors are:
+</p>
+<center>
+<table border="1" cellpadding="2">
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td>70</td>
+      <td>90</td>
+      <td>10</td>
+      <td>50</td>
+      <td>60</td>
+      <td>30</td>
+      <td>20</td>
+      <td>40</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p>
+We can compare the desirability of these two arrangements of the
+octagons by adding the brightness of the colors at each joint
+(including the connection of the two ends). For Bracelet 1,
+colors A, A, E, and E have sum 70 + 70 + 60 + 60 = 260.
+For Bracelet 2, colors C, C, G, and E have sum 10 + 10 + 20 + 60 =
+100. Bracelet 2 is preferable, having the smaller sum. In
+fact, Bracelet 2 provides the best possible result
+among all rearrangements and rotations of these four octagons.
+</p>
+<p>There are from one to 20 data sets, followed by a final line
+containing only 0. A data set starts with a line containing nine
+blank-separated integers. The first is the number, <i>n</i>, of
+octagons that form the bracelet, where 4 &le; <i>n</i> &le; 11.
+The remaining eight numbers are the brightness for colors A through H,
+in order.
+Each brightness is positive and less than 256. </p>
+<p>The next <i>n</i> lines each contain eight letters, all in the
+range from A through H.
+Each gives the edge colors for one octagon, in clockwise order.
+Individual colors may appear zero or more times in the octagons.
+Different colors may have the same brightness, but that does not make
+them the same color.
+
+</p>
+<p>The output contains one line for each data set:
+If no bracelet can be constructed using all the octagons, the line
+contains "impossible".
+Otherwise the line contains the minimal sum of the brightness for the
+connections.
+<span style="font-weight: bold;">Caution</span>: If your solution
+considers all possible orderings and rotations individually, it will
+run out of time.
+<br>
+</p>
+<table border="1" cellpadding="10">
+  <thead>
+      <tr>
+        <td><b>Example input:</b><td><b>Example output:</b></td>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><tt>
+         4 70 90 10 50 60 30 20 40<br>
+         ACACACAC<br>
+         ABCDEFGH<br>
+         EEEEECCC<br>
+         EECCAGGG<br>
+         5 1 2 3 4 5 6 7 8<br>
+         AAAABBBB<br>
+         BBBBCCCC<br>
+         CCCCDDDD<br>
+         DDDDEEEE<br>
+         EEEEAAAA<br>
+         6 50 50 50 50 100 1 2 3<br>
+         HHHHHHHH<br>
+         BBBBCCCC<br>
+         CDCDDDDD<br>
+         DEDEEEEE<br>
+         EFEFEFEF<br>
+         FFFFFFFF<br>
+         0</tt>
+      </td>
+      <td style="vertical-align: top;"><tt>
+         100<br>
+         15<br>
+         impossible</tt>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 24, 2003 at 8:55 AM.</i></small></p>
+</body>
+</html>

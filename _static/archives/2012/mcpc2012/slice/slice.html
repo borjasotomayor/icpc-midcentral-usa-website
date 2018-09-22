@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Gabriel Foust">
+    <title>Any Way You Slice It</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      .aside { border: 1px dashed black; padding: 0 1em; }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.figure
+      {
+          margin: auto;
+          border-spacing: 1em;
+      }
+      table.figure td
+      {
+          border: 1px solid black;
+          padding: 1em;
+          width: 220px;
+          vertical-align: bottom;
+          text-align: center;
+      }
+      table.figure td.caption
+      {
+          border-style: none;
+          font-style: italic;
+          padding-top: 0;
+          vertical-align: top;
+          text-align: center;
+      }
+      pre
+      {
+        margin-left: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem C: Any Way You Slice It</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>slice.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>slice.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The Association for Cutting Machinery (ACM) has just announced a new
+      portable laser capable of slicing through six-inch sheet metal like a
+      hot knife through Jello (or butter, if you're a traditionalist).  The
+      laser is mounted on a small motorized vehicle which is programmed to
+      drive over the surface being cut.  The vehicle has two operations: it
+      can move forward in a straight line, cutting the surface beneath it as
+      it goes, or it can pivot in place to face a different direction.
+    </p>
+    <p>
+      Of course, trouble can arise if the laser cuts a hole in the surface, as
+      the surface inside the hole will drop out, and the vehicle will fall in
+      the hole.  Your task is to take a set of instructions for the vehicle
+      and decide whether they will result in cutting a hole&mdash;that is, if
+      the path that it is cutting ever intersects itself.  We will assume that
+      we have an infinite surface, and that the laser makes a cut of zero
+      width.
+    </p>
+    <p>
+      We assume that the starting location of the laser is <nobr>(0, 0)</nobr>
+      and oriented to face in the positive&nbsp;Y direction.
+      Sequences of instructions will always alternate between turn instructions
+      and move instructions.  All instructions are relative&mdash;e.g.,&nbsp;turn a
+      certain number of counterclockwise degrees relative to your current position.
+      For example, suppose we gave the vehicle the following sequence of
+      instructions:
+    </p>
+<pre>TURN  -90
+MOVE   10
+TURN   90
+MOVE    5
+TURN  135
+MOVE   10
+TURN  -90
+MOVE    5
+</pre>
+    <p>
+    The vehicle will take the following actions:
+    </p>
+    <ol>
+      <li>
+        <em>Turn -90&deg;.</em>  The laser is still at (0, 0), but now the vehicle
+        is facing in the positive X direction.
+      </li>
+      <li><em>Move forward 10.</em>  This moves the laser to location (10, 0).</li>
+      <li>
+        <em>Turn 90&deg;.</em>  The laser is still at (10, 0), but now the vehicle
+        is facing in the positive Y direction.
+      </li>
+      <li>
+        <em>Move forward 5.</em>  This moves the laser to location (10,
+        5).  (See Figure 1)
+      </li>
+      <li>
+        <em>Turn 135&deg;.</em>  Now the vehicle is facing diagonally in the
+        negative XY direction.
+      </li>
+      <li>
+        <em>Move forward 10.</em>  If this instruction were completed, it
+        would move the laser to approximately (2.93, -2.07).  However, along
+        the way the laser will intersect one of the previous cuts it made,
+        making a hole and interfering with the mobility of the vehicle.  (See
+        Figure 2)  Thus, this instruction (and all following instructions)
+        cannot be completed.
+      </li>
+    </ol>
+    <table class="figure">
+      <tr>
+        <td><img src="slice1.png"/></td>
+        <td><img src="slice2.png"/></td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 1: <nobr>after 2 turn/move instructions</nobr></td>
+        <td class="caption">Figure 2: <nobr>after 3 turn/move instructions</nobr></td>
+      </tr>
+    </table>
+    <p>
+      <b>Input:</b>&nbsp; The input will be a series of at most 20 data sets.  Each data
+      set begins with a line containing an integer <var>N</var> representing
+      the number of turn/move combinations that will be executed
+      (1&nbsp;&le;&nbsp;<var>N</var>&nbsp;&le;&nbsp;100).  A value of zero for
+      <var>N</var> indicates the end of the input.
+    </p>
+    <p>
+    The next <var>N</var> lines contain the instructions. Each
+    instruction contains two integers <var>T</var> and <var>M</var>,
+    where <var>T</var> is the number of degrees to turn
+    <nobr>(-179&nbsp;&le;&nbsp;T&nbsp;&le;&nbsp;179)</nobr> and
+    <var>M</var> is the distance to move after that turn (1&nbsp;&le;&nbsp;<var>M</var>&nbsp;&le;&nbsp;100).
+    </p>
+    <p>
+      Note that, although <var>T</var> and <var>M</var> will be integers, you
+      should not assume the position of the laser will always be integer
+      coordinates; in fact, they will typically not be integral. We
+      have taken care to choose data sets for which lines that
+      intersect do so sufficiently away from an endpoint, and that
+      lines that do not intersect remain sufficiently separated from
+      each other.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each data set you should output the number of
+      the <em>first</em> move instruction that will create a hole
+      (e.g.,&nbsp;output 3 if the third move creates the hole).  Note
+      that once you have detected a hole, the remaining instructions are
+      irrelevant and may be ignored (but must still be read from the input).
+    </p>
+    <p>
+      If the entire set of instructions can be carried out without creating a
+      hole, then print the word <b><tt>SAFE</tt></b>.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>4
+-90 10
+90 5
+135 10
+-90 5
+4
+-90 10
+90 5
+135 5
+-90 10
+6
+60 10
+60 10
+60 10
+60 10
+60 10
+80 20
+0</td>
+          <td>3
+SAFE
+6</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

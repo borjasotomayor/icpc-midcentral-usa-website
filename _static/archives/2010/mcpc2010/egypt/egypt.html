@@ -1,0 +1,240 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Gabriel Foust">
+    <title>Egyptian Fractions</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      .fraction
+      {
+        display: inline-block; vertical-align: middle;
+        font-size: 60%;
+      }
+      .fraction span { display: block; text-align: center; }
+      .fraction span:first-child { border-bottom: 1px solid black; }
+      .formula { font-family: "Courier New",monospace; margin-left: 5em; }
+      .formula .fraction { font-size: 90%; margin: 0 4px; }
+      ul.spaced li { margin-bottom: 1em; }
+    </style>
+  </head>
+  <body>
+    <h1>Problem I: Egyptian Fractions</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>egypt.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>egypt.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      During the Middle Kingdom of Egypt (circa 2000 BC), the Egyptians
+      developed a novel way of writing fractions.  Adding a certain symbol to
+      the hieroglyph for an integer was understood to represent the reciprocal
+      of that integer.  This made it easy to write any fraction of the
+      form <span class="fraction"><span>1</span><span>N</span></span> (called
+      a <dfn>unit fraction</dfn>)&mdash;simply add the reciprocal symbol to
+      the hieroglyph for N.
+    </p>
+    <p>
+      There was no direct way to represent a fraction of the
+      form <span class="fraction"><span>M</span><span>N</span></span>, where M
+      &gt; 1.  Instead, any such fraction was written as the sum of unit
+      fractions.  For example, the
+      fraction <span class="fraction"><span>3</span><span>4</span></span>
+      could be written as:
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>3</span><span>4</span></span>
+      = <span class="fraction"><span>1</span><span>2</span></span>
+      + <span class="fraction"><span>1</span><span>4</span></span>
+    </p>
+    <p>
+      Notice that multiple sums may yield the same result; for
+      example, <span class="fraction"><span>3</span><span>4</span></span> can
+      also be written as
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>3</span><span>4</span></span> =
+      <span class="fraction"><span>1</span><span>3</span></span> +
+      <span class="fraction"><span>1</span><span>4</span></span> +
+      <span class="fraction"><span>1</span><span>6</span></span>
+    </p>
+    <p>
+      Your job is to take a
+      fraction <span class="fraction"><span>M</span><span>N</span></span> and
+      write it as a sum of unit fractions by way of a &ldquo;greedy&rdquo;
+      search.  In a greedy search you continually subtract the largest unit
+      fraction possible until you are left with zero.  For example, consider
+      the
+      fraction <span class="fraction"><span>9</span><span>20</span></span>.  A
+      greedy search would find the
+      sum <span class="fraction"><span>1</span><span>3</span></span>
+      + <span class="fraction"><span>1</span><span>9</span></span>
+      + <span class="fraction"><span>1</span><span>180</span></span> in three
+      steps, like so:
+    </p>
+    <p class="formula">
+      (1.)
+      <span class="fraction"><span>9</span><span>20</span></span> -
+      <span class="fraction"><span>1</span><span>3</span></span> =
+      <span class="fraction"><span>7</span><span>60</span></span>,&nbsp;
+      (2.)
+      <span class="fraction"><span>7</span><span>60</span></span> -
+      <span class="fraction"><span>1</span><span>9</span></span> =
+      <span class="fraction"><span>1</span><span>180</span></span>,&nbsp;
+      (3.)
+      <span class="fraction"><span>1</span><span>180</span></span> -
+      <span class="fraction"><span>1</span><span>180</span></span> = 0
+    </p>
+    <p>
+      Note that at each step we subtracted the largest possible unit fraction
+      from whatever remained of our original fraction.
+    </p>
+    <p>
+      One additional restriction must be added to keep our solutions from
+      becoming too large: Each time we subtract a unit fraction, we must be
+      left with a fraction whose denominator is strictly less than 1,000,000.
+      For example, consider the
+      fraction <span class="fraction"><span>17</span><span>69</span></span>.
+      The first two unit fractions we would subtract would
+      be <span class="fraction"><span>1</span><span>5</span></span>
+      and <span class="fraction"><span>1</span><span>22</span></span>, leaving
+      us with <span class="fraction"><span>7</span><span>7590</span></span>.
+      At this point, the largest unit fraction we could subtract would
+      be <span class="fraction"><span>1</span><span>1085</span></span>,
+      leaving us with
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>7</span><span>7590</span></span> -
+      <span class="fraction"><span>1</span><span>1085</span></span> =
+      <span class="fraction"><span>1519</span><span>1647030</span></span> -
+      <span class="fraction"><span>1518</span><span>1647030</span></span> =
+      <span class="fraction"><span>1</span><span>1647030</span></span>
+    </p>
+    <p>
+      Unfortunately, this leaves us with a fraction whose denominator is
+      larger than 1,000,000, so we can <em>not</em> use this unit fraction in
+      our sum.  We move on to the next largest unit
+      fraction, <span class="fraction"><span>1</span><span>1086</span></span>,
+      which leaves us with
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>7</span><span>7590</span></span> -
+      <span class="fraction"><span>1</span><span>1086</span></span> =
+      <span class="fraction"><span>1267</span><span>1373790</span></span> -
+      <span class="fraction"><span>1265</span><span>1373790</span></span> =
+      <span class="fraction"><span>2</span><span>1373790</span></span> =
+      <span class="fraction"><span>1</span><span>686895</span></span>
+    </p>
+    <p>
+      Since the final answer reduces to a fraction with a denominator less
+      than 1,000,000, we <em>can</em> use this unit fraction, leaving us with
+      a final answer
+      of <span class="fraction"><span>1</span><span>5</span></span> +
+      <span class="fraction"><span>1</span><span>22</span></span> +
+      <span class="fraction"><span>1</span><span>1086</span></span> +
+      <span class="fraction"><span>1</span><span>686895</span></span>.
+    </p>
+    <p>
+      In this case we only had to skip over a single fraction.  In general,
+      however, you may have to skip over many fractions in order to find one
+      that will work.  While you are searching, you will have to perform
+      calculations on many fractions with large denominators; make sure you do
+      so efficiently, or your program may take too long to execute.
+    </p>
+    <p>
+      You should also make sure you are using a data type large enough to hold
+      the large numbers you are working with.  Even though we have restricted
+      denominators to 1,000,000, you may have to calculate intermediate values
+      with denominators up to 10<sup>12</sup>.  A 64-bit integer will be
+      required to hold such values (<code>long</code> in Java, <code>long
+      long</code> in C/C++).
+    </p>
+    <p>
+      Finally, it might be worth noting that, by its very nature, the greedy
+      algorithm will always find some answer consisting of fractions with
+      denominators less than 1,000,000 since, at the very least, any fraction
+      can be represented as a sum of unit fractions with its own denominator.
+      For example:
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>3</span><span>999983</span></span> =
+      <span class="fraction"><span>1</span><span>999983</span></span> +
+      <span class="fraction"><span>1</span><span>999983</span></span> +
+      <span class="fraction"><span>1</span><span>999983</span></span>
+    </p>
+    <p>
+      <b>Input:</b>&nbsp; The input will consist of a sequence of fractions;
+      one per line.  Each line will contain only two integers <var>M</var>
+      and <var>N</var>, where
+      1&nbsp;&lt;&nbsp;M&nbsp;&lt;&nbsp;N&nbsp;&lt;&nbsp;100, representing the
+      fraction <span class="fraction"><span>M</span><span>N</span></span>.&nbsp;
+      M and N will have no common divisors greater than 1.
+      The end of the input will be indicated by two zeros: 0&nbsp;0.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each input
+      fraction <span class="fraction"><span>M</span><span>N</span></span> you
+      are to output a single line containing
+      numbers <var>D<sub>1</sub></var> &le; <var>D<sub>2</sub></var> &le; <var>D<sub>3</sub></var>
+      &le; &hellip; such that:
+    </p>
+    <p class="formula">
+      <span class="fraction"><span>M</span><span>N</span></span> =
+      <span class="fraction"><span>1</span><span>D<sub>1</sub></span></span> +
+      <span class="fraction"><span>1</span><span>D<sub>2</sub></span></span> +
+      <span class="fraction"><span>1</span><span>D<sub>3</sub></span></span> +
+      &hellip;
+    </p>
+    <p>
+      This should be the first sum arrived at using a greedy search while
+      enforcing the denominator bound of 1,000,000.  Each number should be
+      separated by a single space, with no leading or trailing whitespace.
+    </p>
+      <table border="1" cellpadding="10">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td style="font-family: monospace;" valign="top">3 4<br>
+2 7<br>
+9 20<br>
+17 69<br>
+0 0</td>
+       <td style="font-family: monospace;" valign="top">2 4<br>
+4 28<br>
+3 9 180<br>
+5 22 1086 686895</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

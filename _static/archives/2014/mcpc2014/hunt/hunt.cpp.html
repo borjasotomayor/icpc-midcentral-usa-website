@@ -1,0 +1,267 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// hunt.cpp
+</span><span class=comment>// The Leprechaun Hunt, MCPC 2014, Problem D
+</span><span class=comment>// C++ version by Michael Goldwasser
+</span>
+<span class=comment>/*
+  This implementation uses backward reasoning, with caching to detect
+  known states.  It begins by examining all possible states in which
+  the villagers have caught the leprechaun (i.e. villagers win in 0
+  plies). Then it finds all states in which all of the leprechauns
+  moves lead to a final state (i.e., villagers win in 1 plies), then
+  all states in which the villager can reach such a state (i.e.,
+  villagers win in 2 plies), and so on, until finding the best winning
+  start state, or until exhausting all possibilities.
+ */</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> MAX_N 15
+<span class=pp>#define</span> MAX_E 45
+<span class=pp>#define</span> MAX_DEG 6
+<span class=pp>#define</span> MAX_V 7
+<span class=pp>#define</span> LOG_N 4   <span class=comment>// number of bits needed to encode node
+</span>
+<span class=keyword>int</span> DEBUG = 0;
+
+<span class=comment>// store input information globally
+</span><span class=keyword>int</span> V;  <span class=comment>// number of villagers
+</span><span class=keyword>int</span> N;  <span class=comment>// number of nodes
+</span><span class=keyword>int</span> E;  <span class=comment>// number of edges
+</span>vector&lt;vector&lt;<span class=keyword>int</span>&gt; &gt; adj;   <span class=comment>// adj[k] is a vector of k's neighbors
+</span>
+<span class=keyword>typedef</span> <span class=keyword>long</span> <span class=keyword>long</span> StateCode;
+
+<span class=keyword>struct</span> State {
+    <span class=keyword>bool</span> villagerTurn;
+    <span class=keyword>int</span> leprechaun;
+    set&lt;<span class=keyword>int</span>&gt; villagers;
+
+    State() { }
+
+    <span class=comment>// produce integer encoding for state
+</span>    <span class=keyword>const</span> <span class=keyword>static</span> StateCode MASK = (1L &lt;&lt; LOG_N) - 1;
+    StateCode code() <span class=keyword>const</span> {
+        <span class=comment>// Encode game state. Least significant bit denotes turn (1=villagers).
+</span>        <span class=comment>// Next LOG_N bits denote leprechaun's node; then LOG_N bits per villager.
+</span>        StateCode s = villagerTurn;
+        s |= (leprechaun &lt;&lt; 1);
+        <span class=keyword>int</span> offset = 1+LOG_N;
+        <span class=keyword>for</span> (set&lt;<span class=keyword>int</span>&gt;::const_iterator it = villagers.begin();
+             it != villagers.end(); ++it) {
+            s |= ( ((StateCode) *it) &lt;&lt; offset);
+            offset += LOG_N;
+        }
+        <span class=keyword>return</span> s;
+    }
+
+    <span class=comment>// reconstruct state from code
+</span>    State(StateCode c) {
+        villagerTurn = (c % 2 == 1);
+        leprechaun = (c &gt;&gt; 1) &amp; MASK;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;V; j++)
+            villagers.insert((c &gt;&gt; (1+LOG_N*(1+j))) &amp; MASK);
+
+        <span class=keyword>if</span> (code() != c) {
+            cerr &lt;&lt; &quot;INVALID RECONSTRUCTION&quot; &lt;&lt; endl;
+            cerr &lt;&lt; c &lt;&lt; endl;
+            cerr &lt;&lt; code() &lt;&lt; endl;
+            cerr &lt;&lt; toString() &lt;&lt; endl;
+        }
+    }
+
+    vector&lt;State&gt; neighbors() <span class=keyword>const</span> {
+        vector&lt;State&gt; nbrs;
+        State copy(*<span class=keyword>this</span>);
+        copy.villagerTurn = !villagerTurn;
+        <span class=keyword>if</span> (villagerTurn) {
+            <span class=keyword>for</span> (set&lt;<span class=keyword>int</span>&gt;::const_iterator it = villagers.begin();
+                 it != villagers.end(); ++it) {
+                <span class=keyword>int</span> cur = *it;                                        <span class=comment>// consider moving villager *it.
+</span>                copy.villagers.erase(cur);
+                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; adj[cur].size(); j++) {
+                    <span class=keyword>if</span> (copy.villagers.insert(adj[cur][j]).second) {  <span class=comment>// not already occupied
+</span>                        nbrs.push_back(copy);
+                        copy.villagers.erase(adj[cur][j]);
+                    }
+                }
+                copy.villagers.insert(cur);
+            }
+        } <span class=keyword>else</span> {  <span class=comment>// leprechaun turn
+</span>            <span class=keyword>if</span> (leprechaun != N)
+                nbrs.push_back(copy);  <span class=comment>// allowed to stay put (except on fake first move)
+</span>            <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; adj[leprechaun].size(); j++) {
+                <span class=keyword>if</span> (copy.villagers.count(adj[leprechaun][j]) == 0) {
+                    copy.leprechaun = adj[leprechaun][j];
+                    nbrs.push_back(copy);
+                }
+            }
+        }
+        <span class=keyword>return</span> nbrs;
+    }
+
+    string toString() <span class=keyword>const</span> {
+        string result;
+        result += ((<span class=keyword>char</span>) ('A' + leprechaun));
+        result += ',';
+        <span class=keyword>for</span> (set&lt;<span class=keyword>int</span>&gt;::const_iterator it = villagers.begin();
+             it != villagers.end(); ++it) {
+            result += ((<span class=keyword>char</span>) ('A' + *it));
+        }
+        result += &quot; (&quot;;
+        result += (villagerTurn ? &quot;villager&quot; : &quot;leprechaun&quot;);
+        result += &quot; to move)&quot;;
+        <span class=keyword>return</span> result;
+    }
+};
+
+<span class=comment>// Recursively find all (N choose V) placements of villages on the graph
+</span><span class=keyword>void</span> generateVillagerPlacements(vector&lt;State&gt;&amp; result, State&amp; model) {
+    <span class=keyword>if</span> (model.villagers.size() == V) {
+        result.push_back(model);
+    } <span class=keyword>else</span> {
+        <span class=keyword>int</span> next = (model.villagers.empty() ? 0 : 1 + *(model.villagers.rbegin()));
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=next; j &lt; N; j++) {
+            model.villagers.insert(j);
+            generateVillagerPlacements(result, model);
+            model.villagers.erase(j);
+        }
+    }
+}
+
+map&lt;StateCode,<span class=keyword>int</span>&gt; win;    <span class=comment>// win[s] = k means that villagers win after k plies from s
+</span>
+<span class=comment>// return true if every leprechaun move from s leads to known state with wen &lt; plies
+</span><span class=keyword>bool</span> trapped(<span class=keyword>const</span> State&amp; s, <span class=keyword>int</span> plies) {
+    <span class=keyword>if</span> (DEBUG &gt; 2)
+        cerr &lt;&lt; &quot;  testing trapped for &quot; &lt;&lt; s.toString() &lt;&lt; &quot; &quot; &lt;&lt; plies &lt;&lt; endl;
+    vector&lt;State&gt; options = s.neighbors();
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; options.size(); j++) {
+        StateCode code = options[j].code();
+        <span class=keyword>if</span> (win.find(code) == win.end() || win[code] &gt;= plies)
+            <span class=keyword>return</span> <span class=keyword>false</span>;
+    }
+    <span class=keyword>if</span> (DEBUG &gt; 2)
+        cerr &lt;&lt; &quot;   TRAPPED is true&quot; &lt;&lt; endl;
+    <span class=keyword>return</span> <span class=keyword>true</span>;
+}
+
+<span class=keyword>int</span> analyze() {
+    <span class=comment>// start by finding potential win[0] candidates
+</span>    set&lt;StateCode&gt; fringe;
+    vector&lt;State&gt; placements;
+    State model;
+    model.villagerTurn = <span class=keyword>false</span>;
+    model.leprechaun = 0;
+    generateVillagerPlacements(placements, model);
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; placements.size(); j++) {
+        State&amp; s(placements[j]);
+        <span class=keyword>for</span> (set&lt;<span class=keyword>int</span>&gt;::const_iterator it = s.villagers.begin();
+             it != s.villagers.end(); ++it) {
+            s.leprechaun = *it;
+            StateCode code = s.code();
+            win[code] = 0;
+            fringe.insert(code);
+        }
+    }
+
+    <span class=keyword>int</span> plies = 0;  
+    <span class=keyword>while</span> (!fringe.empty()) {
+        plies++;                 <span class=comment>// everything in fringe has win &lt; plies
+</span>        set&lt;StateCode&gt; newFringe;
+        <span class=keyword>for</span> (set&lt;StateCode&gt;::const_iterator it = fringe.begin(); it != fringe.end(); ++it) {
+            State s(*it);  <span class=comment>// reconstruct state from code
+</span>
+            <span class=keyword>if</span> (DEBUG &gt; 1)
+                cerr &lt;&lt; &quot;win = &quot; &lt;&lt; win[*it] &lt;&lt; &quot; for &quot; &lt;&lt; s.toString() &lt;&lt; endl;
+
+            s.villagerTurn = !s.villagerTurn;  <span class=comment>// FAKE to analyze reverse moves
+</span>            <span class=keyword>if</span> (s.villagerTurn) {
+                <span class=comment>// consider villagers' previous move
+</span>                vector&lt;State&gt; nbrs = s.neighbors();
+                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; nbrs.size(); j++) {
+                    nbrs[j].villagerTurn = <span class=keyword>true</span>;
+                    StateCode code = nbrs[j].code();
+                    <span class=keyword>if</span> (DEBUG &gt; 3) cerr &lt;&lt; &quot;  Considering &quot; &lt;&lt; nbrs[j].toString() &lt;&lt; endl;
+                    <span class=keyword>if</span> (win.find(code) == win.end()) {
+                        <span class=keyword>if</span> (DEBUG &gt; 2) cerr &lt;&lt; &quot;  Adding to fringe &quot; &lt;&lt; nbrs[j].toString() &lt;&lt; endl;
+                        win[code] = plies;
+                        newFringe.insert(code);
+                    }
+                }
+            } <span class=keyword>else</span> {
+                <span class=comment>// consider leprechaun's previous move (including possible N)
+</span>                State special(s);
+                special.leprechaun = N;
+                <span class=keyword>if</span> (DEBUG &gt; 2) cerr &lt;&lt; &quot;  Considering special &quot; &lt;&lt; special.toString() &lt;&lt; endl;
+                <span class=keyword>if</span> (trapped(special, plies)) {
+                    <span class=keyword>if</span> (DEBUG &gt; 0) cerr &lt;&lt; &quot;Winning initial state &quot; &lt;&lt; special.toString() &lt;&lt; endl;
+                    <span class=keyword>return</span> plies-1;         <span class=comment>// found a winning initial state!!!!
+</span>                }
+                vector&lt;State&gt; nbrs = s.neighbors();
+                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; nbrs.size(); j++) {
+                    nbrs[j].villagerTurn = <span class=keyword>false</span>;
+                    StateCode code = nbrs[j].code();
+                    <span class=keyword>if</span> (DEBUG &gt; 3) cerr &lt;&lt; &quot;  Considering &quot; &lt;&lt; nbrs[j].toString() &lt;&lt; endl;
+                    <span class=keyword>if</span> (win.find(code) == win.end())
+                        <span class=keyword>if</span> (trapped(nbrs[j], plies)) {
+                            <span class=keyword>if</span> (DEBUG &gt; 2) cerr &lt;&lt; &quot;  Adding to fringe &quot; &lt;&lt; nbrs[j].toString() &lt;&lt; endl;
+                            win[code] = plies;
+                            newFringe.insert(code);
+                        }
+                }
+            }
+        }
+        fringe.swap(newFringe);
+    }
+
+    <span class=keyword>return</span> -1;  <span class=comment>// if fringe became empty, no winning strategy exists
+</span>}
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    ifstream fin((argv == 1) ? &quot;hunt.in&quot; : argc[1]);
+    <span class=keyword>if</span> (argv &gt; 2) DEBUG = atoi(argc[2]);
+    <span class=keyword>int</span> trial=0;
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        ++trial;
+        fin &gt;&gt; V;
+        <span class=keyword>if</span> (V == 0) <span class=keyword>break</span>;
+        fin &gt;&gt; N &gt;&gt; E;
+        adj.clear();
+        adj.resize(1+N);
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; E; j++) {
+            string edge;
+            fin &gt;&gt; edge;
+            <span class=keyword>int</span> u(edge[0]-'A'), v(edge[1]-'A');
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        <span class=comment>// fictitious node N is used as sentinel start node for leprechaun
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> u=0; u&lt;N; u++)
+            adj[N].push_back(u);
+
+        win.clear();
+        <span class=keyword>int</span> plies = analyze();
+        <span class=keyword>if</span> (DEBUG &gt; 0) cerr &lt;&lt; &quot;Solved &quot; &lt;&lt; win.size() &lt;&lt; &quot; states&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;CASE &quot; &lt;&lt; trial &lt;&lt; &quot;: &quot;;
+        <span class=keyword>if</span> (plies == -1)
+            cout &lt;&lt; &quot;NEVER&quot; &lt;&lt; endl;
+        <span class=keyword>else</span>
+            cout &lt;&lt; (1+plies)/2 &lt;&lt; endl;   <span class=comment>// count rounds, not plies
+</span>    }
+}
+</pre></body>
+</html>

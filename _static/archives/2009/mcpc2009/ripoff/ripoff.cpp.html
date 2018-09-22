@@ -1,0 +1,133 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*  RIPOFF, MCPC 2009 Problem I, by Gabriel Foust
+*/</span>
+
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;iomanip&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>/*
+ * Explanation:
+ *
+ * board[i]        = the number of points for square i
+ *                   (board[0] is the starting point - always 0)
+ * canFinish[i][j] = can we finish from square i with j turns left
+ * score[i][j]     = the best score we can get from square i with j turns left
+ * next[i][j]      = the next square we'd go to get score[i][j]
+ *                   (not needed, my program just traces for fun)
+ *
+ * When we're done, score[0][T] is the best score we can get from the start
+ * with T turns left.
+ */</span>
+
+<span class=keyword>int</span> N;
+<span class=keyword>int</span> S;
+<span class=keyword>int</span> T;
+<span class=keyword>int</span> board[201];
+<span class=keyword>bool</span> canFinish[201][201];
+<span class=keyword>int</span> score[201][201];
+
+<span class=keyword>short</span> <span class=keyword>int</span> next[201][201];
+
+ifstream fin( &quot;ripoff.in&quot; );
+
+<span class=keyword>bool</span> getDataSet()
+{
+    fin &gt;&gt; N;
+    <span class=keyword>if</span> (N &lt;= 0)
+        <span class=keyword>return</span> <span class=keyword>false</span>;
+
+    fin &gt;&gt; S &gt;&gt; T;
+
+    board[0]= 0;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 1; i &lt;= N; i++)
+        fin &gt;&gt; board[i];
+
+    <span class=keyword>return</span> <span class=keyword>true</span>;
+}
+
+<span class=keyword>void</span> finish( <span class=keyword>int</span> space, <span class=keyword>int</span> left, <span class=keyword>int</span> n )
+{
+    <span class=keyword>int</span> extra= 0;
+    <span class=keyword>if</span> (n &gt;= 0)
+        extra= score[n][left - 1];
+
+    <span class=keyword>if</span> (canFinish[space][left])
+    {
+        <span class=keyword>if</span> (score[space][left] &lt; board[space] + extra)
+        {
+            score[space][left]= board[space] + extra;
+            next[space][left]= n;
+        }
+    }
+    <span class=keyword>else</span>
+    {
+        score[space][left]= board[space] + extra;
+        next[space][left]= n;
+        canFinish[space][left]= <span class=keyword>true</span>;
+    }
+}
+
+<span class=keyword>void</span> makeScoresFor( <span class=keyword>int</span> space )
+{
+    <span class=keyword>for</span> (<span class=keyword>int</span> left= 0; left &lt; 200; left++)
+    {
+        canFinish[space][left]= <span class=keyword>false</span>;
+        score[space][left]= 0;
+    }
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> left= 1; left &lt;= T; left++)
+    {
+        <span class=keyword>for</span> (<span class=keyword>int</span> move= 1; move &lt;= S; move++)
+        {
+            <span class=keyword>if</span> (space + move &gt;= N + 1)
+                finish( space, left, -1 );
+            <span class=keyword>else</span> <span class=keyword>if</span> (canFinish[space + move][left - 1])
+                finish( space, left, space + move );
+        }
+    }
+}
+
+<span class=keyword>int</span> bestScore()
+{
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= N; i &gt;= 0; i--)
+        makeScoresFor( i );
+
+    <span class=keyword>int</span> best= score[0][T];
+
+    <span class=keyword>int</span> start= next[0][T];
+    <span class=keyword>int</span> turn= T;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 1; i &lt; N; i++)
+    {
+        <span class=keyword>if</span> (i % 10 == 0)
+            cerr &lt;&lt; endl;
+        <span class=keyword>if</span> (i == start)
+        {
+            cerr &lt;&lt; &quot; (&quot; &lt;&lt; setw( 3 ) &lt;&lt; board[i] &lt;&lt; ')';
+            start= next[i][--turn];
+        }
+        <span class=keyword>else</span>
+            cerr &lt;&lt; setw( 5 ) &lt;&lt; board[i] &lt;&lt; ' ';
+    }
+    cerr &lt;&lt; endl &lt;&lt; endl;
+
+    <span class=keyword>return</span> best;
+}
+
+<span class=keyword>int</span> main()
+{
+    <span class=keyword>while</span> (getDataSet())
+        cout &lt;&lt; bestScore() &lt;&lt; endl;
+    <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

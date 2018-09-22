@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/hex/hex.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Statement { color: #7e75b5; font-weight: bold; }
+.Constant { color: #72a5e4; font-weight: bold; }
+.Error { color: #ffffff; background-color: #dd0805; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="Comment">/* hex.java MCPC 2008 Problem C by Andy Harrington</span>
+<span class="lnr">  2 </span><span class="Comment">allow only 1 or 2 digit numbers, max 2 *'s so int calculations work</span>
+<span class="lnr">  3 </span><span class="Comment">*/</span>
+<span class="lnr">  4 </span>
+<span class="lnr">  5 </span><span class="PreProc">import</span> java.util.*;
+<span class="lnr">  6 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr">  7 </span>
+<span class="lnr">  8 </span><span class="Type">public</span> <span class="Type">class</span><span class=""> hex</span>
+<span class="lnr">  9 </span>{
+<span class="lnr"> 10 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">char</span>[][]<span class=""> hex; </span><span class="Comment">// input pattern</span>
+<span class="lnr"> 11 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">char</span>[]<span class=""> seq;  </span><span class="Comment">// current proposed soluton sequence</span>
+<span class="lnr"> 12 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> nMax;    </span><span class="Comment">// total number of tiles</span>
+<span class="lnr"> 13 </span>    <span class="Comment">// offsets to neighbors:</span>
+<span class="lnr"> 14 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span>[][]<span class=""> dc = { {</span><span class="Constant">1</span><span class="">,  </span><span class="Constant">0</span><span class="">, -</span><span class="Constant">1</span><span class="">, -</span><span class="Constant">1</span><span class="">, -</span><span class="Constant">1</span><span class="">, </span><span class="Constant">0</span><span class="">},   </span><span class="Comment">// in even row</span>
+<span class="lnr"> 15 </span>                          {<span class="Constant">1</span><span class="">,  </span><span class="Constant">1</span><span class="">,  </span><span class="Constant">0</span><span class="">, -</span><span class="Constant">1</span><span class="">,  </span><span class="Constant">0</span><span class="">, </span><span class="Constant">1</span><span class="">} }; </span><span class="Comment">// in odd row</span>
+<span class="lnr"> 16 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span>[]<span class=""> dr =     {</span><span class="Constant">0</span><span class="">, -</span><span class="Constant">1</span><span class="">, -</span><span class="Constant">1</span><span class="">,  </span><span class="Constant">0</span><span class="">,  </span><span class="Constant">1</span><span class="">, </span><span class="Constant">1</span><span class="">};   </span><span class="Comment">// in each row</span>
+<span class="lnr"> 17 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">char</span><span class=""> DONE = </span><span class="Constant">'</span><span class="Error">\0</span><span class="Constant">'</span><span class="">;  </span><span class="Comment">// initial array value</span>
+<span class="lnr"> 18 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> nSol;  </span><span class="Comment">//judge data</span>
+<span class="lnr"> 19 </span>
+<span class="lnr"> 20 </span>    <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class="">String</span>[]<span class=""> args</span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr"> 21 </span>        String file = (<span class="">args.length &gt; </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> ? args</span><span class="javaParen">[</span><span class="Constant">0</span><span class="javaParen">]</span><span class=""> : </span><span class="Constant">&quot;hex.in&quot;</span><span class="">;</span>
+<span class="lnr"> 22 </span>        Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class="Statement">new</span><span class=""> File</span>(<span class="">file</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 23 </span>        <span class="Type">int</span><span class=""> r  = in.nextInt</span>()<span class="">;</span>
+<span class="lnr"> 24 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">r  &gt; </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 25 </span>            <span class="Type">int</span><span class=""> c = in.nextInt</span>()<span class="">;</span>
+<span class="lnr"> 26 </span>            hex = <span class="Statement">new</span><span class=""> </span><span class="Type">char</span>[<span class="">r+</span><span class="Constant">2</span><span class="javaParen">][</span><span class="">c+</span><span class="Constant">3</span><span class="javaParen">]</span><span class="">; </span><span class="Comment">// leave border; no boundary checks</span>
+<span class="lnr"> 27 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">1</span><span class="">; i &lt;= r; i++</span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr"> 28 </span>                <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> j = </span><span class="Constant">1</span><span class="">; j &lt;= c + </span><span class="Constant">1</span><span class=""> - i % </span><span class="Constant">2</span><span class="">; j++</span><span class="javaParen">)</span>
+<span class="lnr"> 29 </span>                    hex[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = in.next</span><span class="javaParen">()</span><span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 30 </span>            nMax = r*c + r/<span class="Constant">2</span><span class="">;</span>
+<span class="lnr"> 31 </span>            seq = <span class="Statement">new</span><span class=""> </span><span class="Type">char</span>[<span class="">nMax+</span><span class="Constant">1</span><span class="javaParen">]</span><span class="">;  </span><span class="Comment">// convenient to append final '='</span>
+<span class="lnr"> 32 </span>            seq[<span class="">nMax</span><span class="javaParen">]</span><span class=""> = </span><span class="Constant">'='</span><span class="">;         </span><span class="Comment">//   to trigger second evaluation</span>
+<span class="lnr"> 33 </span>            nSol = <span class="Constant">0</span><span class="">; </span><span class="Comment">// judge check</span>
+<span class="lnr"> 34 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">1</span><span class="">; i &lt;= r; i++</span><span class="javaParen">)</span>
+<span class="lnr"> 35 </span>                <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> j = </span><span class="Constant">1</span><span class="">; j &lt;= c + </span><span class="Constant">1</span><span class=""> - i % </span><span class="Constant">2</span><span class="">; j++</span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr"> 36 </span>                    <span class="Statement">if</span><span class=""> </span>(<span class="">Character.isDigit</span>(<span class="">hex</span>[<span class="">i</span><span class="javaParen2">][</span><span class="">j</span><span class="javaParen2">]</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr"> 37 </span>                        solve(<span class="">i, j, </span><span class="Constant">0</span><span class="">, </span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 38 </span>            <span class="Statement">if</span><span class=""> </span>(<span class="">nSol == </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> </span><span class="Comment">// judge check</span>
+<span class="lnr"> 39 </span>                System.out.println(<span class="Constant">&quot;#### NO SOLUTION!&quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 40 </span>            r = in.nextInt()<span class="">;</span>
+<span class="lnr"> 41 </span>        }
+<span class="lnr"> 42 </span>    }
+<span class="lnr"> 43 </span>
+<span class="lnr"> 44 </span>    <span class="Comment">// use hex[r][c] next if not DONE and number of digits legal.</span>
+<span class="lnr"> 45 </span>    <span class="Comment">//   nDigits before; n is current length of seq without hex[r][c]</span>
+<span class="lnr"> 46 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> solve</span>(<span class="Type">int</span><span class=""> r, </span><span class="Type">int</span><span class=""> c, </span><span class="Type">int</span><span class=""> n, </span><span class="Type">int</span><span class=""> nDigits</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 47 </span>        <span class="Type">char</span><span class=""> lastCh = hex</span>[<span class="">r</span><span class="javaParen">][</span><span class="">c</span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr"> 48 </span>        nDigits = Character.isDigit(<span class="">lastCh</span><span class="javaParen">)</span><span class=""> ? nDigits+</span><span class="Constant">1</span><span class=""> : </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 49 </span>        <span class="Statement">if</span><span class=""> </span>(<span class="">lastCh == DONE || nDigits &gt; </span><span class="Constant">2</span><span class=""> ||   </span><span class="Comment">// 2 is max number of digits</span>
+<span class="lnr"> 50 </span>                              nDigits == <span class="Constant">2</span><span class=""> &amp;&amp; seq</span>[<span class="">n-</span><span class="Constant">1</span><span class="javaParen1">]</span><span class=""> == </span><span class="Constant">'0'</span>)<span class=""> </span><span class="Comment">// leading '0'</span>
+<span class="lnr"> 51 </span>            <span class="Statement">return</span><span class="">;</span>
+<span class="lnr"> 52 </span>        seq[<span class="">n</span><span class="javaParen">]</span><span class=""> = lastCh;</span>
+<span class="lnr"> 53 </span>        <span class="Statement">if</span><span class=""> </span>(<span class="">n &lt; nMax - </span><span class="Constant">1</span><span class="javaParen">)</span><span class=""> { </span><span class="Comment">// add another character</span>
+<span class="lnr"> 54 </span>            hex[<span class="">r</span><span class="javaParen">][</span><span class="">c</span><span class="javaParen">]</span><span class=""> = DONE;  </span><span class="Comment">// don't let path come back here</span>
+<span class="lnr"> 55 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; </span><span class="Constant">6</span><span class="">; i++</span><span class="javaParen">)</span><span class=""> </span><span class="Comment">//</span>
+<span class="lnr"> 56 </span>                 solve(<span class="">r + dr</span>[<span class="">i</span><span class="javaParen1">]</span><span class="">, c + dc</span><span class="javaParen1">[</span><span class="">r%</span><span class="Constant">2</span><span class="javaParen1">][</span><span class="">i</span><span class="javaParen1">]</span><span class="">, n+</span><span class="Constant">1</span><span class="">, nDigits</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 57 </span>            hex[<span class="">r</span><span class="javaParen">][</span><span class="">c</span><span class="javaParen">]</span><span class=""> = lastCh; </span><span class="Comment">// revert to previous state for backtracking</span>
+<span class="lnr"> 58 </span>        }
+<span class="lnr"> 59 </span>        <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class="">nDigits &gt; </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> </span><span class="Comment">// full seq; end must be digit</span>
+<span class="lnr"> 60 </span>            checkEqual()<span class="">;  </span>
+<span class="lnr"> 61 </span>     }
+<span class="lnr"> 62 </span>
+<span class="lnr"> 63 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> checkEqual</span>()<span class=""> { </span><span class="Comment">// have seq[0..nMax], seq[nMax] set to '='</span>
+<span class="lnr"> 64 </span>        <span class="Comment">// assume seq: digit(s), op, digit(s), op, ... digit(s), second '='</span>
+<span class="lnr"> 65 </span>        <span class="Type">int</span><span class=""> leftExpr = </span><span class="Constant">0</span><span class="">;  </span><span class="Comment">// set after first '='</span>
+<span class="lnr"> 66 </span>        <span class="Type">int</span><span class=""> expr = </span><span class="Constant">0</span><span class="">;  </span><span class="Comment">// currently accumulating expression</span>
+<span class="lnr"> 67 </span>        <span class="Type">char</span><span class=""> lastOp = </span><span class="Constant">'+'</span><span class="">;  </span><span class="Comment">// adding to 0 is innocuous initialization</span>
+<span class="lnr"> 68 </span>        <span class="Type">int</span><span class=""> digits = </span><span class="Constant">0</span><span class="">;  </span><span class="Comment">// value of current digit sequence</span>
+<span class="lnr"> 69 </span>        <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt;= nMax; i++</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 70 </span>            <span class="Type">char</span><span class=""> ch = seq</span>[<span class="">i</span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr"> 71 </span>            <span class="Statement">if</span><span class=""> </span>(<span class="">Character.isDigit</span>(<span class="">ch</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr"> 72 </span>                digits = <span class="Constant">10</span><span class="">*digits + ch - </span><span class="Constant">'0'</span><span class="">;</span>
+<span class="lnr"> 73 </span>            <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr"> 74 </span>                <span class="Statement">switch</span>(<span class="">lastOp</span><span class="javaParen">)</span><span class=""> {  </span><span class="Comment">// evaluate so far</span>
+<span class="lnr"> 75 </span>                    <span class="Statement">case</span><span class=""> </span><span class="Constant">'+'</span><span class="">: expr += digits; </span><span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 76 </span>                    <span class="Statement">case</span><span class=""> </span><span class="Constant">'-'</span><span class="">: expr -= digits; </span><span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 77 </span>                    <span class="Statement">case</span><span class=""> </span><span class="Constant">'*'</span><span class="">: expr *= digits; </span><span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 78 </span>                    <span class="Statement">case</span><span class=""> </span><span class="Constant">'/'</span><span class="">:  { </span><span class="Comment">// no division by 0, exact integer result</span>
+<span class="lnr"> 79 </span>                        <span class="Statement">if</span><span class=""> </span>(<span class="">digits == </span><span class="Constant">0</span><span class=""> || expr % digits != </span><span class="Constant">0</span><span class="javaParen">)</span>
+<span class="lnr"> 80 </span>                            <span class="Statement">return</span><span class="">;</span>
+<span class="lnr"> 81 </span>                        expr /= digits; <span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 82 </span>                    }
+<span class="lnr"> 83 </span>                }
+<span class="lnr"> 84 </span>                digits = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 85 </span>                <span class="Statement">if</span><span class=""> </span>(<span class="">ch != </span><span class="Constant">'='</span><span class="javaParen">)</span><span class="">  </span><span class="Comment">// continue expression</span>
+<span class="lnr"> 86 </span>                    lastOp = ch;
+<span class="lnr"> 87 </span>                <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class="">i &lt; nMax</span><span class="javaParen">)</span><span class=""> { </span><span class="Comment">// first =</span>
+<span class="lnr"> 88 </span>                    leftExpr = expr;
+<span class="lnr"> 89 </span>                    lastOp = <span class="Constant">'+'</span><span class="">; </span><span class="Comment">// start expr calc over</span>
+<span class="lnr"> 90 </span>                    expr = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 91 </span>                }
+<span class="lnr"> 92 </span>                <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class="">leftExpr == expr</span><span class="javaParen">)</span><span class=""> { </span><span class="Comment">// second equal at end, and match</span>
+<span class="lnr"> 93 </span>                    nSol++; <span class="Comment">// judge check for 3 lines</span>
+<span class="lnr"> 94 </span>                    <span class="Statement">if</span><span class=""> </span>(<span class="">nSol &gt; </span><span class="Constant">1</span><span class="javaParen">)</span>
+<span class="lnr"> 95 </span>                        System.out.print(<span class="Constant">&quot;!!!  &quot;</span><span class="javaParen">)</span><span class="">;           </span>
+<span class="lnr"> 96 </span>                    <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; nMax; j++</span><span class="javaParen">)</span>
+<span class="lnr"> 97 </span>                        System.out.print(<span class="">seq</span>[<span class="">j</span><span class="javaParen1">]</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 98 </span>                    System.out.println()<span class="">;</span>
+<span class="lnr"> 99 </span>                }
+<span class="lnr">100 </span>            }
+<span class="lnr">101 </span>        }
+<span class="lnr">102 </span>    }
+<span class="lnr">103 </span>}
+</pre>
+</body>
+</html>

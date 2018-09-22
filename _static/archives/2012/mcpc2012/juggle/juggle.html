@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Michael Goldwasser">
+    <title>Jugglefest</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem G: Jugglefest</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>juggle.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>juggle.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+    Many people are familiar with a standard 3-ball juggling
+    pattern in which you throw ball&nbsp;A, then ball&nbsp;B, then ball&nbsp;C, then
+    ball&nbsp;A, then ball&nbsp;B, then ball&nbsp;C, and so on.
+    Assuming we keep a regular rhythm of throws, a ball that is thrown
+    higher into the air will take longer to return, and therefore will
+    take longer before the next time it gets thrown. We say that a
+    ball thrown to height&nbsp;<em>h</em> will not be thrown again
+    until precisely <em>h</em> steps later in the pattern.  For
+    example, in the standard 3-ball pattern, we say that each ball is
+    thrown to a height of 3, and therefore thrown again 3-steps later in
+    the pattern. For example, ball&nbsp;A that we throw at time&nbsp;1 of
+    the process will be next thrown at time&nbsp;4.
+    </p>
+
+    <p><img src="example3.png"></p>
+
+    <p>
+    By convention, we label the first ball thrown as&nbsp;A, and each
+    time we introduce a new ball into the pattern, we label it with
+    the next consecutive uppercase letter (hence B and then C in the
+    classic pattern).
+    
+    
+    <p>
+    There exist more complex juggling patterns. Within the
+    community of jugglers, a standard way to describe a pattern is
+    through a repeating sequence of numbers that describe the height
+    of each successive throw. This is known as the <b><em>siteswap</em></b> notation.
+    </p>
+
+    <p>
+    To demonstrate the notation, we first consider the
+    <nobr>"3 4 5"</nobr> siteswap pattern. This describes an infinite series of
+    throws based on the repeating series <nobr>"3 4 5 3 4 5 3 4 5 ..."</nobr>.
+    The first throw the juggler makes will be to a height of 3, the
+    second throw will be to a height of 4, the third throw to a height
+    of 5, the fourth throw to a height of 3 (as the pattern repeats), and so forth.
+    </p>
+
+    <p>
+    While the siteswap pattern describes the heights of the throws, the
+    actual movement of individual balls does not follow as obvious 
+    a pattern. The following diagram illustrates the beginning of the
+    <nobr>"3 4 5"</nobr> pattern.
+    </p>
+
+    <p>
+    <img src="example345.png">
+    </p>
+
+    <p>
+    The first throw is ball&nbsp;A, thrown to a height of 3, and thus
+    ball&nbsp;A is not thrown again until time&nbsp;4. At time&nbsp;2,
+    we must make a throw with height&nbsp;4; since ball&nbsp;A has not
+    yet come back, we introduce a second ball, conventionally labeled&nbsp;B.
+    Because ball&nbsp;B is thrown at time&nbsp;2 with a height of 4, it
+    will not be thrown again until time&nbsp;6. At time&nbsp;3, we
+    introduce yet another ball, labeled&nbsp;C, and throw it to
+    height&nbsp;5 (thus it will next be thrown at time&nbsp;8). Our
+    next throw, at time&nbsp;4, is to have height&nbsp;3. However,
+    since ball&nbsp;A has returned (from its throw at time&nbsp;1), we
+    do not introduce a new ball; we throw&nbsp;A. At time&nbsp;5, we
+    are to make a throw with height&nbsp;4, yet we must introduce a
+    new ball,&nbsp;D, because balls A, B, and C are all still up in
+    the air. (Ball&nbsp;D is the last ball to be introduced for this
+    particular pattern.)
+    The juggling continues with ball&nbsp;B being thrown to
+    height&nbsp;5 at time&nbsp;6, and so on.
+    </p>
+
+    <p>
+    The <nobr>"3 4 5"</nobr> siteswap pattern works out nicely.  It
+    happens to be a 4-ball pattern, because after introducing
+    ball&nbsp;D, the juggler can now continue until his or her arms
+    get tired.  Unfortunately, not all siteswap sequences are legitimate!
+    </p>
+
+    <p>
+    Consider an attempt to use a siteswap pattern <nobr>"3 5 4"</nobr>.
+    If we were only interested in making six throws, everything works
+    well.  But a problem arises at time 7, as shown in the following diagram.
+    </p>
+    
+    <p>
+    <img src="example354.png">
+    </p>
+
+    <p>
+    Ball&nbsp;B was thrown at time&nbsp;2 with a height of
+    5. Therefore, it should get its next turn to be thrown at
+    time&nbsp;7.  However, ball&nbsp;C was thrown at time&nbsp;3 with
+    a height of 4, and so it too should get its next turn at
+    time&nbsp;7.  (To add insult to injury, ball&nbsp;A gets thrown at
+    time&nbsp;4 with height of 3, also suggesting it get its next turn
+    at time&nbsp;7.)  What we have here is a problem, resulting in
+    a lot of balls crashing to the ground.
+    </p>
+
+    <p>
+      <b>Input:</b>&nbsp; Each line represents a separate trial.  It
+      starts with the number <em>1 &le; P &le; 7</em> which
+      represents the period of the repeating pattern, followed by <em>P</em>
+      positive numbers that represent the throw heights in
+      the pattern. An individual throw height will be at most 19.
+      The input is terminated with a single line containing the value&nbsp;0.
+    </p>
+    <p>
+    <b>Output:</b>&nbsp; For each pattern, output a single line
+    describing the first 20 throws for the given pattern, if 20
+    throws can be legally made.  Otherwise, output the word
+    <tt>CRASH</tt>. You need not be concerned with any
+      crashes due to balls landing strictly after time&nbsp;20.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>3 3 4 5
+1 3
+3 3 5 4
+5 7 7 7 3 1
+0</td>
+
+          <td>ABCADBACDABCADBACDAB
+ABCABCABCABCABCABCAB
+CRASH
+ABCDEEDABCCBEDAADCBE
+</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </body>
+</html>

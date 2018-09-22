@@ -1,0 +1,1 @@
+forAll copysrc %1

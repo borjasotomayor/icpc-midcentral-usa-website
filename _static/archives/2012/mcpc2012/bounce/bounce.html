@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Bounce</title>
+
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Andy Harrington"></head><body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem H: Bounce</h1>
+<center>
+<table>
+<tbody>
+<tr>
+<td>Source file:</td>
+<td><tt>bounce.</tt>{<tt>c</tt>, <tt>cpp</tt>,
+<tt>java</tt>}</td>
+</tr>
+<tr>
+<td>Input file:</td>
+<td><tt>bounce.in</tt></td>
+</tr>
+</tbody>
+</table>
+</center>
+<br>
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><img style="width: 150px; height: 108px;" alt="bounce image 3 rows  3 columns length 2" src="bounce332.png"><br>
+</td>
+<td>
+<p><img style="width: 215px; height: 108px;" alt="bounce image 3 rows  5 columns length 4" src="bounce354.png"><br>
+</p>
+</td>
+</tr>
+<tr>
+<td>Figure 1</td>
+<td>Figure 2</td>
+</tr>
+</tbody>
+</table>
+</center>
+
+<br>
+<p>A puzzle adapted from a 2007 Games Magazine consists of a collection of hexagonal tiles
+packed together with each tile showing a letter.&nbsp; A <span style="font-style: italic;">bouncing path</span>
+in the grid is a
+continuous path, using no tile more than once, starting in the top
+row, including at least one tile in the bottom row,
+and ending in the top row to the right of the starting tile.&nbsp;
+<span style="font-style: italic;">Continuous</span> means that the next tile in a path always shares an edge with the previous tile.<br>
+</p>
+<p> Each bouncing path defines a sequence of letters.&nbsp; The sequence
+of letters for the path shown in Figure 1 is BCBCBC.&nbsp; Note that this is
+just BC repeated three times.&nbsp; We say a path has a <em>repetitive pattern
+of length n</em> if the whole sequence is composed of two or more copies of
+the first n letters concatenated together.&nbsp; Figure 2 shows a repetitive
+pattern of length four:&nbsp; the pattern BCBD repeated twice.&nbsp; Your task
+is to find bouncing paths with a repetitive pattern of a given length.&nbsp; <br>
+</p>
+
+<p>
+In each grid the odd numbered rows will have the same number of
+tiles as the first row.&nbsp; The even numbered rows will each have one
+more tile, with the ends offset to extend past the odd rows on both the
+left and the right.&nbsp; <br>
+</p>
+<p><b>Input:</b> The&nbsp;input will
+consist&nbsp;of one to twelve data
+sets,&nbsp;followed by a line containing only 0. &nbsp;</p>
+<p>The first line of a data set contains blank separated
+integers&nbsp;<span style="font-style: italic;">r c n</span> , where&nbsp;<span style="font-style: italic;">r</span>
+is the number of rows in the hex pattern <nobr>(2 &le; r &le; 7)</nobr>, <span style="font-style: italic;">c</span> is the number of entries
+in the odd numbered rows,
+<nobr>(2 &le; <span style="font-style: italic;">c</span> &le; 7)</nobr>, and <span style="font-style: italic;">n</span>
+is the required pattern length
+<nobr>(2 &le; <span style="font-style: italic;">n</span> &le;&nbsp; 5)</nobr>.&nbsp; The next <span style="font-style: italic;">r</span> lines contain the capital letters on the hex tiles, one row per line. &nbsp;All hex tile
+characters for a row are blank separated. &nbsp;The lines for odd
+numbered rows&nbsp;also start with a blank, to better simulate the
+way the hexagons fit together. &nbsp; <br>
+</p>
+<p><b>Output:</b> There is one line of output for
+each data set.&nbsp; If there is a bouncing path with pattern length <span style="font-style: italic;">n</span>, then output the pattern for the <span style="font-style: italic;">shortest</span> possible
+path.&nbsp; 
+If there is no such path, output the phrase:
+<nobr><b><tt>no solution</tt></b></nobr>.&nbsp;
+The data sets have been chosen such that the shortest solution path is unique, if
+one exists.<br>
+</p>
+<table border="1" cellpadding="10">
+<thead><tr>
+<td><b>Example input:</b></td>
+<td><b>Example output:</b></td>
+</tr>
+</thead> <tbody>
+<tr>
+<td style="font-family: monospace;">3 3 2<br>
+&nbsp;B D C<br>
+C E B G<br>
+&nbsp;B C B<br>
+3 5 4<br>
+&nbsp;A B E B D<br>
+A C D C A D<br>
+&nbsp;D B B B C<br>
+3 3 4<br>
+&nbsp;B D C<br>
+C E B G<br>
+&nbsp;B C B<br>
+3 4 4<br>
+&nbsp;B D H C<br>
+C E F G B<br>
+&nbsp;B C B C<br>0<br>
+</td>
+<td style="font-family: monospace;" valign="top">BCBCBC<br>
+BCBDBCBD<br>
+no solution<br>
+BCBCBCBC<br>
+<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<p><small><i>Last modified on October 18, 2012.</i></small></p>
+</body></html>

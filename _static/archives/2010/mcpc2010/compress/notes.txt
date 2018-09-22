@@ -1,0 +1,64 @@
+Images 1 through 4 are the same examples given in problem description
+
+Images 5 through 8 are the bit-flipped versions of the first four
+
+
+Image 9 to 22:  Checkerboard patterns with alternating orientations.
+                   All regions are 50% other than leaves.
+
+
+Image 23: Tests the accurate evaluation of the threshold for the
+      overall region.  There are 2088 zeros out of 4096 which is
+      50.9765%, so this does not meet the top-level threshold
+
+Image 24:  bit-flipped version of Image 23
+
+Image 25: Tests the accurate evaluation of the threshold for the
+      overall region.  There are 2089 zeros out of 4096 which is
+      51.0009765%, so this should meet the top-level threshold
+
+Image 26:  bit-flipped version of Image 25
+
+Image 27: Tests the accurate evaluation of the threshold for the
+      overall region.  There are 3031 zeros out of 4096 which is
+      73.999023%, so this does not meet the top-level threshold
+
+Image 28:  bit-flipped version of Image 27
+
+Image 29: Tests the accurate evaluation of the threshold for the
+      overall region.  There are 3032 zeros out of 4096 which is
+      74.0234%, so this should meet the top-level threshold
+
+Image 30:  bit-flipped version of Image 29
+
+Image 31 the accurate evaluation of the threshold for the
+      overall region.  There are 552 zeros out of 1024, which is
+      53.90625%, so this does not meet the top-level threshold
+
+Image 32-flipped version of Image 31
+
+Image 33 the accurate evaluation of the threshold for the
+      overall region.  There are 553 zeros out of 1024, which is
+      54.00390625%, so this meets the top-level threshold
+
+Image 34:  bit-flipped version of Image 33
+
+Image 35. Width 64 image that composes four quadrants from Images 31
+     to 34 Top-level percentage is 50%, and then subquadrants should
+     be treated as with those earlier cases.
+
+Image 36: Tests the accurate evaluation of the threshold for the
+      overall region.  There are 727 zeros out of 1024, which is
+      70.99609%, so this does not meet the top-level threshold
+
+Image 37-flipped version of Image 36
+
+Image 38 the accurate evaluation of the threshold for the
+      overall region.  There are 728 zeros out of 1024, which is
+      71.09375%, so this meets the top-level threshold
+
+Image 39-flipped version of Image 38
+
+Image 40: width 64 image that composes four quadrants from Images 36
+     to 39.  Top-level percentage is 50%, and then subquadrants should be
+     treated as with those earlier cases.

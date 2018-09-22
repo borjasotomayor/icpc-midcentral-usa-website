@@ -1,0 +1,246 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Su-domino-ku, MCPC 2011 Problem D, Faster C++ solution by Michael Goldwasser */</span>
+<span class=comment>/*
+  Rather than blindly checking consistency of the entire board in
+  'legal', this method takes into account the location of the most
+  recently added number, only checking those areas involving that
+  entry.
+*/</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>// resolving circular definitions
+</span><span class=keyword>class</span> Board;
+ostream&amp; <span class=keyword>operator</span>&lt;&lt;(ostream&amp; out, <span class=keyword>const</span> Board&amp; board);
+
+<span class=keyword>class</span> Board {
+<span class=keyword>public</span>:
+  vector&lt;vector&lt;<span class=keyword>int</span>&gt; &gt; data;
+  pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; opening;
+
+  Board() {
+    data.resize(9, vector&lt;<span class=keyword>int</span>&gt;(9,0));
+    opening = make_pair(0,0);
+  }
+
+  <span class=keyword>bool</span> <span class=keyword>operator</span>==(<span class=keyword>const</span> Board&amp; other) {
+    <span class=keyword>return</span> data == other.data;
+  }
+
+  <span class=keyword>bool</span> <span class=keyword>operator</span>&lt;(<span class=keyword>const</span> Board&amp; other) {
+    <span class=keyword>return</span> data &lt; other.data;
+  }
+
+  <span class=keyword>int</span> get(<span class=keyword>int</span> r, <span class=keyword>int</span> c) <span class=keyword>const</span> { <span class=keyword>return</span> data[r][c]; }
+
+  <span class=keyword>void</span> set(<span class=keyword>int</span> r, <span class=keyword>int</span> c, <span class=keyword>int</span> v) {
+    data[r][c] = v;
+    pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; cur(r,c);
+    <span class=keyword>if</span> (v == 0) { <span class=comment>// clearing
+</span>      <span class=keyword>if</span> (opening == make_pair(-1,-1) || cur &lt; opening)
+        opening = cur;
+    } <span class=keyword>else</span> <span class=keyword>if</span> (opening == cur) {
+      <span class=keyword>while</span> (r &lt; 9 &amp;&amp; data[r][c] != 0) {
+        c++;
+        <span class=keyword>if</span> (c == 9) {
+          c = 0;
+          r++;
+        }
+      }
+      <span class=keyword>if</span> (r == 9) {
+        r = -1; c = -1;
+      }
+      opening = make_pair(r,c);
+    }
+  }
+
+  <span class=comment>// is current (partial) board legal thus far
+</span>  <span class=keyword>bool</span> legal(<span class=keyword>int</span> newR, <span class=keyword>int</span> newC) <span class=keyword>const</span> {
+    std::set&lt;<span class=keyword>int</span>&gt; check;
+
+    <span class=comment>// check row newR
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> c=0; c&lt;9; c++) {
+      <span class=keyword>int</span> val = data[newR][c];
+      <span class=keyword>if</span> (val &gt; 0 &amp;&amp; !check.insert(val).second)
+        <span class=keyword>return</span> <span class=keyword>false</span>;  
+    }
+
+    <span class=comment>// check column newC
+</span>    check.clear();
+    <span class=keyword>for</span> (<span class=keyword>int</span> r=0; r&lt;9; r++) {
+      <span class=keyword>int</span> val = data[r][newC];
+      <span class=keyword>if</span> (val &gt; 0 &amp;&amp; !check.insert(val).second)
+        <span class=keyword>return</span> <span class=keyword>false</span>;  
+    }
+
+    <span class=comment>// check appropriate square
+</span>    <span class=keyword>int</span> s = newR / 3;
+    <span class=keyword>int</span> t = newC / 3;
+    check.clear();
+    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;3; i++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;3; j++) {
+        <span class=keyword>int</span> val = data[3*s+i][3*t+j];
+        <span class=keyword>if</span> (val &gt; 0 &amp;&amp; !check.insert(val).second)
+          <span class=keyword>return</span> <span class=keyword>false</span>;  
+      }
+    
+    <span class=keyword>return</span> <span class=keyword>true</span>;   <span class=comment>// passed all tests
+</span>  }
+
+  pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; firstOpening() <span class=keyword>const</span> {
+    <span class=keyword>return</span> opening;
+  }
+};
+
+ostream&amp; <span class=keyword>operator</span>&lt;&lt;(ostream&amp; out, <span class=keyword>const</span> Board&amp; board) {
+  <span class=keyword>for</span> (<span class=keyword>int</span> r=0; r&lt;9; r++) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> c=0; c&lt;9; c++) {
+      <span class=keyword>if</span> (board.get(r,c) &gt; 0)
+        out &lt;&lt; board.get(r,c);
+      <span class=keyword>else</span>
+        out &lt;&lt; '.';
+    }
+    out &lt;&lt; endl;
+  }
+  <span class=keyword>return</span> out;
+}
+
+Board minBoard,maxBoard;
+<span class=keyword>bool</span> foundSoln;
+<span class=keyword>int</span> recursions(0);
+
+<span class=comment>// all of this is premised on a,b being distinct from 1 to 9,
+</span><span class=comment>// so we really only use subset of inventory[12] to inventory[89].
+</span><span class=keyword>bool</span> inventory[90];
+
+<span class=comment>// assume inventory is up to date
+</span><span class=keyword>void</span> solve(Board&amp; board) {
+  recursions++;
+
+  pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; open = board.firstOpening();
+  <span class=keyword>if</span> (open.first == -1) {
+    <span class=keyword>if</span> (foundSoln) {
+      <span class=keyword>if</span> (board &lt; minBoard) {
+        minBoard = board;
+      }
+      <span class=keyword>if</span> (maxBoard &lt; board) {
+        maxBoard = board;
+      }
+    } <span class=keyword>else</span> {
+      foundSoln = <span class=keyword>true</span>;
+      minBoard = maxBoard = board;
+    }
+  } <span class=keyword>else</span> {
+    <span class=comment>// fill first square with a domino
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> t=12; t&lt;90; t++) {
+      <span class=keyword>if</span> (inventory[t]) {
+        pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; tile = make_pair(t/10,t%10);
+        <span class=comment>// consider all placements of that tile covering first openingn
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> reverse=0; reverse&lt;2; reverse++)
+          <span class=keyword>for</span> (<span class=keyword>int</span> vertical=0; vertical&lt;2; vertical++) {
+            <span class=keyword>int</span> rOther = open.first + (vertical ? 0 : 1);
+            <span class=keyword>int</span> cOther = open.second + (vertical ? 1 : 0);
+            <span class=keyword>if</span> (rOther &lt; 9 &amp;&amp; cOther &lt; 9 &amp;&amp; board.get(rOther,cOther) == 0) {
+              board.set(open.first,open.second, reverse ? tile.second : tile.first);
+              board.set(rOther,cOther, reverse ? tile.first : tile.second);
+
+              <span class=keyword>if</span> (board.legal(open.first,open.second) &amp;&amp; board.legal(rOther,cOther)) {
+                inventory[t] = <span class=keyword>false</span>;
+                solve(board);
+                inventory[t] = <span class=keyword>true</span>;
+              }
+              board.set(open.first,open.second,0);
+              board.set(rOther,cOther,0);
+            }
+          }
+      }
+    }
+  }
+}
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+  ifstream fin;
+  <span class=keyword>if</span> (argv &gt; 1) {
+    fin.open(argc[1]);
+  }
+
+  <span class=keyword>if</span> (!fin.is_open()) {
+    fin.clear();
+    fin.open(&quot;sudominoku.in&quot;);
+  }
+
+
+  <span class=keyword>int</span> puzCount(0);
+  <span class=keyword>while</span> (<span class=keyword>true</span>) {
+    <span class=keyword>int</span> n;
+    fin &gt;&gt; n;
+    <span class=keyword>if</span> (n==0) <span class=keyword>break</span>;
+
+    Board board;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=12; k&lt;90; k++)
+      inventory[k] = <span class=keyword>false</span>;
+    <span class=keyword>for</span> (<span class=keyword>int</span> a=1; a &lt; 9; a++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> b=a+1; b &lt;= 9; b++)
+        inventory[a*10 + b] = <span class=keyword>true</span>;
+
+    <span class=comment>// read dominos
+</span>    <span class=keyword>int</span> a,b;
+    string locA,locB;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;n; k++) {
+      fin &gt;&gt; a &gt;&gt; locA &gt;&gt; b &gt;&gt; locB;
+      board.set(locA[0]-'A',locA[1]-'1', a);
+      board.set(locB[0]-'A',locB[1]-'1', b);
+      inventory[10*min(a,b) + max(a,b)] = <span class=keyword>false</span>;
+    }
+
+    <span class=comment>// read individual 1 to 9
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> k=1; k&lt;=9; k++) {
+      fin &gt;&gt; locA;
+      board.set(locA[0]-'A',locA[1]-'1', k);
+    }
+
+
+    <span class=comment>// quick check to make sure starting configuration is not flawed
+</span>    <span class=keyword>bool</span> consistent = <span class=keyword>true</span>;
+    <span class=keyword>for</span> (<span class=keyword>int</span> r=0; consistent &amp;&amp; r&lt;9; r++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> c=0; consistent &amp;&amp; c&lt;9; c++)
+        <span class=keyword>if</span> (!board.legal(r,c)) {
+          consistent = <span class=keyword>false</span>;
+          cerr &lt;&lt; &quot;ERROR: flawed initial conditions&quot; &lt;&lt; endl;
+        }
+
+
+    <span class=comment>// time to fill the board
+</span>    foundSoln = <span class=keyword>false</span>;
+    <span class=keyword>if</span> (consistent)
+      solve(board);
+
+    <span class=comment>// output results
+</span>    cout &lt;&lt; &quot;Puzzle &quot; &lt;&lt; ++puzCount &lt;&lt; endl;
+    <span class=keyword>if</span> (foundSoln) {
+      cout &lt;&lt; minBoard;
+
+      <span class=keyword>if</span> (!(maxBoard == minBoard)) {
+        cerr &lt;&lt; &quot;max lexicographic differs:&quot; &lt;&lt; endl;
+        cerr &lt;&lt; maxBoard;
+      }
+    } <span class=keyword>else</span> {
+      cout &lt;&lt; &quot;impossible&quot; &lt;&lt; endl;
+    }
+  }
+  cerr &lt;&lt; &quot;Total number of recursions was: &quot; &lt;&lt; recursions &lt;&lt; endl;
+}
+</pre></body>
+</html>

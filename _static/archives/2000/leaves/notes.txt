@@ -1,0 +1,15 @@
+Judges' note for Leaves
+The last input set is for the following tree.  
+(View/print in a fixed width font.)
+
+              Y
+            /   \
+          R      Z
+        /    \     
+      L        T
+    /    \   /   \
+  D       P S     W
+ / \     / \     / \
+B  H    N   Q   U   X
+  / \  / \       \
+ F  J M   O       V

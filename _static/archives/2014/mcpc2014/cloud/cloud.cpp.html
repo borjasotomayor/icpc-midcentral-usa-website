@@ -1,0 +1,89 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// cloud.cpp
+</span><span class=comment>// Word Cloud, MCPC 2014, Problem E
+</span><span class=comment>// C++ version by Michael Goldwasser
+</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> PAD 10           <span class=comment>// interspace padding
+</span><span class=pp>#define</span> MIN_C 5
+<span class=pp>#define</span> MAX_C 1000
+<span class=pp>#define</span> MAX_W 5000
+<span class=pp>#define</span> MAX_N 1000
+
+<span class=keyword>bool</span> DEBUG = <span class=keyword>false</span>;
+
+<span class=keyword>struct</span> item {
+    <span class=keyword>int</span> wordlength, count, width, height;
+};
+
+item box[MAX_N];
+
+<span class=keyword>int</span> ceil(<span class=keyword>int</span> num, <span class=keyword>int</span> denom) {
+    <span class=keyword>return</span> (num/denom + (num % denom &gt; 0 ? 1 : 0));
+}
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    ifstream fin((argv == 1) ? &quot;cloud.in&quot; : argc[1]);
+    DEBUG = (argv &gt; 2);
+
+    <span class=keyword>int</span> trial=0;
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> W,N;
+        fin &gt;&gt; W &gt;&gt; N;
+        <span class=keyword>if</span> (W == 0) <span class=keyword>break</span>;
+
+        <span class=keyword>if</span> (W &gt; MAX_W) cerr &lt;&lt; &quot;ILLEGAL W&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (N &gt; MAX_N) cerr &lt;&lt; &quot;ILLEGAL N&quot; &lt;&lt; endl;
+
+        <span class=keyword>int</span> maxC = 0;
+        string prev = &quot;&quot;;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;N; j++) {
+            string S;
+            <span class=keyword>int</span> C;
+            fin &gt;&gt; S &gt;&gt; C;
+            <span class=keyword>if</span> (C &lt; MIN_C || C &gt; MAX_C) cerr &lt;&lt; &quot;ILLEGAL C&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (S &lt; prev) cerr &lt;&lt; &quot;WARNING: NOT ALPHABETIZED&quot; &lt;&lt; endl;
+            prev = S;  <span class=comment>// for style only
+</span>            box[j].wordlength = S.size();
+            box[j].count = C;
+            maxC = max(maxC, C);
+        }
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;N; j++) {
+            box[j].height = 8 + ceil(40*(box[j].count-4), maxC-4);
+            box[j].width = ceil(9*box[j].wordlength*box[j].height, 16);
+            <span class=keyword>if</span> (box[j].width &gt; W) cerr &lt;&lt; &quot;WORD TOO LONG&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (DEBUG) cout &lt;&lt; box[j].height &lt;&lt; &quot; x &quot; &lt;&lt; box[j].width &lt;&lt; endl;
+        }
+
+        <span class=keyword>int</span> total = 0;
+        <span class=keyword>int</span> lineWidth = box[0].width;
+        <span class=keyword>int</span> lineHeight = box[0].height;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=1; j&lt;N; j++) {
+            <span class=keyword>if</span> (lineWidth + PAD + box[j].width &lt;= W) {
+                lineWidth += PAD + box[j].width;
+                lineHeight = max(lineHeight, box[j].height);
+            } <span class=keyword>else</span> {
+                total += lineHeight;
+                lineHeight = box[j].height;
+                lineWidth = box[j].width;
+            }
+        }
+        total += lineHeight;  <span class=comment>// don't forget the last line
+</span>
+        cout &lt;&lt; &quot;CLOUD &quot; &lt;&lt; ++trial &lt;&lt; &quot;: &quot; &lt;&lt; total &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

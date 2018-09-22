@@ -1,0 +1,70 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Image Compression, MCPC 2010 Problem H by Michael Goldwasser */</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;algorithm&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>// love globals
+</span>fstream fin(&quot;compress.in&quot;);
+string image[64];     <span class=comment>// use array of strings in place of 2d array
+</span><span class=keyword>int</span> W,T;
+
+<span class=comment>// ranges are half-open as [xStart,xEnd)
+</span><span class=keyword>void</span> compress(<span class=keyword>int</span> xStart, <span class=keyword>int</span> xEnd, <span class=keyword>int</span> yStart, <span class=keyword>int</span> yEnd) {
+  <span class=comment>// first count current region
+</span>  <span class=keyword>int</span> ones = 0;
+  <span class=keyword>for</span> (<span class=keyword>int</span> x=xStart; x &lt; xEnd; x++)
+    <span class=keyword>for</span> (<span class=keyword>int</span> y=yStart; y&lt; yEnd; y++)
+      <span class=keyword>if</span> (image[y][x] == '1')
+        ones++;
+
+  <span class=keyword>int</span> total = (xEnd-xStart)*(yEnd-yStart);
+  <span class=keyword>int</span> majority = max(ones, total-ones);
+
+  <span class=keyword>if</span> (majority*100  &gt;= T * total) {
+    <span class=comment>// base case
+</span>    <span class=keyword>char</span> charval = (ones &gt; total-ones) ? '1' : '0';
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> x=xStart; x &lt; xEnd; x++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> y=yStart; y&lt; yEnd; y++)
+        image[y][x] = charval;
+  } <span class=keyword>else</span> {
+    <span class=comment>// four quadrants in proper order
+</span>    <span class=keyword>int</span> xMid = (xStart + xEnd) / 2;
+    <span class=keyword>int</span> yMid = (yStart + yEnd) / 2;
+    compress(xMid, xEnd, yStart, yMid);    <span class=comment>// top-right
+</span>    compress(xStart, xMid, yStart, yMid);  <span class=comment>// top-left
+</span>    compress(xStart, xMid, yMid, yEnd);    <span class=comment>// bottom-left
+</span>    compress(xMid, xEnd, yMid, yEnd);      <span class=comment>// bottom-right
+</span>  }
+}
+
+<span class=keyword>int</span> main() {
+  <span class=keyword>int</span> count=0;
+  fin &gt;&gt; W;
+  <span class=keyword>while</span> (W &gt; 0) {
+    count++;
+    fin &gt;&gt; T;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;W; i++)
+      fin &gt;&gt; image[i];
+
+    compress(0, W, 0, W);
+    cout &lt;&lt; &quot;Image &quot; &lt;&lt; count &lt;&lt; &quot;:&quot; &lt;&lt; endl;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;W; i++)
+      cout &lt;&lt; image[i] &lt;&lt; endl;
+
+    fin &gt;&gt; W;
+  }
+}
+</pre></body>
+</html>

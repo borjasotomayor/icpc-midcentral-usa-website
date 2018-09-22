@@ -1,0 +1,76 @@
+Judge's notes for Bright Bracelet
+
+Each output can be determined by a fairly short logical argument:
+
+Dataset 1:
+E must be an end of piece 4.  The best mathematically would be CCCE,
+but only one piece has C's on opposite sides, so next
+best is CCGE as in the example.
+
+Dataset 2:
+There are only the connections AB, AC, BD, CD, which make a circuit,
+A+B+D+C = 10
+
+Dataset 3:
+Impossible:  Piece 5 must connect with E, and there are no other E's
+
+Dataset 4:
+Impossible.  No connections at all.  (Colors must match, and it was explicitly
+said that the same brightness does not mean the same color.)
+
+Dataset 5:
+The minimum-sum opposite pairs for each piece are
+1 BC or AD
+2 BD
+3 CD
+4 BD
+5 BD
+6 CD
+7 CD
+8 CD
+9 CD
+10 CD
+11 CD
+
+Using the BC for piece 1, the counts of each color are: 10 D, 8 C, 4 B's. There
+are the necessary even numbers of each connection, and they can be connected
+in one cycle.  The piece number is shown between the connecting colors:
+D2B1C3D4B5D6C7D8C9D10C11 and back to the D in piece 2.
+This makes 10/2 = 5 D connections, 8/2=4 C's, 4/2 = 2 B's,
+5*251 + 4*252 + 2*253 = 2769
+
+Dataset 6:
+Same as Dataset 6, except all brightness is one greater:
+  2769 + 11 = 2780
+Together Datasets 5 and 6 took more than 10 minutes on a 2.4 GHz Intel processor
+with an efficently coded and optimized permutation algorithm in C++.  For
+each dataset more than 20.6 billion passes are made through part of the code.
+
+Even with a really fast computer out there, the permutation approach is
+not going to work for datasets 5 and 6 together.
+
+Dataset 7:
+Again the minimal-sum opposite pairs can be listed.  This time one element
+of each pair, except in the first piece, is fixed, and is preceeded by an
+underscore as a reminder.  Where another pair is used in the final solution,
+it is shown in parentheses.
+1 AE
+2 _AB
+3 _BC
+4 _CD (solution uses CF)
+5 _DE (solution uses DG)
+6 _EE (solution uses EH)
+7 A_F
+8 A_G
+9 A_H
+10 A_A
+11 A_D
+
+Again counting. there are 8A 2B 2C 3D 4E 1F 1G 1H.
+The F, G, H cannot be changed, and another must be created from elements that
+are not fixed.  The closest colors to change are the odd D and two E's
+which can be changed to F, G, H.  A cycle can be made:
+A10A2B3C4F7A8G5D11A9H6E1 and back to the A at the other end.
+
+This leave 4 A connections and 1 each for B through H,
+ 4*10+20+30+40+50+60+70+80 = 390

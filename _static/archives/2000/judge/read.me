@@ -1,0 +1,130 @@
+Using the Judging Utilities
+
+TO INSTALL THE UTILITIES: 
+
+  1.  Open a DOS window if you are not already in DOS. 
+  2.  Change to a directory in which you have write access, under 
+      which you want the mcpc2000 directory and subdirectories copied. 
+  3.  Put the judge's diskette in drive A: and type "A:\INSTALL". 
+
+This will copy the entire floppy disk, creating subdirectories 
+mcpc2000, mcpc2000\TEAM, mcpc2000\JUDGE, mcpc2000\BACK, mcpc2000\NOTES, and 
+directories with each of the individual problems, and make the current 
+directory mcpc2000\TEAM. 
+
+All directories mentioned below are relative to the mcpc2000 directory. 
+
+To judge a program, make sure the current directory is still TEAM, and 
+then just type 
+    J L # 
+where L is the problem letter, and # is the team number as in "j e 12" 
+to grade problem e for team 12. 
+
+This batch file will 
+
+  1. search the A: drive for a valid source file for problem L, 
+  2. delete the relevant contents of TEAM in preparation for judging, 
+  3. copy the source file into TEAM, 
+  4. make a uniquely named archival copy of the source file in BACK, 
+  5. copy the correct input file into TEAM, 
+  6. compile the program, 
+  7. run the program, 
+  8. compare the program's output with the correct output, and if they 
+     don't match, 
+  9. allow you to visually compare the two output files. 
+
+Instructions will be displayed on the screen, and you can stop the 
+batch file when necessary by pressing Ctrl-C. 
+
+In step 8 the files are compared using the diff utility. If the two 
+files are identical it will say so, and otherwise it will show the 
+differences.  The output of diff is fairly clear when it all fits on 
+one screen.  If there are a lot of errors it may be easier to see them 
+in step 9. 
+
+Step 9 is necessary if it is not obvious that there are wrong answers, 
+and you need to check for a presentation error.  The batch file uses 
+the LIST program to view both the team's output and the correct 
+output. 
+
+USING THE LIST PROGRAM: 
+
+  * Use Ctrl-PgUp and Ctrl-PgDn to switch between the two files. 
+  * The status line at the top of the screen tells you which file 
+    you're looking at: 
+     > The team's output is in the current directory TEAM (no path 
+       shown), and 
+     > the correct output is in the directory starting ..\ followed by 
+       the problem's name. 
+  * If necessary you can use Alt-H to display the files in 
+    hexadecimal; this might help you find missing end-of-line 
+    characters or extraneous whitespace. 
+  * Use the arrow keys to move around in the files if necessary, and 
+  * Press ESC or F10 to exit.
+
+If you want to see both files at once using the LIST program: 
+
+   * Press Alt-W followed by Return to get two views of the same file, then 
+   * Press Ctrl-PgDn to display the second file in the bottom window. 
+   * Use Ctrl-V to switch windows. 
+
+IMPORTANT NOTE: SITE SPECIFIC MODIFICATIONS TO THE GRADING UTILITIES
+
+These batch files assume that the following command-line compilers are 
+in the executable path: "tpc" for Turbo Pascal 7.0, "tcc" for Turbo 
+C++ 3.0, and "javac" for Java v1.1.8 or later.  It also uses "java" to 
+execute Java programs.  If you are using different compilers you will 
+need to change one of the five lines that immediately follow a comment 
+of the form 
+
+rem IS THE FOLLOWING   ...   LINE RIGHT FOR YOUR SYSTEM? 
+
+in JUDGE\J2.BAT so that it runs the correct compiler and executes Java 
+correctly. You can download this batch file before the competition from 
+http://www.cs.smsu.edu/~rcjudge.  If you are using a more recent Borland  
+compiler, you will probably have to replace "tcc" with "bcc".  In case 
+people are generating old segmented code for DOS, C++ and C files are 
+compiled using the large memory model (that's the -ml option to tcc) 
+because it most closely matches the Turbo Pascal memory model.  If you 
+use a non Borland compiler you will need to modify this flag as well. 
+
+If you change any of these batch file lines, make sure the source file 
+being compiled is %2.c, %2.cpp, %2.java or %2.pas.  
+The compiled file should be %2.exe or %2.class. 
+
+Visual C++ users:
+
+I have included three long lines for Visual C++ 6.0 that work at Loyola 
+under NT.  You can remove the rem's at the beginning of the three lines 
+under C and C++ and move the rem's to the Turbo lines.  The Visual C++ 
+lines are based on a path to the base Visual C++ directory, set in the 
+first of the three lines.  You are likely to need to adjust that path 
+for your installation.  Note that the environment variable VCPPBASE 
+needed an unmatched quotation mark -- at the beginning and NOT the end! 
+
+
+ARCHIVE OF SUBMITTED PROBGRAMS 
+
+Example:  The 4th time that team 7 has a C++ program for problem E 
+graded on the same computer, the batch file JUDGE\NEXTBACK.BAT is 
+called to copy their source program to 
+    BACK\7E4.CPP 
+
+If there is some problem detected that may affect earlier submissions, 
+you will have a copy to consult!  (That is unless you are running on 
+an old system with a virtual disk that is erased every time the system 
+bombs! -- can't help there.) 
+
+BROWSING IN YOUR SPARE TIME 
+
+All the judges' files are copied by install.bat.  While waiting for 
+the next problem to grade, or even if you do not use the judging 
+utilities at all, you can browse through the problem files and 
+administrative information files by starting a web browser at the 
+local file browse.html in the mcpc2000 directory.
+
+
+Andy Harrington
+
+Regional Chief Judge: Toolsmith 
+Loyola University Chicago

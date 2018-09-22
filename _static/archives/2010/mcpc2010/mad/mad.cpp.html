@@ -1,0 +1,47 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Mad Scientist, MCPC 2010 Problem B by Michael Goldwasser */</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+fstream fin(&quot;mad.in&quot;);
+<span class=keyword>const</span> <span class=keyword>int</span> MAX(26);       <span class=comment>// max for n.  k is at least one less
+</span><span class=keyword>int</span> k;
+<span class=keyword>int</span> P[MAX];    <span class=comment>// P-sequence  (leaving P[0] empty for convenience)
+</span><span class=keyword>int</span> M[MAX];    <span class=comment>// Original sequence of measurements
+</span>
+<span class=keyword>int</span> main() {
+
+  <span class=keyword>while</span> (<span class=keyword>true</span>) {
+    fin &gt;&gt; k;
+    <span class=keyword>if</span> (k==0) <span class=keyword>break</span>;     <span class=comment>// all done
+</span>
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=1; j &lt;= k; j++)
+      fin &gt;&gt; P[j];
+
+    <span class=keyword>int</span> n(0);
+    <span class=keyword>int</span> j(1);
+
+    <span class=keyword>while</span> (j &lt;= k) {
+      <span class=keyword>while</span> (n &lt; P[j])
+        M[n++] = j;   <span class=comment>// add another 'j' to measurement sequence
+</span>      j++;
+    }   
+
+    cout &lt;&lt; M[0];
+    <span class=keyword>for</span> (<span class=keyword>int</span> i=1; i &lt; n; i++)
+      cout &lt;&lt; &quot; &quot; &lt;&lt; M[i];
+    cout &lt;&lt; endl;
+  }
+}
+</pre></body>
+</html>

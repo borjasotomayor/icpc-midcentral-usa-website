@@ -1,0 +1,131 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  cubes.cpp
+  Letter Cubes, 2013 Mid-Central Programming Competition, Problem E
+  C++ Solution by Michael Goldwasser
+
+  We solve by recursive enumeration, considering the sorted alphabet
+  while trying to place each successive alphabet symbol on a
+  non-conflicting cube, with conflicts defined for those pairs of
+  letters that originally appeared in the same word.
+*/</span>  
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;cubes.in&quot;);
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_N = 30;
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_K = 4;
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_TRIALS = 20;
+<span class=keyword>int</span> N, K;
+
+string alpha;
+vector&lt;string&gt; solution;
+map&lt;<span class=keyword>char</span>,set&lt;<span class=keyword>char</span>&gt; &gt; conflict;
+
+<span class=keyword>void</span> printSolution(vector&lt;string&gt; &amp;soln) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> d=0; d &lt; soln.size(); d++) {
+        <span class=keyword>if</span> (d != 0) cout &lt;&lt; &quot; &quot;;  <span class=comment>// separating space
+</span>        cout &lt;&lt; soln[d];
+    }
+    cout &lt;&lt; endl;
+}
+
+<span class=comment>// try to complete partial solution placing letters alpha[j] and onward
+</span><span class=comment>// (and make sure to leave parameter the way we found it!)
+</span><span class=keyword>void</span> solve(<span class=keyword>int</span> j, vector&lt;string&gt; &amp;partial) {
+    <span class=keyword>if</span> (j == 6*K) {
+        <span class=keyword>if</span> (solution.empty())
+            solution = partial;
+        <span class=keyword>else</span> {
+            cerr &lt;&lt; &quot;Alternative solution found: &quot;;   <span class=comment>// shouldn't happen
+</span>            printSolution(partial);
+        }
+    } <span class=keyword>else</span> {
+        <span class=comment>// try to add alpha[j] to any one of the cubes
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> d=0; d &lt; partial.size(); d++) {
+            <span class=keyword>if</span> (partial[d].size() &lt; 6) {
+                <span class=keyword>bool</span> legal=<span class=keyword>true</span>;
+                <span class=keyword>for</span> (<span class=keyword>int</span> c=0; c &lt; partial[d].size(); c++)
+                    <span class=keyword>if</span> (conflict[alpha[j]].find(partial[d][c]) != conflict[alpha[j]].end()) {
+                        legal = <span class=keyword>false</span>; <span class=keyword>break</span>;
+                    }
+                <span class=keyword>if</span> (legal) {
+                    partial[d].push_back(alpha[j]);
+                    solve(j+1, partial);
+                    partial[d].erase(partial[d].size()-1);   <span class=comment>// or pop_back in C++11
+</span>                }
+            }
+        }
+        <span class=comment>// also consider adding new cube
+</span>        <span class=keyword>if</span> (partial.size() &lt; K) {  
+            string newest;
+            newest.push_back(alpha[j]);
+            partial.push_back(newest);
+            solve(j+1, partial);
+            partial.pop_back();
+        }
+    }
+}
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    <span class=keyword>int</span> trial=0;
+
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+
+        K = -1;
+        trial++;
+        solution.clear();
+        conflict.clear();
+        alpha.clear();
+
+        set&lt;<span class=keyword>char</span>&gt; tempalpha;
+        <span class=keyword>char</span> extra;
+        fin &gt;&gt; extra;
+        <span class=keyword>if</span> (extra != '-')
+            tempalpha.insert(extra);
+        <span class=keyword>for</span> (<span class=keyword>int</span> w=0; w&lt;N; w++) {
+            string word;
+            fin &gt;&gt; word;
+            <span class=keyword>if</span> (K == -1)
+                K = word.size();
+            <span class=keyword>else</span> <span class=keyword>if</span> (word.size() != K) cerr &lt;&lt; &quot;Word &quot; &lt;&lt; word &lt;&lt; &quot; has inconsistent size&quot; &lt;&lt; endl;
+
+            <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;K; i++) {
+                tempalpha.insert(word[i]);
+                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;i; j++) {
+                    conflict[word[i]].insert(word[j]);
+                    conflict[word[j]].insert(word[i]);
+                }
+            }
+        }
+        <span class=comment>// convert ordered set to string so that we can more easily index within
+</span>        alpha = string(tempalpha.begin(), tempalpha.end());
+
+        vector&lt;string&gt; empty;
+        solve(0, empty);
+        printSolution(solution);
+
+        <span class=comment>// some input validity tests (for judges debug only)
+</span>        <span class=keyword>if</span> (alpha.size() != 6 * K) cerr &lt;&lt; &quot;Incorrect alphabet size&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (trial &gt; MAX_TRIALS) cerr &lt;&lt; &quot;Too many trials: &quot; &lt;&lt; trial &lt;&lt; endl;
+        <span class=keyword>if</span> (N &gt; MAX_N) cerr &lt;&lt; &quot;N is too large: &quot; &lt;&lt; N &lt;&lt; endl;
+        <span class=keyword>if</span> (K &gt; MAX_K) cerr &lt;&lt; &quot;K is too large: &quot; &lt;&lt; N &lt;&lt; endl;
+        <span class=keyword>if</span> (solution.empty()) cerr &lt;&lt; &quot;UNSOLVABLE CASE&quot; &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

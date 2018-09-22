@@ -1,0 +1,6 @@
+Author's comments:  The final test grows to 255 characters and shrinks
+back down.  I gave a maximum size for strings and explicitly said the
+find-string and output string have at least one character.  I gave no
+minimum for the replacement string.  The test data contains replacement
+strings with no characters.
+

@@ -1,0 +1,50 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  sortme.cpp
+  Sort Me, MCPC 2013, Problem H
+  C++ solution by Michael Goldwasser
+*/</span>
+<span class=pp>#include</span>&lt;iostream&gt;
+<span class=pp>#include</span>&lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;sortme.in&quot;);
+<span class=keyword>int</span> ordinal[26];
+string words[20];
+
+<span class=keyword>bool</span> comp(string a, string b) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; a.size(); j++) {
+        <span class=keyword>if</span> (j == b.size()) <span class=keyword>return</span> <span class=keyword>false</span>;  <span class=comment>// b is prefix of a
+</span>        <span class=keyword>int</span> x = ordinal[a[j] - 'A'];
+        <span class=keyword>int</span> y = ordinal[b[j] - 'A'];
+        <span class=keyword>if</span> (x &lt; y) <span class=keyword>return</span> <span class=keyword>true</span>;
+        <span class=keyword>else</span> <span class=keyword>if</span> (x &gt; y) <span class=keyword>return</span> <span class=keyword>false</span>;
+    }
+    <span class=keyword>return</span> <span class=keyword>true</span>; <span class=comment>// a is prefix of b
+</span>}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>int</span> trial = 1;
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> N;
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+        string code;
+        fin &gt;&gt; code;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; 26; j++) ordinal[code[j]-'A'] = j;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; N; j++) fin &gt;&gt; words[j];
+        sort(words, words+N, comp);
+        cout &lt;&lt; &quot;year &quot; &lt;&lt; trial++ &lt;&lt; endl;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;N; j++) cout &lt;&lt; words[j] &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

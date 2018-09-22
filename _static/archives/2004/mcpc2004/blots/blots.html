@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Ink Blots</title>
+  <meta name="Author" content="Andrew Harrington">
+</head>
+<body lang="EN-US" style="background-color: white;">
+<h1 align="center" style="text-align: center;">Problem F: Ink Blots</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>blots.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>blots.in</tt></td>
+    </tr>
+    <tr>
+      <td>Output file:</td>
+      <td><tt>blots.out</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<center>
+<table border="3" cellpadding="4">
+  <tbody>
+    <tr>
+      <td style="text-align: center;"><img
+ style="width: 104px; height: 110px;" alt="0 holes" src="1region.gif"></td>
+      <td style="text-align: center; vertical-align: middle;"><img
+ style="width: 258px; height: 200px;" alt="2 holes" src="3regions.gif"><br>
+      </td>
+      <td style="vertical-align: top; text-align: center;"><img
+ style="width: 237px; height: 237px;" alt="3 holes" src="4regions.gif"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">Figure 1:&nbsp; <br>
+1 White Region<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Figure
+2:&nbsp; <br>
+3 White Regions</td>
+      <td style="vertical-align: top; text-align: center;">Figure
+3:&nbsp; <br>
+4 White Regions</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p>Drops of dark ink can fall on a white piece of paper creating a
+number of round ink blots. Three examples are shown above. The blots
+can create multiple distinct white regions. In the first figure, there
+is just one white region. In the second figure there is the outer
+white region plus a small white region bounded by the left four blots
+and an even smaller white region bounded by the right three blots. In
+the third figure, there are four white regions, one on the very
+outside, one inside the outer ring of blots and outside the four blots
+in the middle, and two tiny ones each formed between three of the four
+inner blots.</p>
+
+<p>Two points are in the same white region if a path can be drawn between
+them that only passes through white points. Your problem is to
+count the number of white regions given the centers and radii of the
+blots. </p>
+
+<p><b>Math Formulas:</b> If circles</p>
+
+<blockquote>
+<span style="font-style: italic;">C</span><sub
+ style="font-style: italic;">1</sub> with center <span
+ style="font-style: italic;">(x</span><sub style="font-style: italic;">1</sub><span
+ style="font-style: italic;">, y</span><sub style="font-style: italic;">1</sub><span
+ style="font-style: italic;">)</span> and radius <span
+ style="font-style: italic;">r</span><sub style="font-style:
+ italic;">1</sub>, and<br>
+
+ <span style="font-style: italic;">C</span><sub
+ style="font-style: italic;">2</sub> with center <span
+ style="font-style: italic;">(x</span><sub style="font-style: italic;">2</sub><span
+ style="font-style: italic;">, y</span><sub style="font-style: italic;">2</sub><span
+ style="font-style: italic;">)</span> and radius <span
+ style="font-style: italic;">r</span><sub style="font-style:
+ italic;">2</sub>
+</blockquote>
+
+<p>intersect in exactly two distinct points, let</p>
+
+<blockquote>
+ <span style="font-style: italic;">d</span> equal the distance between
+ the centers of <span style="font-style: italic;">C</span><sub
+ style="font-style: italic;">1</sub><span style="font-style: italic;"><span
+ style="font-style: italic;"> </span></span>and<span
+ style="font-style: italic;"><span style="font-style: italic;"> C</span><sub
+ style="font-style: italic;">2</sub></span>, <br>
+
+ <span style="font-style: italic;">A</span> = atan2<span
+ style="font-style: italic;">(y</span><sub style="font-style: italic;">2</sub><span
+ style="font-style: italic;">-y</span><sub style="font-style: italic;">1</sub><span
+ style="font-style: italic;">, x</span><sub style="font-style: italic;">2</sub><span
+ style="font-style: italic;">-x</span><sub style="font-style: italic;">1</sub><span
+ style="font-style: italic;">)</span>, and<br>
+
+ <span style="font-style: italic;">B</span> = acos<span
+ style="font-style: italic;">((</span><span style="font-style: italic;"></span><span
+ style="font-style: italic;"><span style="font-style: italic;"><span
+ style="font-style: italic;">r</span><sub style="font-style: italic;">1</sub><sup>2</sup>
++ </span></span><span style="font-style: italic;"><span
+ style="font-style: italic;"><span style="font-style: italic;"><span
+ style="font-style: italic;">d</span><sup>2</sup></span></span></span><span
+ style="font-style: italic;"></span><span style="font-style: italic;"><span
+ style="font-style: italic;"><span style="font-style: italic;"> - r</span><sub
+ style="font-style: italic;">2</sub><sup>2</sup></span></span><span
+ style="font-style: italic;">)/(2*</span><span
+ style="font-style: italic;"><span style="font-style: italic;">r</span><sub
+ style="font-style: italic;">1</sub>*d</span><span
+ style="font-style: italic;">))</span>;
+</blockquote>
+
+<p>then the intersection points on <i>C</i><sub>1</sub> are at angles
+<i>A</i>+<i>B</i> and <i>A</i>-<i>B</i> radians counterclockwise from
+the ray extending to the right from the center of
+<i>C</i><sub>1</sub>. The function atan2 is the inverse tangent
+function with two arguments, and acos is the inverse cosine function,
+both available in the math libraries of C, C++, and Java.</p>
+
+<p><span style="font-weight: bold;">Input:</span> There are from
+one to 15 data sets, followed by a final line
+containing only 0. A data set starts with a line containing a
+single positive integer <i>n</i>, which is no more than 100. It
+is the number of blots in the dataset. Then 3<span
+ style="font-style: italic;">n</span> positive integers follow, with a
+single blank or a newline separating them.&nbsp; Each group of three
+give the data for the circular boundary of one blot: x and y
+coordinate of the center of the blot and its radius, in that order.
+Each of these numbers will be no larger than 1,000,000. All
+blots lie entirely on a piece of paper, and no blot touches any edge of
+the paper. No two circles in a dataset will be identical.
+Given any two distinct circles, they will either intersect at exactly
+two distinct points or not intersect at all. If two circles in
+the input intersect, then they overlap
+by at least one unit. More precisely, if they have radii <span
+ style="font-style: italic;">r</span><sub style="font-style: italic;">1</sub>
+and <span style="font-style: italic;">r</span><sub
+ style="font-style: italic;">2</sub>, where <span
+ style="font-style: italic;">r</span><sub style="font-style: italic;">1</sub>
+&#8804; <span style="font-style: italic;">r</span><sub
+ style="font-style: italic;">2</sub>, and if <span
+ style="font-style: italic;">d</span> is the distance between their
+centers, then</p>
+
+<blockquote>
+<span style="font-style: italic;">r</span><sub
+ style="font-style: italic;">2</sub><span style="font-style: italic;">
+- r</span><sub style="font-style: italic;">1</sub> + 1 &#8804; <span
+ style="font-style: italic;">d</span> &#8804; <span
+ style="font-style: italic;">r</span><sub style="font-style: italic;">1</sub><span
+ style="font-style: italic;"> + r</span><sub style="font-style: italic;">2</sub><span
+ style="font-style: italic;"> - </span>1.
+</blockquote>
+
+<p>Three or more circles will
+never intersect at the same point. If <span
+ style="font-style: italic;">C</span>
+is a circle in the input that intersects at least one other input
+circle, and <span style="font-style: italic;">p</span> and <span
+ style="font-style: italic;">q</span> are any of the intersection
+points of <span style="font-style: italic;">C</span> with any of the
+other input circles, with <span style="font-style: italic;">p</span>
+distinct from <span style="font-style: italic;">q</span>, then <span
+ style="font-style: italic;">p</span> and <span
+ style="font-style: italic;">q</span> will be separated on <span
+ style="font-style: italic;">C</span> by at least 0.001 radians of
+arc. The restrictions on radii and angles ensure that standard
+double-precision arithmetic is sufficient for the calculations
+suggested above.</p>
+
+<p>The sample input below corresponds to the figures above, though the
+scale is different in each figure. </p>
+
+<p><span style="font-weight: bold;">Output:</span> The output
+contains one line for each data set.&nbsp; The line
+contains only the number of white regions for the dataset, which is
+never more than 200. </p>
+
+<p><span style="font-weight: bold;"> <span style="font-style:
+italic;">Warning</span></span>: Brute force raster methods of solving
+this problem will take up too much memory and be too slow.</p>
+
+<span style="font-weight: bold;"></span></p>
+<table border="1" cellpadding="2">
+  <thead>
+    <tr>
+      <td>
+      <b>Example input:</b>
+      </td>
+      <td style="vertical-align: top;">
+      <b>Example output:</b>
+      </td>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+      <pre>4<br>45 45 40 65 55 35 45 45 10 20 95 10<br>5<br>30 30 20 30 60 20 60 30 20 60 60 20 90 45 15<br>16<br>200 120 65 300 100 55 400 120 65 480 200 65<br>500 300 55 480 400 65 400 480 65 300 500 55<br>200 480 65 120 400 65 100 300 55 120 200 65<br>300 245 60 300 355 60 385 300 51 215 300 51<br>0</pre>
+      </td>
+      <td style="vertical-align: top;">
+      <pre>1<br>3<br>4<br></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 31, 2004 at 4:21 PM.</i></small></p>
+
+</body>
+</html>

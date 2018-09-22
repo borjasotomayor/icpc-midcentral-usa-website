@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Queen Collisions</title>
+
+  
+
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+  
+  <meta name="Author" content="Michael Goldwasser"></head><body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem D: Queen
+Collisions</h1>
+
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td style="font-family: monospace;">collision.{c, cpp, java}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td style="font-family: monospace;">collision.in</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p><br>
+</p>
+
+<center>
+<table style="text-align: center; width: 567px; height: 277px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><img src="1.png" style="width: 198px; height: 201px;" alt="no collisions"><br>
+      </td>
+      <td>
+      <p><img style="width: 143px; height: 147px;" alt="5x5 4 collisions" src="2.png"><br>
+      </p>
+      </td>
+ <td>
+<p><img src="3.png" style="width: 223px; height: 227px;" alt="size 8, 5 collisions"><br>
+</p>
+</td>
+    </tr>
+    <tr>
+      <td>Figure 1</td>
+      <td>Figure 2</td>
+      <td>Figure 3<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p><br>
+Lots of time has been spent by computer science students dealing with
+queens on a chess board.&nbsp; Two queens on a chessboard <span style="font-style: italic;">collide</span>
+if they lie on the same row, column or diagonal, and there is no piece
+between them.&nbsp; Various sized square boards and numbers
+of queens are considered.&nbsp; For example, Figure 1, with a 7 x 7 board, contains 7
+queens with no collisions.&nbsp; In Figure 2 there is a 5 x 5 board
+with 5 queens and 4 collisions.&nbsp; In Figure 3, a traditional 8 x 8
+board, there are 7 queens and 5 collisions.&nbsp; </p>
+
+<p>On an <span style="font-style: italic;">n</span> x <span style="font-style: italic;">n</span> board, queen positions are given
+in Cartesian coordinates (<span style="font-style: italic;">x</span>, <span style="font-style: italic;">y</span>)&nbsp; where <span style="font-style: italic;">x</span> is a column number, 1 to <span style="font-style: italic;">n</span>, and <span style="font-style: italic;">y</span> is a row number, 1 to <span style="font-style: italic;">n</span>.&nbsp; Queens at distinct
+positions (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>)
+lie on the same diagonal if (x<sub>1</sub>- x<sub>2</sub>) and (y<sub>1</sub>-
+y<sub>2</sub>) have the same magnitude.&nbsp; They lie on the same row
+or column if x<sub>1</sub>= x<sub>2</sub> or y<sub>1</sub>= y<sub>2</sub>,
+respectively.&nbsp;
+In each of these cases the queens have a collision if there is no other
+queen directly between them on the same diagonal, row, or column, respectively.&nbsp;
+For example, in Figure 2, the collisions are between the queens at (5, 1) and (4, 2), (4, 2) and&nbsp; (3, 3), (3, 3) and
+(2, 4), and&nbsp; finally (2, 4) and (1, 5).&nbsp; In Figure 3, the
+collisions are between the queens at (1, 8) and (4, 8), (4, 8)
+and (4, 7), (4, 7) and (6, 5),&nbsp; (7, 6) and (6, 5), and&nbsp;
+finally (6, 5)
+and (2, 1).&nbsp; Your task is to count queen collisions.<br>
+</p>
+
+In many situations there are a number of queens in a regular pattern.
+For instance in Figure 1 there are 4 queens in a line at (1,1), (2, 3),
+(3, 5), and (4, 7).&nbsp; Each of these queens after the first at (1,
+1) is one to the right and 2 up from the previous one.&nbsp; Three
+queens starting at (5, 2) follow a similar pattern.&nbsp; Noting these
+patterns can allow the positions of a large number of queens to be
+stated succinctly.<br>
+
+<p><b>Input:</b> The input will
+consist of one to twenty data
+sets, followed by a line containing only 0. </p>
+
+<p>The first line of a dataset contains blank separated
+positive integers <span style="font-style: italic;">n g</span>,
+where <span style="font-style: italic;">n</span>
+indicates an <span style="font-style: italic;">n</span> x <span style="font-style: italic;">n</span> board size, and <span style="font-style: italic;">g</span> is the number of linear patterns of
+queens to be described, where <span style="font-style: italic;">n</span>&nbsp;
+&lt; 30000, and <span style="font-style: italic;">g</span> &lt;
+250.&nbsp; The next <span style="font-style: italic;">g</span> lines
+each contain five blank separated integers, <span style="font-style: italic;">k x y s t</span>, representing a linear
+pattern of <span style="font-style: italic;">k</span> queens at
+locations (<span style="font-style: italic;">x</span> + <span style="font-style: italic;">i</span>*<span style="font-style: italic;">s</span>,
+<span style="font-style: italic;">y</span> +<span style="font-style: italic;">i</span>*<span style="font-style: italic;">t</span>),
+for <span style="font-style: italic;">i</span> = 0, 1, ..., <span style="font-style: italic;">k</span>-1.&nbsp; The value of <span style="font-style: italic;">k</span> is positive.&nbsp; If <span style="font-style: italic;">k</span>
+is 1, then the values of s and t are irrelevant, and they will be given
+as 0.&nbsp; All queen positions will be on the board.&nbsp; The total
+number of queen positions among all the linear patterns will be no more
+than <span style="font-style: italic;">n</span>, and all these queen
+positions will be distinct.<br>
+</p>
+
+<p><b>Output:</b>&nbsp;There is one line of output for
+each data set,&nbsp;containing only the number of collisions between
+the queens.</p>
+
+<p>The sample input data set corresponds to the configuration in the
+Figures.&nbsp; <br>
+</p>
+
+<p>Take some care with your algorithm, or else your solution may take
+too long.<br>
+</p>
+
+<table border="1" cellpadding="10">
+
+  <thead><tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td style="font-family: monospace;">7 2<br>
+4 1 1 1 2<br>
+3 5 2 1 2<br>5 1<br>5 5 1 -1 1<br>
+8 3<br>
+1 2 1 0 0<br>
+3 1 8 3 -1<br>
+3 4 8 2 -3<br>
+0<br>
+      </td>
+      <td style="font-family: monospace;" valign="top">0<br>
+4<br>
+5<br>
+      <br>
+      <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<br>
+
+</body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/serials/serials.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Constant { color: #72a5e4; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr">  2 </span><span class="PreProc">import</span> java.util.Scanner;
+<span class="lnr">  3 </span>
+<span class="lnr">  4 </span><span class="Type">class</span> serials {
+<span class="lnr">  5 </span>
+<span class="lnr">  6 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class=""> String</span>[]<span class=""> args </span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr">  7 </span>    String inFile = args.length &gt; <span class="Constant">0</span><span class=""> ? args</span>[<span class="Constant">0</span><span class="javaParen">]</span><span class=""> : </span><span class="Constant">&quot;serials.in&quot;</span><span class="">;</span>
+<span class="lnr">  8 </span>    Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class=""> </span><span class="Statement">new</span><span class=""> File</span>(<span class=""> inFile </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">  9 </span>    String s = in.nextLine()<span class="">;</span>
+<span class="lnr"> 10 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> !s.equals</span>(<span class=""> </span><span class="Constant">&quot;END&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 11 </span>      System.out.println(<span class=""> s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 12 </span>      list serials = <span class="Statement">new</span><span class=""> list</span>()<span class="">;</span>
+<span class="lnr"> 13 </span>      <span class="Type">int</span><span class=""> a = in.nextInt</span>()<span class="">;</span>
+<span class="lnr"> 14 </span>      <span class="Statement">while</span><span class=""> </span>(<span class=""> a != </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 15 </span>        <span class="Type">int</span><span class=""> b = in.nextInt</span>()<span class="">;</span>
+<span class="lnr"> 16 </span>        <span class="Type">char</span><span class=""> c = in.next</span>()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 17 </span>        <span class="Type">int</span><span class=""> t = in.nextInt</span>()<span class="">;</span>
+<span class="lnr"> 18 </span>        serials.insert(<span class=""> a, b, c, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 19 </span>        a = in.nextInt()<span class="">;</span>
+<span class="lnr"> 20 </span>      }
+<span class="lnr"> 21 </span>      serials.display()<span class="">;</span>
+<span class="lnr"> 22 </span>      in.nextLine()<span class="">;</span>
+<span class="lnr"> 23 </span>      s = in.nextLine()<span class="">;</span>
+<span class="lnr"> 24 </span>    }
+<span class="lnr"> 25 </span>  }
+<span class="lnr"> 26 </span>
+<span class="lnr"> 27 </span>}
+<span class="lnr"> 28 </span>
+<span class="lnr"> 29 </span><span class="Type">class</span> list {
+<span class="lnr"> 30 </span>
+<span class="lnr"> 31 </span>  node head;
+<span class="lnr"> 32 </span>
+<span class="lnr"> 33 </span>  list()<span class=""> {</span>
+<span class="lnr"> 34 </span>    head = <span class="Statement">new</span><span class=""> node</span>(<span class=""> </span><span class="Constant">0</span><span class="">, </span><span class="Constant">0</span><span class="">, </span><span class="Constant">'0'</span><span class="">, </span><span class="Constant">0</span><span class="">, </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 35 </span>  }
+<span class="lnr"> 36 </span>
+<span class="lnr"> 37 </span>  <span class="Type">void</span><span class=""> insert</span>(<span class=""> </span><span class="Type">int</span><span class=""> x, </span><span class="Type">int</span><span class=""> y, </span><span class="Type">char</span><span class=""> c, </span><span class="Type">int</span><span class=""> t </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 38 </span>
+<span class="lnr"> 39 </span>    <span class="Comment">// find the insert point</span>
+<span class="lnr"> 40 </span>    node p = head;
+<span class="lnr"> 41 </span>    node q = head.next;
+<span class="lnr"> 42 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> q != </span><span class="Constant">null</span><span class=""> &amp;&amp; q.a &lt;= x </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 43 </span>      p = q;
+<span class="lnr"> 44 </span>      q = q.next;
+<span class="lnr"> 45 </span>    }
+<span class="lnr"> 46 </span>
+<span class="lnr"> 47 </span>    <span class="Comment">// insert the new node</span>
+<span class="lnr"> 48 </span>    q = <span class="Statement">new</span><span class=""> node</span>(<span class=""> p.a, p.b, p.c, p.t, p.next </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 49 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> x == q.a </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 50 </span>      p.b = y;
+<span class="lnr"> 51 </span>      p.c = c;
+<span class="lnr"> 52 </span>      p.t = t;
+<span class="lnr"> 53 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> y &lt; q.b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 54 </span>        p.next = <span class="Statement">new</span><span class=""> node</span>(<span class=""> y+</span><span class="Constant">1</span><span class="">, q.b, q.c, q.t, p.next </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 55 </span>      }
+<span class="lnr"> 56 </span>    }
+<span class="lnr"> 57 </span>    <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> x &lt;= q.b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 58 </span>      p.b = x-<span class="Constant">1</span><span class="">;</span>
+<span class="lnr"> 59 </span>      p.next = <span class="Statement">new</span><span class=""> node</span>(<span class=""> x, y, c, t, p.next </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 60 </span>      p = p.next;
+<span class="lnr"> 61 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> y &lt; q.b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 62 </span>        p.next = <span class="Statement">new</span><span class=""> node</span>(<span class=""> y+</span><span class="Constant">1</span><span class="">, q.b, q.c, q.t, p.next </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 63 </span>      }
+<span class="lnr"> 64 </span>    }
+<span class="lnr"> 65 </span>    <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr"> 66 </span>      p.next = <span class="Statement">new</span><span class=""> node</span>(<span class=""> x, y, c, t, p.next </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 67 </span>      p = p.next;
+<span class="lnr"> 68 </span>    }
+<span class="lnr"> 69 </span>
+<span class="lnr"> 70 </span>    <span class="Comment">// cleanup any successor nodes overlapped by the new node</span>
+<span class="lnr"> 71 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> p.next != </span><span class="Constant">null</span><span class=""> &amp;&amp; y &gt;= p.next.a </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 72 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> y &gt;= p.next.b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 73 </span>        p.next = p.next.next;
+<span class="lnr"> 74 </span>      }
+<span class="lnr"> 75 </span>      <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr"> 76 </span>        p.next.a = y + <span class="Constant">1</span><span class="">;</span>
+<span class="lnr"> 77 </span>      }
+<span class="lnr"> 78 </span>    }
+<span class="lnr"> 79 </span>
+<span class="lnr"> 80 </span>    <span class="Comment">// merge adjacent serial number ranges with identical codes</span>
+<span class="lnr"> 81 </span>    p = head;
+<span class="lnr"> 82 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> p.next != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 83 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> p.b + </span><span class="Constant">1</span><span class=""> == p.next.a &amp;&amp; p.c == p.next.c &amp;&amp; p.t == p.next.t </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 84 </span>        p.b = p.next.b;
+<span class="lnr"> 85 </span>        p.next = p.next.next;
+<span class="lnr"> 86 </span>      }
+<span class="lnr"> 87 </span>      <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr"> 88 </span>        p = p.next;
+<span class="lnr"> 89 </span>      }
+<span class="lnr"> 90 </span>    }
+<span class="lnr"> 91 </span>
+<span class="lnr"> 92 </span>  }
+<span class="lnr"> 93 </span>
+<span class="lnr"> 94 </span>  <span class="Type">void</span><span class=""> display</span>()<span class=""> {</span>
+<span class="lnr"> 95 </span>    node p = head.next;
+<span class="lnr"> 96 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> p != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 97 </span>      System.out.format(<span class=""> </span><span class="Constant">&quot;%d %d %c %d%n&quot;</span><span class="">, p.a, p.b, p.c, p.t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 98 </span>      p = p.next;
+<span class="lnr"> 99 </span>    }
+<span class="lnr">100 </span>  }
+<span class="lnr">101 </span>
+<span class="lnr">102 </span>}
+<span class="lnr">103 </span>
+<span class="lnr">104 </span><span class="Type">class</span> node {
+<span class="lnr">105 </span>
+<span class="lnr">106 </span>  <span class="Type">int</span><span class=""> a;  </span><span class="Comment">// beginning serial number</span>
+<span class="lnr">107 </span>  <span class="Type">int</span><span class=""> b;  </span><span class="Comment">// ending serial number</span>
+<span class="lnr">108 </span>  <span class="Type">char</span><span class=""> c; </span><span class="Comment">// status code</span>
+<span class="lnr">109 </span>  <span class="Type">int</span><span class=""> t;  </span><span class="Comment">// transfer code;</span>
+<span class="lnr">110 </span>  node next;
+<span class="lnr">111 </span>
+<span class="lnr">112 </span>  node(<span class=""> </span><span class="Type">int</span><span class=""> aIn, </span><span class="Type">int</span><span class=""> bIn, </span><span class="Type">char</span><span class=""> cIn, </span><span class="Type">int</span><span class=""> tIn, node nextIn </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">113 </span>    a = aIn;
+<span class="lnr">114 </span>    b = bIn;
+<span class="lnr">115 </span>    c = cIn;
+<span class="lnr">116 </span>    t = tIn;
+<span class="lnr">117 </span>    next = nextIn;
+<span class="lnr">118 </span>  }
+<span class="lnr">119 </span>
+<span class="lnr">120 </span>}
+</pre>
+</body>
+</html>

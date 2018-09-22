@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Using the Judging Utilities</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Using the Judging Utilities</H1>
+
+<P>To install the utilities, put the diskette in drive A: and type
+&#34;<TT>a:install</TT>&#34;. This will create subdirectories <TT>C:\TEAM</TT> and
+<TT>C:\JUDGE</TT>, and will put a batch file <TT>J.BAT</TT> in the root of drive C:.
+If you are using Windows NT, you may need the system administrator to
+give you the privileges to create and use these directories.
+
+<P>To judge a program, just type &#34;<TT>\J n</TT>&#34;, where <I>n</I> is the problem number.  
+This batch file will
+
+<OL>
+<LI>delete the contents of <TT>C:\TEAM</TT> in preparation for judging,</LI>
+<LI>search the A: drive for a valid source file for problem <I>n</I>,</LI>
+<LI>copy the source file into <TT>C:\TEAM</TT>,</LI>
+<LI>copy the correct input file into <TT>C:\TEAM</TT>,</LI>
+<LI>compile the program,</LI>
+<LI>run the program,</LI>
+<LI>compare the program's output with the correct output, and</LI>
+<LI>allow you to visually compare the two output files if necessary.</LI>
+</OL>
+
+<P>Instructions will be displayed on the screen, and you can stop the batch
+file when necessary by pressing Ctrl-C.
+
+<P>In step 7 the files are compared using the <I>diff</I> utility. If
+the two files are identical it will say so, and otherwise it will show
+the differences. The output of <I>diff</I> is fairly clear when it all
+fits on one screen.  If there are a lot of errors it may be easier to
+see them in step 8.
+
+<P>Step 8 is necessary if it is not obvious that there are wrong
+answers, and you need to check for a presentation error.  The batch
+file uses the <I>list</I> program to view both the team's output and the
+correct output.  Use Ctrl-PgUp and Ctrl-PgDn to switch between the two
+files.  The status line at the top of the screen tells you which file
+you're looking at.  The team's output is in <TT>C:\TEAM</TT>, and the correct
+output is in <TT>C:\JUDGE</TT>.  If necessary you can use Alt-H to display
+the files in hexadecimal; this might help you find missing end-of-line
+characters or extraneous whitespace.  Use the arrow keys to move
+around in the files if necessary, and press ESC or F10 to exit.
+
+<P>IMPORTANT NOTE:
+These batch files assume that the following command-line compilers are
+in the executable path: &#34;<TT>tpc</TT>&#34; for Turbo Pascal 7.0, and &#34;<TT>tcc</TT>&#34; for
+Turbo C++ 3.0. If you are using different compilers you will need to
+change the three lines in <TT>\JUDGE\J2.BAT</TT> following &#34;<TT>:do_c</TT>&#34;,
+&#34;<TT>:do_cpp</TT>&#34;, and &#34;<TT>:do_pas</TT>&#34; so that they run the correct compiler.
+If you are using a more recent Borland compiler, you will probably
+have to replace &#34;<TT>tcc</TT>&#34; with &#34;<TT>bcc</TT>&#34;.  C++ and C files are compiled
+using the large memory model (that's the <TT>-ml</TT> option to <TT>tcc</TT>)
+because it most closely matches the Turbo Pascal memory model.  If you
+use a non-Borland compiler you will need to modify this flag as well.
+
+<P>NOTE 2:
+If you want to see both files at once using the <I>list</I> program: 1)
+press Alt-W followed by Return to get two views of the same file, then
+2) press Ctrl-PgDn to display the second file in the bottom window.
+Use Ctrl-V to switch windows.
+</BODY></HTML>

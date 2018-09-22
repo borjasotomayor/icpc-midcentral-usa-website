@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+<title>Judge's Notes for The Leprechaun</title></head><body>
+<h2>Judge's Notes for The Leprechaun</h2>
+
+<p>
+This is a variant of a classic two-player pursuit-evasion game.
+Several of our examples are taken from a
+<a
+href="http://www.link.cs.cmu.edu/15859-s11/notes/aigner-fromme.pdf">1984
+paper by Aigner and Fromme</a> (although that paper considers a model
+where all villagers can move during the same time step).
+A <a
+href="http://www.math.ryerson.ca/~abonato/GRASCan/AndrewBeveridge.pdf">
+presentation of more recent results</a>, discusses some computer proofs
+by Baird and Bonato from 2012. For those really interested, there is a
+<a href="http://www.math.ryerson.ca/~abonato/copsandrobbers.html">2011 book by Bonato and Nowakowski published by AMS</a>.
+
+
+
+
+
+
+</p>
+
+
+<p>
+The judge's tests in <tt>leprechaun.in</tt> are comprised of a series
+of individual test cases that can be found separately within the
+<tt>cases/</tt> directory.
+</p>
+
+<ul>
+  <li>
+      <p>
+      <b>Case 1: <tt>cycle7-1</tt></b> (same as in example input)<br>
+      Cycle of 7 nodes is unsolvable with 1 villager
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 2: <tt>cycle7-2</tt></b> (same as in example input)<br>
+      Cycle of 7 nodes with two villagers.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 3: <tt>house1</tt></b> (same as in example input)<br>
+      What makes this case interesting is that outcome depends upon
+      the rule that Leprechaun is allowed to remain still. If
+      Leprechaun had to move on each turn, one villager can capture it
+      by starting at C (in which case Leprechaun starts at D), moving
+      to A (after which Leprechaun moves to E), then moving to B
+      (after which Leprechuan must move to either C or D).
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 4: <tt>house2</tt></b> (same as in example input)<br>
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 5: <tt>peterson2</tt></b> (same as in example input)<br>
+      This is the Peterson graph. It is the smallest graph for which 3
+      villagers suffices but 2 does not.
+      (<a href="http://www.math.ryerson.ca/~abonato/GRASCan/AndrewBeveridge.pdf">Presentation about similar game in which villagers can move in parallel</a>)
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 6: <tt>peterson3</tt></b> (same as in example input)<br>
+      Peterson graph. 3 villagers easily win the game by selecting
+      initial position (e.g., BEF) that effectively covers the graph.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 7: components3<tt></tt></b> (same as in example input)<br>
+      Graphs is comprised of four separate connected components, each
+      a line. With only 3 villagers, Leprechaun can hide forever in
+      other component.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 8: components4<tt></tt></b> (same as in example input)<br>
+      Same graph as previous case. 4 villagers should each start in
+      separate component, and then the one that ends up with
+      Leprechaun can begin the chase on the line.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 9: <tt>line3-1</tt></b><br>
+      line of 3 nodes. Single villager wins in 1 move by starting at center.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 10: <tt>line4-1</tt></b><br>
+      line of 4 nodes. Single villager wins in 2 moves by starting at
+  either B or C.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 11: <tt>line4-2</tt></b><br>
+      line of 4 nodes. Two villagers win in 1 move by starting with
+      any combination other than AB or CD.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 12: <tt>line5-1</tt></b><br>
+      line of 5 nodes. One villager wins in 2 by starting at center.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 13: <tt>line5-2</tt></b><br>
+      line of 5 nodes. Two villagers win in 1 move by starting at B
+      and D.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 14: <tt>line6-1</tt></b><br>
+      line of 6 nodes. One villager wins in 3 moves by starting at C
+      or D, and chasing down Leprechaun.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 15: <tt>line6-2</tt></b><br>
+      line of 6 nodes. Two villagers win in 1 move by starting at B
+      and E.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 16: <tt>line15-1</tt></b><br>
+      line of 15 nodes. One villager wins in 7 moves.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 17: <tt>line15-2</tt></b><br>
+      line of 15 nodes. Two villagers wins in 4 moves.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 18: <tt>line15-3</tt></b><br>
+      line of 15 nodes. Three villagers wins in 3 moves.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 19: <tt>line15-4</tt></b><br>
+      line of 15 nodes. Four villagers wins in 2 moves.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 20: <tt>line15-5</tt></b><br>
+      line of 15 nodes. Five villagers win in 1 move by starting at BEHKN.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 21: <tt>cycle4-1</tt></b><br>
+      cycle of 4 nodes. One villager cannot win
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 22: <tt>cycle15-1</tt></b><br>
+      cycle of 15 nodes. One villager cannot win
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 23: <tt>cycle15-2</tt></b><br>
+      cycle of 15 nodes. Two villagers win in 6 moves.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 24: <tt>hex.in</tt></b><br>
+      Seven node graph that is a hexagon with a central node connected
+      to all. One villager wins in one move by picking the center (A).
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 25: <tt>star.in</tt></b><br>
+      Expansion of the hex example with 2-move win for single villager
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 26: <tt>octa1.in</tt></b><br>
+      Edge graph of an octahedron. One villager cannot win.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 27: <tt>octa2.in</tt></b><br>
+      Edge graph of an octahedron. Two villagers win in 1 by starting
+      at the two poles.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 28: <tt>grid1.in</tt></b><br>
+      5x3 grid. Single villager cannot win.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 29: <tt>grid2.in</tt></b><br>
+      5x3 grid. Two villagers win in four moves by starting at top and
+      bottom of middle column of 3, and then sweeping to the side with
+      the leprechaun.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 30: <tt>large3.in</tt></b><br>
+      15 node graph with one isolated node (I) that forces spending
+      one villager. In all, 3 villagers do not suffice.
+      </p>
+  </li>
+  <li>
+      <p>
+      <b>Case 31: <tt>large4.in</tt></b><br>
+      same as previous, but with 4 villagers winning in 2 (for
+      example, if starting at FGIO).
+      </p>
+  </li>
+</ul>
+
+</body></html>

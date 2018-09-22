@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Notes to Teams</title></head><body>
+
+<table width="100%">
+<tbody><tr valign="top">
+<td align="left"><font size="+2"><b>Notes to Teams</b></font>
+    </td><td align="right"><font size="-1"><i>Last modified Sept 4 2008</i></font>
+</td></tr></tbody></table>
+
+<ol>
+
+<li>Programs must be in a single source file with the name specified
+in the problem description; failure to meet this requirement is a <a href="http://mcpc.cigas.net/errors.html"><i>Submission Error</i></a>. Java programmers, note
+that you can include additional top-level classes in a single source
+file as long as they are unqualified (just "class", without
+"public"). </li>
+
+<li>All output will be judged using a file comparison utility, so
+output must be <em>exactly</em> as shown in the examples. This applies
+to all problems, whether explicitly stated in the problem description
+or not. Spelling, punctuation, spacing, and case (uppercase/lowercase)
+are all significant. </li>
+
+<li>Programs must write their results to standard output (usually
+<i>stdout</i> in C, <i>cout</i> in C++, and <i>System.out</i> in
+Java).  The judges will ignore all output to standard error (usually
+<i>stderr</i> in C, <i>cerr/clog</i> in C++, and <i>System.err</i> in
+Java), so you can write as much debugging information to standard
+error as you want, subject to the one-minute time limit.  </li>
+
+<li>Your program cannot require any intervention by the user. For
+example, if you pause the program and ask the user to press a key to
+continue, you will be flagged with a <a href="http://mcpc.cigas.net/errors.html"><i>Submission Error</i></a>.  If you pause the
+program without any prompting at all, you may be flagged with a <a href="http://mcpc.cigas.net/errors.html"><i>Time Limit Exceeded</i></a> error. </li>
+
+<li>Do <em>not</em> use drive and/or path specifications when naming
+input files. If a problem indicates that the input file is named
+<tt>file.in</tt>, then you must open <tt>file.in</tt> and not
+<tt>a:file.in</tt> or <tt>c:\stuff\file.in</tt> or anything
+else. Violating this rule will result in a <a href="http://mcpc.cigas.net/errors.html"><i>Submission Error</i></a>. </li>
+
+<li>All test cases used in judging will conform to the input
+specifications.  It is not necessary for you to detect invalid
+input. </li>
+
+<li>Input data and correct output data will obey the following
+rules.
+
+<ul type="disc">
+
+<li>Other than end-of-line characters, spaces are the only whitespace
+that appear. </li>
+
+<li>Two or more consecutive spaces do not appear, unless specifically
+mentioned in the problem statement. </li>
+
+<li>Spaces do not appear at the end of lines. </li>
+
+<li>Spaces do not appear at the beginning of lines, unless
+specifically mentioned in the problem statement. </li>
+
+<li>Blank lines do not appear. </li>
+
+<li>All lines, including the last line, end with the
+standard end-of-line marker. </li>
+
+</ul>
+</li>
+
+<li>This applies only to Java programmers. Counter to Java
+conventions, the name of your source file and main class must be in
+<b><i>lowercase</i></b> for this competition.  For example, if a
+problem states that your program must be called <tt>compute</tt>, then
+you would create a file called <tt>compute.java</tt> that begins like
+this:
+
+    <blockquote>
+      <pre>public class compute {<br>    public static void main(String args[]) {<br>        ...<br>    }<br>    ....<br>}<br></pre>
+     </blockquote>
+   </li>
+
+<li>Teams are ranked by the number of problems solved, with teams
+solving the same number of problems ranked by least total time (see 
+<a href="http://cm2prod.baylor.edu/ICPCWiki/Wiki.jsp?page=Regional%20Rules#section-Regional+Rules-ScoringOfARegionalContest">
+Regional Scoring</a>). Teams solving the same number of problems with
+the same total time are ranked by the smallest <em>elapsed</em> time of their last
+accepted solution (not counting penalties for rejected runs). Any
+remaining ties are left unbroken unless they affect the regional
+winners, in which case they are broken by a coin flip. </li>
+
+   <li>Any team that jeopardizes the integrity of the contest or violates
+the rules of the contest will be disqualified and the team members may be
+banned permanently from competing in the Mid-Central Region. Some examples
+of such actions are:
+    <ul type="disc">
+       <li>accessing the Internet in <b><i>any</i></b> way, </li>
+       <li>disrupting power to computers, </li>
+       <li>corrupting judging materials or the judging process, </li>
+       <li>collaborating with anyone not on the team (this includes using
+a portable phone), </li>
+       <li>disobeying site officials' instructions regarding appropriate conduct.
+      </li>
+
+    </ul>
+   </li>
+
+</ol>
+
+</body></html>

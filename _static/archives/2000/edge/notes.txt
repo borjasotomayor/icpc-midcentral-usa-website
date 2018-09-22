@@ -1,0 +1,10 @@
+Edge notes
+
+The last data set has runs
+
+30 11
+20 11
+10 11
+20 11
+
+repeated 250 times for the maximum 1000 lines.

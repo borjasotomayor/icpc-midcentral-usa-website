@@ -1,0 +1,146 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// Top This, Java version by Andy Harrington (ported to C++ by Michael Goldwasser)
+</span><span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=keyword>typedef</span> <span class=keyword>long</span> <span class=keyword>long</span> <span class=keyword>int</span>  long64;   <span class=comment>// not sure which is standard across platforms
+</span>
+<span class=keyword>const</span> <span class=keyword>int</span> L = 6;  <span class=comment>// output is LxL L &lt; 8
+</span><span class=keyword>const</span> <span class=keyword>int</span> GROUP_MAX = 3;
+<span class=keyword>const</span> <span class=keyword>int</span> DOUBLE_GROUP_MAX = 6;   <span class=comment>// need compile-time constant
+</span><span class=keyword>int</span> groupSize;  <span class=comment>//number of pieces in a group
+</span>
+<span class=comment>// pAll[index in all 7 pieces][rotation] = L x L bitfield 
+</span>long64 pAll[7][4];
+<span class=keyword>int</span> pieceIndex[DOUBLE_GROUP_MAX]; <span class=comment>// pieces to use
+</span>long64 best;
+long64 B;        <span class=comment>// will initialize to 1LL &lt;&lt; (L*L-1) at runtime;   // bit for [r][c] = [0][0]
+</span>
+long64 shift(long64 a, <span class=keyword>int</span> r, <span class=keyword>int</span> c) {
+  <span class=keyword>return</span> a &gt;&gt; (L*r + c);
+}
+
+<span class=keyword>bool</span> get(long64 a, <span class=keyword>int</span> r, <span class=keyword>int</span> c) {<span class=comment>// get bit [r][c]
+</span>  <span class=keyword>return</span> (a &amp; shift(B, r, c)) &gt; 0;
+}
+
+long64 set(long64 a, <span class=keyword>int</span> r, <span class=keyword>int</span> c) {<span class=comment>// set bit [r][c]
+</span>  <span class=keyword>return</span> a | shift(B, r, c);
+}
+
+<span class=comment>//assumes a shifted to upper left; return rotated, shifted up, left
+</span>long64 rot90Shift(long64 a) {
+  long64 b=0;  
+  <span class=keyword>int</span> rMax = 0;
+  <span class=keyword>for</span> (<span class=keyword>int</span> r = 0; r &lt; L; r++)
+    <span class=keyword>for</span> (<span class=keyword>int</span> c = 0; c &lt; L; c++)
+      <span class=keyword>if</span> (get(a, r, c))
+        rMax = r;
+  <span class=keyword>for</span> (<span class=keyword>int</span> r = 0; r &lt;= rMax; r++)
+    <span class=keyword>for</span> (<span class=keyword>int</span> c = 0; c &lt; L; c++) 
+      <span class=keyword>if</span> (get(a, r, c))
+        b = set(b, c, rMax-r);
+  <span class=keyword>return</span> b;
+}
+                             
+<span class=keyword>void</span> print(long64 a) {
+  <span class=keyword>for</span> (<span class=keyword>int</span> r = 0; r &lt; L; r++) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> c = 0; c &lt; L; c++) 
+      cout &lt;&lt; (get(a, r, c) ? '#' : '.');
+    cout &lt;&lt; endl;
+  }
+}
+
+<span class=keyword>void</span> findSol(long64 a, <span class=keyword>int</span> next, long64 shape){
+  <span class=keyword>if</span> (next == 2*groupSize) {
+    <span class=keyword>if</span> (shape &gt; best)
+      best = shape;
+    <span class=keyword>return</span>;
+  }
+  <span class=keyword>if</span> (next == groupSize) {
+      <span class=keyword>if</span> (a &lt;= best)
+        <span class=keyword>return</span>;  <span class=comment>// save lots of time to test if best here!
+</span>    shape = a;
+    a = (B &lt;&lt; 1) - 1 - a;  <span class=comment>//invert all bits
+</span>  }
+  <span class=keyword>int</span> pNum = pieceIndex[next];
+  <span class=keyword>int</span> rows = 2, cols = 3;
+  <span class=keyword>if</span> (pNum == 0) {
+    rows = 1;
+    cols = 4;
+  }
+  <span class=keyword>for</span> (<span class=keyword>int</span> rot = 0; rot &lt; 4; rot++) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> dr = 0; dr &lt;= L-rows; dr++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> dc = 0; dc &lt;= L-cols; dc++) { 
+        long64 shifted = shift(pAll[pNum][rot], dr, dc);
+        <span class=keyword>if</span> ((a &amp; shifted)== 0) <span class=comment>// if disjoint
+</span>          findSol(a | shifted, next+1, shape); <span class=comment>//solve wih union
+</span>      }
+    <span class=keyword>int</span> temp = rows;
+    rows = cols;
+    cols = temp;
+  }
+}
+
+<span class=keyword>int</span> main() {        
+  B = 1LL &lt;&lt; (L*L - 1);
+
+  fstream in(&quot;top.in&quot;);
+  string ps[7][2] = {{&quot;####&quot;,  <span class=comment>//quick coding - next convert to array
+</span>                    &quot;....&quot;},
+                   {&quot;###.&quot;,
+                    &quot;#...&quot;},
+                   {&quot;###.&quot;,
+                    &quot;.#..&quot;},
+                   {&quot;###.&quot;,
+                    &quot;..#.&quot;},
+                   {&quot;##..&quot;,
+                    &quot;.##.&quot;},
+                   {&quot;##..&quot;,
+                    &quot;##..&quot;},
+                   {&quot;.##.&quot;,
+                    &quot;##..&quot;}};
+
+  <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i &lt; 7; i++) { <span class=comment>// set up all 4x4 boolean arrays
+</span>    pAll[i][0] = 0LL;  <span class=comment>// need to initialize in C++
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> r = 0; r &lt; 2; r++) {  <span class=comment>//translate from String representation
+</span>      <span class=keyword>for</span> (<span class=keyword>int</span> c = 0; c &lt; ps[i][r].size(); c++)  
+        <span class=keyword>if</span> (ps[i][r][c] == '#') {
+          pAll[i][0] = set(pAll[i][0], r, c);
+        }
+    }
+    <span class=keyword>for</span> (<span class=keyword>int</span> rot=0; rot&lt;3; rot++)  <span class=comment>// record rotations, shift up left
+</span>      pAll[i][rot+1] = rot90Shift(pAll[i][rot]);
+  }
+
+  <span class=keyword>int</span> dataSets;
+  in &gt;&gt; dataSets;
+  <span class=keyword>for</span> (<span class=keyword>int</span> ds = 1; ds &lt;= dataSets; ds++) {
+    cout &lt;&lt; ds &lt;&lt; endl;
+    groupSize = 3;             <span class=comment>// hardwired for this problem
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;2; i++) {
+      string pieces;
+      in &gt;&gt; pieces;
+      <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; groupSize; j++)
+        pieceIndex[i*groupSize + j] = pieces[j] - 'A';
+    }
+    best = 0;
+    findSol(0, 0, 0);
+    <span class=keyword>if</span> (best == 0) <span class=comment>// array never replaced
+</span>      cout &lt;&lt; &quot;No solution&quot; &lt;&lt; endl;
+    <span class=keyword>else</span>
+      print(best);
+  }
+}
+
+</pre></body>
+</html>

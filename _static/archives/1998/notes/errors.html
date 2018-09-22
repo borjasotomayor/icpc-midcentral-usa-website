@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Error Messages</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Error Messages</H1>
+
+<P>If a submission is not correct it will be returned with the <EM>first</EM>
+applicable error message from the following list. A 20-minute time penalty
+will be assessed for each incorrect submission. The error messages are
+described below.
+
+<OL>
+<LI>Submission Error</LI>
+<LI>Run-time Error</LI>
+<LI>Time Limit Exceeded</LI>
+<LI>Wrong Answer</LI>
+<LI>Presentation Error</LI>
+</OL>
+
+<P><B>Submission Error.</B>
+This indicates a violation of the basic contest rules.
+Teams should never get a <I>Submission Error</I>, but in the heat of competition
+they sometimes make silly mistakes.
+Submission errors include (but are not limited to)
+
+<UL>
+<LI>compilation errors (warnings are OK)</LI>
+<LI>submitting the wrong problem</LI>
+<LI>submitting the executable instead of the source code</LI>
+<LI>writing the output only to the screen and not to the output file</LI>
+<LI>using the wrong input or output file name</LI>
+<LI>including a drive and/or path with a file name</LI>
+<LI>requiring interaction with the user.</LI>
+</UL>
+
+<P><B>Run-time Error.</B>
+The program crashed when run.  Examples of run-time errors include (but are
+not limited to)
+
+<UL>
+<LI>stack overflows</LI>
+<LI>I/O errors</LI>
+<LI>heap overflows</LI>
+<LI>invalid memory references (<I>e.g.</I>, dereferencing a null pointer)</LI>
+<LI>bizarre behavior (garbage on screen, beeping, keyboard lockup, ...).</LI>
+</UL>
+
+<P><B>Time Limit Exceeded.</B>
+The program ran (without crashing) for more than one minute.  It may or may not
+have produced any output.  This error may indicate that the program
+simply runs too slowly, but it usually means that it got stuck in an
+infinite loop.  
+
+<P><B>Wrong Answer.</B>
+The program ran to completion in one minute or less but produced one or more
+incorrect answers.
+
+<P><B>Presentation Error.</B>
+The program ran to completion in one minute or less, <EM>apparently</EM>
+produced correct answers, but formatted the output incorrectly in one or
+more cases.  Examples of incorrect formatting include (but are not limited to)
+
+<UL>
+<LI>misspelled words</LI>
+<LI>wrong case (<I>e.g.</I>, uppercase instead of lowercase)</LI>
+<LI>too few or too many spaces</LI>
+<LI>wrong number of significant digits in numeric output</LI>
+<LI>extra blank lines.</LI>
+</UL>
+
+<B>Note:</B> receiving a <I>Presentation Error</I> guarantees that there are 
+one or more formatting errors, and indicates that the judges did not see 
+any wrong answers based on a brief visual inspection.  However, it is not 
+a <EM>guarantee</EM> that the program produced no incorrect answers.
+
+</BODY></HTML>

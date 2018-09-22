@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/serials/as.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Constant { color: #72a5e4; font-weight: bold; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr"> 1 </span><span class="Comment">// variant on serials.java with ArrayList by Andy Harrington</span>
+<span class="lnr"> 2 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr"> 3 </span><span class="PreProc">import</span> java.util.*;
+<span class="lnr"> 4 </span>
+<span class="lnr"> 5 </span><span class="Type">class</span> as {
+<span class="lnr"> 6 </span>  <span class="Type">static</span><span class=""> ArrayList&lt;Rec&gt; rec = </span><span class="Statement">new</span><span class=""> ArrayList&lt;Rec&gt;</span>()<span class="">;</span>
+<span class="lnr"> 7 </span>
+<span class="lnr"> 8 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class=""> String</span>[]<span class=""> args </span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr"> 9 </span>    String inFile = args.length &gt; <span class="Constant">0</span><span class=""> ? args</span>[<span class="Constant">0</span><span class="javaParen">]</span><span class=""> : </span><span class="Constant">&quot;serials.in&quot;</span><span class="">;</span>
+<span class="lnr">10 </span>    Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class=""> </span><span class="Statement">new</span><span class=""> File</span>(<span class=""> inFile </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">11 </span>    String s = in.nextLine()<span class="">;</span>
+<span class="lnr">12 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> !s.equals</span>(<span class=""> </span><span class="Constant">&quot;END&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">13 </span>      System.out.println(<span class=""> s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">14 </span>      rec.clear()<span class="">; </span>
+<span class="lnr">15 </span>      rec.add(<span class="Statement">new</span><span class=""> Rec</span>(<span class="Constant">0</span><span class="">,</span><span class="Constant">0</span><span class="">,</span><span class="Constant">'0'</span><span class="">, </span><span class="Constant">0</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">; </span><span class="Comment">// dummy header, before everything real</span>
+<span class="lnr">16 </span>      <span class="Type">int</span><span class=""> a = in.nextInt</span>()<span class="">;</span>
+<span class="lnr">17 </span>      <span class="Statement">while</span><span class=""> </span>(<span class=""> a != </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">18 </span>        insert(<span class="Statement">new</span><span class=""> Rec</span>(<span class="">a, in.nextInt</span>()<span class="">, in.next</span><span class="javaParen2">()</span><span class="">.charAt</span><span class="javaParen2">(</span><span class="Constant">0</span><span class="javaParen2">)</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">19 </span>        a = in.nextInt()<span class="">;</span>
+<span class="lnr">20 </span>      }
+<span class="lnr">21 </span>      <span class="Statement">for</span><span class=""> </span>(<span class="">Rec r : rec</span><span class="javaParen">)</span>
+<span class="lnr">22 </span>         <span class="Statement">if</span><span class=""> </span>(<span class="">r.c != </span><span class="Constant">'0'</span><span class="javaParen">)</span>
+<span class="lnr">23 </span>             System.out.format(<span class=""> </span><span class="Constant">&quot;%d %d %c %d%n&quot;</span><span class="">, r.a, r.b, r.c, r.t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">24 </span>      in.nextLine()<span class="">;</span>
+<span class="lnr">25 </span>      s = in.nextLine()<span class="">;</span>
+<span class="lnr">26 </span>    }
+<span class="lnr">27 </span>  }
+<span class="lnr">28 </span>
+<span class="lnr">29 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> insert</span>(<span class="">Rec r</span><span class="javaParen">)</span><span class=""> { </span>
+<span class="lnr">30 </span>    <span class="Type">int</span><span class=""> i = </span><span class="Constant">1</span><span class="">;  </span><span class="Comment">// adjusted to be the index where r inserted</span>
+<span class="lnr">31 </span>    <span class="Statement">while</span><span class=""> </span>(<span class="">i &lt; rec.size</span>()<span class=""> &amp;&amp; rec.get</span><span class="javaParen1">(</span><span class="">i</span><span class="javaParen1">)</span><span class="">.a &lt;= r.a</span><span class="javaParen">)</span>
+<span class="lnr">32 </span>      i++;
+<span class="lnr">33 </span>    Rec p = rec.get(<span class="">i-</span><span class="Constant">1</span><span class="javaParen">)</span><span class="">,  </span><span class="Comment">// starts no later than r does</span>
+<span class="lnr">34 </span>        q = <span class="Statement">new</span><span class=""> Rec</span>(<span class="">r.b+</span><span class="Constant">1</span><span class="">, p.b,p.c,p.t</span><span class="javaParen">)</span><span class="">;  </span><span class="Comment">// in case p goes past r</span>
+<span class="lnr">35 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> p.a &lt; r.a </span><span class="javaParen">)</span><span class=""> </span><span class="Comment">// keep part before</span>
+<span class="lnr">36 </span>        p.b = java.lang.Math.min(<span class="">p.b, r.a-</span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">37 </span>    <span class="Statement">else</span><span class="">  </span><span class="Comment">// quick and dirty - deletions not minimized</span>
+<span class="lnr">38 </span>        rec.remove(<span class="">--i</span><span class="javaParen">)</span><span class="">;  </span><span class="Comment">// i still where r will go</span>
+<span class="lnr">39 </span>    <span class="Statement">if</span><span class=""> </span>(<span class="">q.b &gt; r.b</span><span class="javaParen">)</span><span class=""> </span><span class="Comment">// add part of p extending past r        </span>
+<span class="lnr">40 </span>        rec.add(<span class="">i, q</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">41 </span>    <span class="Statement">while</span><span class=""> </span>(<span class="">i &lt; rec.size</span>()<span class=""> &amp;&amp; rec.get</span><span class="javaParen1">(</span><span class="">i</span><span class="javaParen1">)</span><span class="">.b &lt;= r.b</span><span class="javaParen">)</span>
+<span class="lnr">42 </span>        rec.remove(<span class="">i</span><span class="javaParen">)</span><span class="">; </span><span class="Comment">// remove all totally superceded later ones</span>
+<span class="lnr">43 </span>    <span class="Statement">if</span><span class=""> </span>(<span class="">i &lt; rec.size</span>()<span class=""> &amp;&amp; rec.get</span><span class="javaParen1">(</span><span class="">i</span><span class="javaParen1">)</span><span class="">.a &lt;= r.b</span><span class="javaParen">)</span>
+<span class="lnr">44 </span>        rec.get(<span class="">i</span><span class="javaParen">)</span><span class="">.a = r.b + </span><span class="Constant">1</span><span class="">; </span><span class="Comment">// if part overlap next</span>
+<span class="lnr">45 </span>    <span class="Comment">// merge adjacent serial number ranges with identical codes</span>
+<span class="lnr">46 </span>    p = rec.get(<span class="">i-</span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">47 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> p.b + </span><span class="Constant">1</span><span class=""> == r.a &amp;&amp; p.c == r.c &amp;&amp; p.t == r.t </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">48 </span>        r.a = p.a;   <span class="Comment">// extend r, remove previous Rec</span>
+<span class="lnr">49 </span>        rec.remove(<span class="">--i</span><span class="javaParen">)</span><span class="">;  </span><span class="Comment">// i still index of r</span>
+<span class="lnr">50 </span>    }
+<span class="lnr">51 </span>    <span class="Statement">if</span><span class=""> </span>(<span class="">i &lt; rec.size</span>()<span class="javaParen">)</span><span class="">{</span>
+<span class="lnr">52 </span>        p = rec.get(<span class="">i</span><span class="javaParen">)</span><span class="">;  </span>
+<span class="lnr">53 </span>        <span class="Statement">if</span><span class=""> </span>(<span class=""> r.b + </span><span class="Constant">1</span><span class=""> == p.a &amp;&amp; p.c == r.c &amp;&amp; p.t == r.t </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">54 </span>            r.b = p.b;  <span class="Comment">// extend r, remove following Rec</span>
+<span class="lnr">55 </span>            rec.remove(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">56 </span>        }
+<span class="lnr">57 </span>    }
+<span class="lnr">58 </span>    rec.add(<span class="">i, r</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">59 </span>  }
+<span class="lnr">60 </span>}
+<span class="lnr">61 </span>
+<span class="lnr">62 </span><span class="Type">class</span> Rec {
+<span class="lnr">63 </span>  <span class="Type">int</span><span class=""> a;  </span><span class="Comment">// beginning serial number</span>
+<span class="lnr">64 </span>  <span class="Type">int</span><span class=""> b;  </span><span class="Comment">// ending serial number</span>
+<span class="lnr">65 </span>  <span class="Type">char</span><span class=""> c; </span><span class="Comment">// status code</span>
+<span class="lnr">66 </span>  <span class="Type">int</span><span class=""> t;  </span><span class="Comment">// transfer code;</span>
+<span class="lnr">67 </span>
+<span class="lnr">68 </span>  Rec(<span class=""> </span><span class="Type">int</span><span class=""> aIn, </span><span class="Type">int</span><span class=""> bIn, </span><span class="Type">char</span><span class=""> cIn, </span><span class="Type">int</span><span class=""> tIn</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">69 </span>    a = aIn;
+<span class="lnr">70 </span>    b = bIn;
+<span class="lnr">71 </span>    c = cIn;
+<span class="lnr">72 </span>    t = tIn;
+<span class="lnr">73 </span>  }
+<span class="lnr">74 </span>}
+</pre>
+</body>
+</html>

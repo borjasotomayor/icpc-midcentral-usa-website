@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Judge's Notes</title></head>
+<body><h2>Reasons for judge datasets</h2>1. no backtracking in my solution order<br>2. small easy example with no pitfalls<br>3. many ops left side<br>4. many ops right side<br>5. 2 mult because I said it was the limit<br>6. negative numbers<br>7-8.&nbsp;avoid division by 0, multiple ops both sides<br>9-10. avoid more obvious path with 3 digit numbers<br>11-12. div, avoid more obvious path with truncation<br>13-14. avoid division by 0<br>15-16.&nbsp; div, avoid more obvious path with truncation<br>17-18. avoid more obvious path with leading 0's<br><br>It
+is realistic problem statement for a puzzle to have a unique solution,
+so I leave that assumption. &nbsp;That makes it harder to see if a
+solution is written missing one of the rules, because the correct
+answer could always be found first.&nbsp; On the assumption that the
+solution will include a scan with starting characters going in the file
+order and either the first or the last solution is the one used, I
+arranged the test data so all the rules should get tested.&nbsp; For
+each possibly omitted rule there is a dataset that should produce a
+bogus answer first if the rule is omitted. &nbsp;In case the contestant
+code goes through all possibilities and just keeps the *last* solution,
+all such examples are essentially included twice, with the second
+having the data rotated 180 degrees so the bogus solution comes after
+the real solution in the normal scan. <br><br>With correct code, this means the last six equations are all repeated twice.<br></body></html>

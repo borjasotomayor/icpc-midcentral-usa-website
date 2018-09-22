@@ -1,0 +1,180 @@
+---------------------------
+Case 1:
+6 4
+10 3 4 2
+
+OPT(4): 1+2+3+4
+OPT(4): 1+4+5, 3
+
+Same as in problem description
+---------------------------
+Case 2:
+6 5
+10 2 4 5 3
+
+OPT(6): 1+3+6, 2, 4, 5, 3
+OPT(6): 4+6, 2, 1+3, 5
+
+Shut the Box!
+Same as in problem description
+---------------------------
+Case 3:
+10 10
+1 1 3 4 5 6 7 8 9 10
+
+OPT(1): 1
+
+Game ends on the second turn, as no 1 available
+---------------------------
+Case 4:
+22 22
+22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+
+OPT(22): straightforward
+
+---------------------------
+Case 5:
+6 5
+10 1 6 4 5
+
+OPT(6): 2+3+5, 1, 6, 4
+
+Same as previous but with extraneous unused turn
+---------------------------
+Case 6:
+5 5
+1 2 3 4 5
+
+OPT(5): 1, 2, 3, 4, 5
+
+Plain and simple
+---------------------------
+Case 7:
+5 5
+5 4 3 2 1
+
+OPT(5): 5, 4, 3, 2, 1
+
+Plain and simple, reversed
+---------------------------
+Case 8:
+5 5
+3 3 3 3 3
+
+OPT(3): 1+2, 3  and then stuck (or 3, 1+2)
+
+---------------------------
+Case 9:
+6 1
+1
+
+OPT(1): 1
+
+Must handle small case without error
+---------------------------
+Case 10:
+10 1
+21
+
+OPT(6): 1+2+3+4+5+6
+
+Must find best way to use a single value and noting that single value
+is allowed to be significantly bigger than N.
+
+---------------------------
+Case 11:
+10 2
+20 1
+
+OPT(6): 2+3+4+5+6, 1
+
+---------------------------
+Case 12:
+6 5
+4 6 1 1 5
+
+OPT(4): 1+3, 2+4
+OPT(4): 4, 1+2+3
+(but not 4, 6, 1)
+
+Key is that it is better to get stuck after two turns, than take a
+different approach that uses three turns (but fewer marks). Note that
+there is no way to use the 5 in any scenario.
+
+---------------------------
+Case 13:
+7 6
+3 7 5 1 7 6
+
+OPT(5): 1+2, 3+4, 5
+OPT(5): 3, 2+5, 1+4
+(but not 3, 7, 5, 1)
+
+As with previous case, better to get stuck earlier but get more marks,
+and no way to use the 6 in any scenario.
+
+---------------------------
+Case 14:
+12 3
+12 11 10
+OPT(7): 1+2+3+6, 4+7, 10  (among other solutions)
+
+Testing some multimark combinations
+---------------------------
+Case 15:
+15 3
+15 14 13
+OPT(8): 1+2+3+4+5, 6+8, 13  (among other solutions)
+
+Testing some multimark combinations
+---------------------------
+Case 16:
+18 3
+18 17 16
+OPT(9): 3+4+5+6, 2+7+8, 1+15  (among other solutions)
+
+Testing some multimark combinations
+---------------------------
+Case 17:
+21 3
+21 20 19
+OPT(10): 1+2+5+6+7, 3+8+9, 4+15  (among other solutions)
+
+Testing some multimark combinations
+---------------------------
+Case 18:
+22 4
+22 22 22 22
+
+OPT(12): 2+3+4+6+7, 5+8+9, 1+10+11, 22
+
+Testing more multi combinations
+---------------------------
+Case 19:
+6 4
+10 1 6 4
+
+OPT(6): 2+3+5, 1, 6, 4
+
+Shut the Box!
+---------------------------
+Case 20:
+
+22 8
+22 21 22 21 22 21 22 21
+
+OPT(18): 3+6+13, 10+11, 8+14, 9+12, 7+15, 1+4+16, 5+17, 2+19
+
+Lots of repetition to thwart brute force, but not all the same.
+
+---------------------------
+Case 21:
+22 10
+22 22 22 22 22 22 22 22 22 22
+
+OPT(20):  1+10+11, 9+13, 8+14, 7+15, 6+16, 5+17, 4+18, 3+19, 2+20, 22
+
+This is a case in which dynamic programming does quite quickly, but a
+brute force approach will take too long.  Optimal is any combination
+of turns 1+20, 2+19, 3+18, 4+17, ... for a total of 20 marks.
+---------------------------

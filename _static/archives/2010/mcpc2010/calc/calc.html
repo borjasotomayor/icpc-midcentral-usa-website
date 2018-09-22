@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Judges' Time Calculation</title>
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Author" content="Michael Goldwasser"></head><body style="background-color: white;">
+
+<h1 style="text-align: center;" align="center">Problem A: Judges' Time Calculation</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td style="font-family: monospace;">calc.{c, cpp, java}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td style="font-family: monospace;">calc.in</td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>
+In our region, the contest traditionally starts at 12:30 and lasts for
+5&nbsp;hours.   If you are able to submit a solution at 12:39,
+the wise judges would determine that 9 minutes had elapsed since the
+start of the contest.  Sadly, as the day grows longer, the judges 
+have more trouble doing the calculations accurately (how quickly can you
+determine the elapsed time for a 3:21 submission?)
+</p>
+
+<p>
+Having struggled for many years, the judges developed the following
+system.  Before the contest starts, they place the following table on
+the board at the front of the room
+</p><center>
+<img src="sample.png">
+</center>
+When a problem is submitted with a given time-stamp, they
+determine which row of the table to use, based upon the hour of the
+time-stamp. Then, the formula in the right column is used to compute
+the number of elapsed minutes. For example, with a submission time of
+12:39, the top row is applied with XX=39, leading to the elapsed
+minutes calculated as <nobr>39 - 30 = 9</nobr>.   For a program
+submitted at 3:21, the fourth row is used to calculate
+<nobr>21 + 150 = 171</nobr> elapsed minutes.
+<p></p>
+
+<p>
+Your goal is to develop a program that generates the appropriate table
+given knowledge of the starting time and duration of a contest.
+</p>
+
+
+<p><b>Input:</b>
+The input starts with a line containing a single integer <nobr>1 &#8804; N &#8804; 30</nobr>
+that is the number of cases.  Following this are N lines, with each
+line containing integral values SH, SM, DH, DM separated by spaces.
+The values <nobr>1 &#8804; SH &#8804; 12</nobr> and
+<nobr>0 &#8804; SM &#8804; 59</nobr> respectively represent the hour and
+minute at which a contest starts. The values <nobr>0 &#8804; DH &#8804; 10</nobr> and
+<nobr>0 &#8804; DM &#8804; 59</nobr> represent the duration of the contest
+in terms of hours and minutes.  A contest will last at least
+1&nbsp;minute and at most 10&nbsp;hours and 59&nbsp;minutes.
+This allows us to omit any A.M. or P.M. designations for the times.
+</p>
+
+<p><b>Output:</b> For each case, you are to produce a table formatted
+as shown in the Example Output. Any row in which the hour
+designator is a single digit (e.g., 5:XX) should have a single leading
+space, as should the header of the table just before the word "time".
+</p>
+
+<p>
+The table must have a row for every hour block in which a
+program might be submitted.  Assume that the 
+earliest possible submission is precisely the contest starting time
+(i.e., 0&nbsp;elapsed minutes), and that the latest possible
+submission has an elapsed time of the full duration of the contest
+(e.g., 5:30 in our region).
+</p>
+<p>
+</p>
+
+
+<!-- blank lines are to push table to top of next page for my pdf -->
+<br>
+<br>
+
+
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;" valign="top">
+3<br>
+12 30 5 0<br>
+7 0 2 59<br>
+9 59 4 1
+</td>
+       <td style="font-family: monospace;" valign="top">
+------+---------<br>
+&nbsp;time | elapsed<br>
+------+---------<br>
+12:XX | XX - 30<br>
+&nbsp;1:XX | XX + 30<br>
+&nbsp;2:XX | XX + 90<br>
+&nbsp;3:XX | XX + 150<br>
+&nbsp;4:XX | XX + 210<br>
+&nbsp;5:XX | XX + 270<br>
+------+---------<br>
+&nbsp;time | elapsed<br>
+------+---------<br>
+&nbsp;7:XX | XX<br>
+&nbsp;8:XX | XX + 60<br>
+&nbsp;9:XX | XX + 120<br>
+------+---------<br>
+&nbsp;time | elapsed<br>
+------+---------<br>
+&nbsp;9:XX | XX - 59<br>
+10:XX | XX + 1<br>
+11:XX | XX + 61<br>
+12:XX | XX + 121<br>
+&nbsp;1:XX | XX + 181<br>
+&nbsp;2:XX | XX + 241<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+</body></html>

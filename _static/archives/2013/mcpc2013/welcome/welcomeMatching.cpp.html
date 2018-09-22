@@ -1,0 +1,169 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  welcome-matching.cpp
+  Welcome Party, MCPC 2013, Problem A
+  C++ solution by Michael Goldwasser
+
+  This particular solution is based on solving the underlying vertex cover problem
+  by computing a maximum matching of the bipartite graph (as a simple network flow).
+
+  If the input filename is given as an explicit command-line argument,
+  the program will also output its solution, and a certificate of optimality.
+*/</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>// Note: code is written assuming any names may be used, even though by problem
+</span><span class=comment>// statement, last names will be restricted to first 18 characters of the alphabet.
+</span><span class=keyword>bool</span> graph[26][26];
+<span class=keyword>int</span> match[52];   <span class=comment>// left side are 0-25, right 26-51
+</span><span class=keyword>int</span> numMatched;
+
+<span class=keyword>void</span> reset() {
+    <span class=keyword>for</span> (<span class=keyword>int</span> a=0; a&lt;26; a++) {
+        <span class=keyword>for</span> (<span class=keyword>int</span> b=0; b&lt;26; b++)
+            graph[a][b] = <span class=keyword>false</span>;
+    }
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;52; j++) match[j] = -1;
+}       
+
+
+<span class=comment>// called on odd-length augmenting path
+</span><span class=keyword>bool</span> augmentRecurse(vector&lt;<span class=keyword>int</span>&gt;&amp; path, <span class=keyword>bool</span> used[]) {
+    <span class=keyword>int</span> left = path[path.size()-1];
+    <span class=keyword>for</span> (<span class=keyword>int</span> right=0; right &lt; 26; right++) {
+        <span class=keyword>int</span> bigRight = 26+right;
+        <span class=keyword>if</span> (graph[left][right] &amp;&amp; match[left] != bigRight &amp;&amp; !used[bigRight]) {
+            path.push_back(bigRight); used[bigRight] = <span class=keyword>true</span>;
+            <span class=keyword>if</span> (match[bigRight] == -1)
+                <span class=keyword>return</span> <span class=keyword>true</span>; <span class=comment>// success
+</span>            <span class=keyword>else</span> {
+                path.push_back(match[bigRight]); used[match[bigRight]] = <span class=keyword>true</span>;
+                <span class=keyword>if</span> (augmentRecurse(path, used))
+                    <span class=keyword>return</span> <span class=keyword>true</span>;   <span class=comment>// leave path intact
+</span>                <span class=keyword>else</span> {
+                    used[path[path.size()-1]] = <span class=keyword>false</span>; path.pop_back(); 
+                    used[path[path.size()-1]] = <span class=keyword>false</span>; path.pop_back();
+                }
+            }
+        }
+    }
+    <span class=keyword>return</span> <span class=keyword>false</span>;
+}
+
+<span class=comment>/* Augment matching if possible and return true. Otherwise false. */</span>
+<span class=keyword>bool</span> augmentPath() {
+    vector&lt;<span class=keyword>int</span>&gt; path;
+    <span class=keyword>bool</span> used[52];
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> left=0; left&lt;26; left++) {
+        <span class=keyword>if</span> (match[left] == -1) {
+            path.clear();
+            <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;52; j++) used[j] = <span class=keyword>false</span>;
+            path.push_back(left); used[left] = <span class=keyword>true</span>;
+            <span class=keyword>if</span> (augmentRecurse(path, used)) {   <span class=comment>// success
+</span>                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; path.size(); j += 2) {
+                    <span class=keyword>int</span> a = path[j];
+                    <span class=keyword>int</span> b = path[j+1];
+                    match[a] = b;
+                    match[b] = a;
+                }
+                <span class=keyword>return</span> <span class=keyword>true</span>;
+            }
+        }
+    }
+    <span class=keyword>return</span> <span class=keyword>false</span>;
+}
+
+<span class=keyword>int</span> solve() {
+    numMatched = 0;
+    <span class=keyword>while</span> (augmentPath()) numMatched++;
+    <span class=keyword>return</span> numMatched;
+}
+
+
+<span class=comment>/* The following is only used to provide verbose description of solutions. */</span>
+<span class=pp>#include</span> &lt;set&gt;
+<span class=keyword>void</span> printCertificate() {
+    <span class=keyword>int</span> level[52];
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;52; k++)
+        level[k] = ((match[k] == -1) ? 0 : -1);
+
+    <span class=keyword>int</span> d = 1;
+    <span class=keyword>bool</span> change = <span class=keyword>true</span>;
+    <span class=keyword>while</span> (change) {
+        change = <span class=keyword>false</span>;
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;52; k++)
+            <span class=keyword>if</span> (level[k] == -1) {
+                <span class=keyword>bool</span> left = k &lt; 26;
+                <span class=keyword>int</span> val = k % 26;
+                <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;26; j++) {
+                    <span class=keyword>int</span> bigJ = j + (left ? 26 : 0);
+                    <span class=keyword>if</span> (level[bigJ] == d-1 &amp;&amp; match[k] != bigJ) {
+                        <span class=keyword>if</span> (left ? graph[val][j] : graph[j][val]) {
+                            level[k] = d;
+                            level[match[k]] = d+1;
+                            change = <span class=keyword>true</span>;
+                        }
+                    }
+                }
+            }
+        d += 2;
+    }
+
+    string left,right;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;26; j++) {
+        <span class=keyword>if</span> (level[j] % 2)
+            left += <span class=keyword>char</span>('A'+j);
+        <span class=keyword>if</span> (level[26+j] &gt; 0 &amp;&amp; level[26+j] % 2)
+            right += <span class=keyword>char</span>('A'+j);
+    }
+
+    cout &lt;&lt; &quot;This can be achieved using first initials (&quot; &lt;&lt; left;
+    cout &lt;&lt; &quot;) and last initials (&quot; &lt;&lt; right &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;This is required because of following incompatible people:&quot; &lt;&lt; endl;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;26; j++)
+        <span class=keyword>if</span> (match[j] != -1)
+            cout &lt;&lt; &quot; &quot; &lt;&lt; <span class=keyword>char</span>('A'+j) &lt;&lt; <span class=keyword>char</span>('A'+match[j]-26);
+    cout &lt;&lt; endl;
+}
+
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argc, <span class=keyword>char</span> *argv[]) {
+    ifstream fin;
+    <span class=keyword>bool</span> CERTIFICATE = <span class=keyword>false</span>;
+
+    <span class=keyword>if</span> (argc &gt; 1) {
+        CERTIFICATE = <span class=keyword>true</span>;
+        fin.open(argv[1]);
+    } <span class=keyword>else</span>
+        fin.open(&quot;welcome.in&quot;);
+
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> N;
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+
+        reset();
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;N; j++) {
+            string first,last;
+            fin &gt;&gt; first &gt;&gt; last;
+            graph[first[0] - 'A'][last[0] - 'A'] = <span class=keyword>true</span>;
+        }
+        cout &lt;&lt; solve() &lt;&lt; endl;
+        <span class=keyword>if</span> (CERTIFICATE) printCertificate();
+    }
+}
+</pre></body>
+</html>

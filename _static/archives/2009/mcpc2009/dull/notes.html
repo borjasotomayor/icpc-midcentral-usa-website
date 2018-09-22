@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>Notes for DuLL</title>
+    <meta name="author" content="Gabriel Foust">
+    <style type="text/css">
+    </style>
+  </head>
+  <body>
+    <p>Notes for DuLL</p>
+    <p>
+      Although this is not an easy problem because of the amount of coding
+      involved, the algorithm is relatively straightforward.&ndash;
+      Performance should not be an issue, nor should size limitations.
+    </p>
+    <p>
+      The only possible &ldquo;gotcha&rdquo; that I can think of would be to
+      try and perform reference counting on the programs themselves instead of
+      just the DLLs, and even then the only penalty is slightly increased
+      complexity.  (There's no need to count the programs because the problem
+      guarantees that a program that exits was already running, and that's all
+      you really need to know.)
+    </p>
+    <p>
+      When the solution runs it prints to STDERR the amount of memory used at
+      each transition so you can trace the execution.
+    </p>
+  </body>
+</html>

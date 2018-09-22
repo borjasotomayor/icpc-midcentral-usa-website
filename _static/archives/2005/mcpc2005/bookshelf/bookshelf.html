@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Bookshelf</title>
+  <meta name="Author" content="Kristine Rudin">
+  <meta content="Kristine Rudin" name="author">
+  <meta content="Eastern Washington University" name="description">
+</head>
+<body style="background-color: white;" lang="EN-US">
+<h1 style="text-align: center;" align="center">Problem B: Overflowing
+Bookshelf<br>
+</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>bookshelf.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>bookshelf.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<p>Agnes C. Mulligan is a fanatical bibliophile &#8211; she is constantly
+buying new books, and trying to find space for those books. In
+particular, she has a shelf for her &#8220;to be read&#8221; books, where she puts
+her newest books. When she decides to read one of these books, she
+removes it from the shelf, making space for more books. Sometimes,
+however, she buys a new book and puts it on the shelf, but because of
+limited space, this pushes one or more books off the shelf at the other
+end. She always adds books on the left side of the shelf, making books
+fall off the right side. Of course, she can remove a book from any
+location on the shelf when she wants to read one. <br>
+</p>
+<p>Your task will be to write a simulator that will keep track of books
+added and removed from a shelf. At the end of the simulation, display
+the books remaining on the shelf, in order from left to right. Books in
+each simulation will be identified by a unique, positive integer, 0
+&lt; <span style="font-style: italic;">I</span> &#8804; 100. There are three
+types of
+events in the simulation:<br>
+</p>
+<ul>
+  <li><span style="font-family: monospace;"> Add</span>: A new book is
+pushed on the left end of the shelf, pushing
+other books to the right as needed. No book moves to the right unless
+it is pushed by an adjacent (touching) book on its left. Any book that
+is not <span style="font-style: italic;">entirely </span>on the shelf
+falls off
+the right edge. No single book will ever be wider than the given shelf.
+No book that is currently on the shelf will be added again. </li>
+  <li><span style="font-family: monospace;"> Remove</span>: If the book
+is on the shelf, then the book is removed
+from the shelf, leaving a hole. If the book isn't on the shelf, the
+operation is ignored.</li>
+  <li><span style="font-family: monospace;"> End</span>: End the
+simulation for this case and print the contents of
+the shelf.</li>
+</ul>
+<p><span style="font-weight: bold;"> Input:</span> The input file will
+contain data for one or more simulations. The end of the input is
+signalled by a line containing -1. Each
+simulation will begin with the integer width of the shelf, <span
+ style="font-style: italic;">s</span>, 5 &#8804; <span
+ style="font-style: italic;">s</span> &#8804; 100, followed by a series of <span
+ style="font-family: monospace;">add</span> and <span
+ style="font-family: monospace;">remove</span> events. An <span
+ style="font-family: monospace;">add</span> event is a single line
+beginning
+with an upper case '<span style="font-family: monospace;">A</span>'
+followed by the book ID, followed by the integer width of the book, <span
+ style="font-style: italic;">w</span>, 0 &lt; <span
+ style="font-style: italic;">w</span> &#8804; <span
+ style="font-style: italic;">s</span>. A <span
+ style="font-family: monospace;">remove</span> event is a single
+line beginning with an upper case '<span style="font-family: monospace;">R</span>'
+followed by the the book ID. Finally, the <span
+ style="font-family: monospace;">end</span> event is a line
+containing only a single upper case '<span
+ style="font-family: monospace;">E</span>'. Each number in an event is
+preceded by a single blank.<br>
+</p>
+<p> <b>Output:</b> For each simulation
+case, print a single line containing a label (as shown in the output
+sample), followed by the
+list of IDs of books remaining on the shelf, in order
+from left to right.<br>
+</p>
+<p></p>
+<table border="1" cellpadding="2">
+  <thead> <tr>
+    <td> <b>Example input:</b> </td>
+    <td style="vertical-align: top;"> <b>Example output:</b> </td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td><span style="font-family: monospace;">10<br>
+R 3<br>
+A 6 5<br>
+A 42 3<br>
+A 3 5<br>
+A 16 2<br>
+A 15 1<br>
+R 16<br>
+E<br>
+7<br>
+A 49 6<br>
+A 48 2<br>
+R 48<br>
+E<br>
+5<br>
+A 1 1<br>
+A 2 1<br>
+A 3 1<br>
+R 2<br>
+A 4 1<br>
+A 5 1<br>
+R 5<br>
+R 4<br>
+A 6 1<br>
+A 7 4<br>
+E<br>
+      </span><span style="font-family: monospace;">-1<br
+ style="font-family: monospace;">
+      </span> <span style="font-family: monospace;"></span></td>
+      <td style="vertical-align: top;">
+      <pre><span style="font-family: monospace;">PROBLEM 1: 15 3<br>PROBLEM 2:<br>PROBLEM 3: 7 6<br></span><span
+ style="font-family: monospace;"></span><br><br></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 30, 2005 at 12:10 PM.</i></small></p>
+</body>
+</html>

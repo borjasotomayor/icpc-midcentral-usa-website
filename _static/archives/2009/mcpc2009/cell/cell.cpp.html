@@ -1,0 +1,209 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Cell Towers, MCPC 2009 Problem I, by Gabriel Foust
+ *
+ * Check each mile post to see which is the strongest tower
+ * Report each time it changes
+ */</span>
+
+<span class=pp>#include</span> &lt;cmath&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;limits&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;cell.in&quot; );
+
+<span class=keyword>struct</span> Point
+{
+    <span class=keyword>double</span> x, y;
+    Point() :
+        x( 0 ), y( 0 )
+    {
+    }
+    Point( <span class=keyword>double</span> x, <span class=keyword>double</span> y ) :
+        x( x ), y( y )
+    {
+    }
+};
+
+<span class=keyword>int</span> T;
+Point towers[10];
+<span class=keyword>double</span> powers[10];
+<span class=keyword>int</span> R;
+Point roads[11];
+
+<span class=keyword>double</span> ptDistance( Point p, Point q )
+{
+    <span class=keyword>double</span> d1= p.x - q.x;
+    <span class=keyword>double</span> d2= p.y - q.y;
+    <span class=keyword>return</span> sqrt( d1 * d1 + d2 * d2 );
+}
+
+<span class=keyword>int</span> dataset= 0;
+<span class=keyword>bool</span> getDataSet()
+{
+    fin &gt;&gt; T;
+    <span class=keyword>if</span> (T &lt;= 0)
+        <span class=keyword>return</span> <span class=keyword>false</span>;
+    fin &gt;&gt; R;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; T; i++)
+        fin &gt;&gt; towers[i].x &gt;&gt; towers[i].y &gt;&gt; powers[i];
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; R + 1; i++)
+        fin &gt;&gt; roads[i].x &gt;&gt; roads[i].y;
+
+    cerr &lt;&lt; &quot;Data Set &quot; &lt;&lt; ++dataset &lt;&lt; endl;
+    <span class=keyword>return</span> <span class=keyword>true</span>;
+}
+
+<span class=keyword>int</span> towerForPoint( Point p )
+{
+    <span class=keyword>int</span> tower= 0;
+    <span class=keyword>double</span> d= ptDistance( towers[0], p );
+    <span class=keyword>double</span> realS= powers[0] / d / d;
+    <span class=keyword>int</span> s= round( realS );
+    <span class=keyword>int</span> strength= s;
+
+    <span class=comment>// realStrength at nextStrength are only used to keep track of the difference
+</span>    <span class=comment>// between the winner and the runner up - wanted to watch out for close calls
+</span>    <span class=comment>// Not relevant to the solution
+</span>    <span class=keyword>double</span> realStrength= realS;
+    <span class=keyword>double</span> nextStrength= -1e6;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> t= 1; t &lt; T; t++)
+    {
+        d= ptDistance( towers[t], p );
+        realS= powers[t] / d / d;
+        s= round( realS );
+        <span class=keyword>if</span> (s == strength)
+        {
+            <span class=keyword>if</span> (t &lt; tower)
+            {
+                tower= t;
+                strength= s;
+            }
+
+            <span class=keyword>if</span> (round( realStrength ) == round( nextStrength ))
+            {
+                <span class=keyword>if</span> (realS &gt; realStrength)
+                    realStrength= realS;
+                <span class=keyword>else</span> <span class=keyword>if</span> (realS &lt; nextStrength)
+                    nextStrength= realS;
+            }
+            <span class=keyword>else</span>
+            {
+                <span class=keyword>if</span> (realS &gt; realStrength)
+                {
+                    nextStrength= realStrength;
+                    realStrength= realS;
+                }
+                <span class=keyword>else</span>
+                {
+                    nextStrength= realS;
+                }
+            }
+        }
+        <span class=keyword>else</span> <span class=keyword>if</span> (s &gt; strength)
+        {
+            tower= t;
+            strength= s;
+            nextStrength= realStrength;
+            realStrength= realS;
+        }
+        <span class=keyword>else</span> <span class=keyword>if</span> (realS &gt; nextStrength)
+        {
+            nextStrength= realS;
+        }
+    }
+
+    <span class=keyword>double</span> realDiff= realStrength - nextStrength;
+    <span class=keyword>if</span> (realDiff &lt; 2.5 &amp;&amp; realDiff &gt; 0.1)
+    {
+        cerr &lt;&lt; '(' &lt;&lt; p.x &lt;&lt; ',' &lt;&lt; p.y &lt;&lt; &quot;) = &quot; &lt;&lt; realStrength &lt;&lt; &quot; vs. &quot; &lt;&lt; nextStrength &lt;&lt; endl;
+    }
+
+    <span class=keyword>return</span> tower;
+}
+
+<span class=keyword>void</span> tracePath()
+{
+    <span class=keyword>int</span> tower= towerForPoint( roads[0] );
+    cout &lt;&lt; &quot;(0,&quot; &lt;&lt; (<span class=keyword>char</span>)('A' + tower) &lt;&lt; &quot;)&quot;;
+
+    <span class=keyword>int</span> mile= 0;
+    <span class=keyword>double</span> distance= 0;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> r= 0; r &lt; R; r++)
+    {
+        <span class=keyword>double</span> length= ptDistance( roads[r], roads[r + 1] );
+        <span class=keyword>double</span> dx= roads[r + 1].x - roads[r].x;
+        <span class=keyword>double</span> dy= roads[r + 1].y - roads[r].y;
+
+        <span class=keyword>while</span> (distance &lt; length)
+        {
+            Point p;
+            <span class=keyword>if</span> (dx == 0)
+            {
+                p.x= roads[r].x;
+                p.y= roads[r].y + (dy &gt;= 0 ? distance : -distance);
+            }
+            <span class=keyword>else</span> <span class=keyword>if</span> (dy == 0)
+            {
+                p.x= roads[r].x + (dx &gt;= 0 ? distance : -distance);
+                p.y= roads[r].y;
+            }
+            <span class=keyword>else</span>
+            {
+                <span class=keyword>double</span> m= fabs( dx / dy );
+
+                <span class=keyword>double</span> yside= sqrt( distance * distance / (m * m + 1) );
+                <span class=keyword>double</span> xside= m * yside;
+
+                p.x= roads[r].x + (dx &gt;= 0 ? xside : -xside);
+                p.y= roads[r].y + (dy &gt;= 0 ? yside : -yside);
+            }
+
+            <span class=keyword>int</span> t= towerForPoint( p );
+            <span class=keyword>if</span> (t != tower)
+            {
+                tower= t;
+                cout &lt;&lt; &quot; (&quot; &lt;&lt; mile &lt;&lt; &quot;,&quot; &lt;&lt; (<span class=keyword>char</span>)('A' + tower) &lt;&lt; &quot;)&quot;;
+            }
+
+            mile++;
+            distance++;
+        }
+
+        distance-= length;
+    }
+
+    <span class=keyword>if</span> (distance &lt; .5)
+    {
+        <span class=keyword>int</span> t= towerForPoint( roads[R] );
+        <span class=keyword>if</span> (t != tower)
+        {
+            tower= t;
+            cout &lt;&lt; &quot; (&quot; &lt;&lt; mile &lt;&lt; &quot;,&quot; &lt;&lt; (<span class=keyword>char</span>)('A' + tower) &lt;&lt; &quot;)&quot;;
+        }
+    }
+
+    cout &lt;&lt; endl;
+}
+
+<span class=keyword>int</span> main()
+{
+    <span class=keyword>while</span> (getDataSet())
+        tracePath();
+    <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

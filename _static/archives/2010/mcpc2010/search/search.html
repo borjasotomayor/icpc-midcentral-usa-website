@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Quick Search</title>
+
+
+
+
+
+  
+
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+  
+  <meta name="Author" content="Michael Goldwasser"></head><body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem G: Quick Search<br>
+</h1>
+
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td style="font-family: monospace;">search.{c, cpp, java}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td style="font-family: monospace;">search.in</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p><br>
+</p>
+
+<center>
+<table style="text-align: center; width: 439px; height: 119px;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td><img style="width: 100px; height: 68px;" alt="Fig 1" src="Fig1.png"><br>
+      </td>
+      <td>
+      <p><img style="width: 151px; height: 73px;" alt="Fig 2" src="Fig2.png"><br>
+      </p>
+      </td>
+ 
+    </tr>
+    <tr>
+      <td>Figure 1</td>
+      <td>Figure 2</td>
+      
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p><br>A police unit has dealt with a number of situations where
+they need to search multiple sites as rapidly as possible with a small
+group of officers. Figures 1 and 2 are diagrams for two situations.&nbsp; Sites to
+search are labeled with capital letters.&nbsp; The site labeled A is the
+common starting point.&nbsp; Some of these locations have connecting
+paths.&nbsp; Assume each connecting path takes one unit of time to
+traverse, and individual sites take no time for a visual search.&nbsp; <br>
+</p>
+<p>Consider Figure 1.&nbsp; If there are 3 or more officers it takes
+only one unit of time to search.&nbsp; Different officers follow paths
+AB, AC, and AD.&nbsp; If there are two officers, the complete search
+will take two time units.&nbsp; For example one officer could follow
+the path ABC and the other AD.<br>
+ </p>
+
+
+<p>Consider Figure 2.&nbsp; If there were 3 officers, they could follow
+paths ABC, ABD, and AEAF and take 3 units of time.&nbsp; With 2
+officers they could follow paths ABCBD and AEAF, and take 4 units of
+time.&nbsp; <br>
+</p>
+<p>These are simple enough examples to figure out by hand.&nbsp; For more complicated arrangements they want your programming help.<br>
+</p>
+<b>Input:</b> The input will
+consist of 1 to 25 data
+sets, followed by a line containing only 0.
+<p>A dataset is a single line starting with blank separated
+positive integers <span style="font-style: italic;">s n p</span>,
+where <span style="font-style: italic;">s</span>
+is the number of sites to search, <span style="font-style: italic;">n</span> <span style="font-style: italic;"></span> is the number of officers, and <span style="font-style: italic;">p</span> is the number of connecting paths between search sites.&nbsp; Limits are 2 &#8804; <span style="font-style: italic;">s</span> &#8804; 10, 1
+
+&#8804; <span style="font-style: italic;">n</span> &#8804; 4, and<span style="font-style: italic;"></span> <span style="font-style: italic;">p</span>
+
+&#8804; 20.&nbsp; The rest of the line contains <span style="font-style: italic;">p</span> pairs of capital letters, indicating paths between sites, each preceded by a blank.&nbsp; Sites are labeled with the first <span style="font-style: italic;">s</span>
+capital letters.&nbsp; All sites will be connected by some sequence of
+connecting paths.&nbsp; The two letters in each letter pair will be in
+increasing alphabetical order.&nbsp;No letter pair will be repeated.&nbsp; 
+ </p>
+
+
+<p><b>Output:</b>&nbsp;There is one line of output for
+each data set,&nbsp;containing only the minimum search time for <span style="font-style: italic;">n</span> officers starting at site A.</p><p>Take some care with your algorithm, or else your solution may take
+too long.<br>
+</p>
+<p>The sample input data sets correspond to the scenarios discussed.&nbsp; <br>
+</p>
+
+
+<p>
+</p>
+
+
+<table border="1" cellpadding="10">
+
+  <thead><tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td style="font-family: monospace;">4 4 5 AB BC CD AD AC<br>
+4 2 5 AB BC CD AD AC<br>
+6 3 5 AB BC BD AE AF<br>
+6 2 5 AB BC BD AE AF<br>
+0<br>
+      </td>
+      <td style="font-family: monospace;" valign="top">1<br>2<br>3<br>
+      4<br>
+      <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+<br>
+
+</body></html>

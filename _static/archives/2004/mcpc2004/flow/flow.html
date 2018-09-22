@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Flow Layout</title>
+
+
+  <meta name="Author" content="John Cigas">
+
+  <meta name="author" content="John Cigas">
+</head>
+  <body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem D: Flow Layout</h1>
+
+<center>
+<table>
+                  <tbody>
+                   <tr>
+                     <td>Source file:</td>
+                     <td><tt>flow.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+                   </tr>
+                  <tr>
+                     <td>Input file:</td>
+                     <td><tt>flow.in</tt></td>
+                   </tr>
+                  <tr>
+                     <td>Output file:</td>
+                     <td><tt>flow.out</tt></td>
+                   </tr>
+
+  </tbody>
+</table>
+               </center>
+
+<p>A flow layout manager takes rectangular objects and places them in
+a rectangular window from left to right. If there isn't enough room in
+one row for an object, it is placed completely below all the objects
+in the first row at the left edge, where the order continues from left
+to right again.  Given a set of rectangular dimensions and a maximum
+window width, you are to write a program that computes the dimensions
+of the final window after all the rectangles have been placed in it.
+</p>
+
+<p>For example, given a window that can be at most 35 units wide, and
+three rectangles with dimensions 10 <span style="font-family:
+monospace;">x</span> 5, &nbsp;20 <span style="font-family:
+monospace;">x</span> 12, and 8 <span style="font-family:
+monospace;">x</span> 13, the flow layout manager would create a window
+that looked like the figures below after each rectangle was added.
+</p>
+
+<center>
+<table cellspacing="2" border="0">
+          <tbody>
+            <tr>
+              <td valign="top"><img src="fig1a.gif"
+ alt="insert 10x5 rectangle" style="width: 235; height: 35;"
+ align="top">
+                     </td>
+              <td valign="top"><img src="fig1b.gif"
+ alt="insert 20x12 rectangle" style="width: 235; height: 77;"
+ align="top">
+              </td>
+              <td valign="top"><img src="fig1c.gif"
+ alt="insert 8x13 rectangle" style="width: 238; height: 154;"
+ align="top">
+              </td>
+            </tr>
+
+  </tbody>
+</table>
+ </center>
+
+<p>The final dimensions of the resulting window are 30 <span
+style="font-family: monospace;">x</span> 25, since the width of the
+first row is 10+20 = 30 and the combined height of the first and
+second rows is 12+13 = 25.
+</p>
+
+<p><span style="font-weight: bold;">Input:</span> The input consists
+of one or more sets of data, followed by a final line containing only
+the value 0. Each data set starts with a line containing an integer,
+<i>m</i>, 1 &#8804; <span style="font-style: italic;">m</span> &#8804;
+80, which is the maximum width of the resulting window. This is
+followed by at least one and at most 15 lines, each containing the
+dimensions of one rectangle, width first, then height. The end
+of the list of rectangles is signaled by the pair -1 -1, which is not
+counted as the dimensions of an actual rectangle.  Each rectangle is
+between 1 and 80 units wide (inclusive) and between 1 and 100
+units high (inclusive).
+</p>
+
+<p><span style="font-weight: bold;">Output:</span> For each input set
+print the width of the resulting window, followed by a space, then the
+lowercase letter "<span style="font-family: monospace;">x</span>",
+followed by a space, then the height of the resulting window.<br>
+</p>
+
+<table border="1" cellpadding="10">
+                 <thead>  <tr>
+                  <td><b>Example input:</b></td>
+                   <td><b>Example output:</b></td>
+                 </tr>
+                 </thead>  <tbody>
+                 <tr>
+                  <td style="font-family: monospace;">35<br>
+            10 5<br>
+            20 12<br>
+            8 13<br>
+            -1 -1<br>
+            25<br>
+            10 5<br>
+            20 13<br>
+            3 12<br>
+            -1 -1<br>
+            15<br>
+            5 17<br>
+            5 17<br>
+            5 17<br>
+            7 9<br>
+            7 20<br>
+            2 10<br>
+            -1 -1<br>
+            0<br>
+                     </td>
+                  <td valign="top" style="font-family: monospace;">30 x 25<br>
+            23 x 18<br>
+            15 x 47<br>
+               </td>
+                 </tr>
+
+  </tbody>
+</table>
+
+<p><small><i>Last modified on October 26, 2004 at 8:15 PM.</i></small><br>
+            </p>
+
+</body>
+</html>

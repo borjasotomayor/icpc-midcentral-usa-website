@@ -1,0 +1,56 @@
+Judge's notes for Jungle:
+
+If you want to check out the final, most complicated graph by hand,
+here is a text-graphic representation with a rectangle of 8 x 4
+vertices joined horizontally, vertically, and diagonally from top left
+to bottom right, and it wraps around the edges. All the top vertices
+are linked to A and all the bottom ones to Z.
+
+ORIGINAL  (left and right sides connect.  Vertices for opposite side
+shown a second time in parentheses)
+
+            ----------------A----------------
+           /     /     /    |    \    \      \
+          /     /     /     |     \    \      \
+         /     /     /     / \     \    \      \
+        /     /     /     /   \     \    \      \
+ rt   17     41   18     42   19    43    20    44    to left end
+ end   |     |     |     |     |     |     |     |    
+(I)48 -B--1--C--4--D-45--E--7--F-46--G-10--H-47--I-48-(B)
+ |\    |\    |\    |\    |\    |\    |\    |\    |\   
+59 60 21 29 53 54 23 31 55 56 25 33 57 58 27 35 59 60 
+ |    \|    \|    \|    \|    \|    \|    \|    \|   \
+(Q)40 -J-37--K--2--L--5--M-38--N--8--O-39--P-11--Q-40-(J)
+ |\    |\    |\    |\    |\    |\    |\    |\    |\   
+67 68 22 30 61 62 24 32 63 64 26 34 65 66 28 36 67 68 
+ |    \|    \|    \|    \|    \|    \|    \|    \|   \
+(Y)12 -R-49--S-50--T--3--U--6--V-51--W--9--X-52--Y-12-(R)
+        \     \      \    \   /     /     /     /
+        13    69     14   70 15    71    16    72      
+         \     \      \    \ /     /     /     /
+          \     \      \    |     /     /     /
+           -----------------Z----------------
+
+MINIMAL SPANNING TREE
+             ---------------A----------------
+            /               |         \      \
+           /                |          \      \
+          /                  \          \      \
+         /                    \          \      \
+       17                     19          20    44               
+       |                       |           |     |    
+       B--1--C--4--D     E--7--F     G-10--H     I       
+       |           |           |           |          
+      21          23          25          27          
+       |           |           |           |          
+       J     K--2--L--5--M     N--8--O     P-11--Q       
+       |\                                             
+      22 30                                           
+       |    \                                         
+Y--12--R     S     T--3--U--6--V     W--9--X             
+from    \           \                     /      
+rt      13           14                  16            
+         \            \                  /       
+          \            \                /      
+           -----------------Z-----------     
+

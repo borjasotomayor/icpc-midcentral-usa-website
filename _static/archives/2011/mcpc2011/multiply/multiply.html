@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Grade School Multiplication</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Author" content="Andy Harrington">
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier, monospace;
+}
+</style><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body style="background-color: white;">
+
+<h1 style="text-align: center;" align="center">Problem A: Grade School Multiplication<br>
+</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td style="font-family: monospace;">multiply.{c, cpp, java}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td style="font-family: monospace;">multiply.in</td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+
+<p>An educational software company, All Computer Math (ACM), has a
+section on multiplication of integers.&nbsp; They want to display
+the calculations in the traditional grade school format, like the
+following computation of <nobr>432&nbsp;&times;&nbsp;5678</nobr>:</p>
+
+<p>
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; 432</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp; 5678</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">-------</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;3456</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;3024</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;2592</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">2160</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">-------</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">2452896</span><br style="font-family: monospace;">
+</p>
+
+<p>
+Note well that the final product is printed without any leading
+spaces, but that leading spaces are necessary on some of the other
+lines to maintain proper alignment.  However, as per our regional
+rules, there should <em>never</em> be any lines with <em>trailing</em>
+white space.  Note that the lines of dashes have length matching the
+final product.
+</p>
+
+<p>
+As a special case, when one of the digits of the second operand is a
+zero, it generates a single&nbsp;0 in the partial answers,
+and the next partial result should be on the <em>same</em> line
+rather than the next line down.  For example, consider the following
+product of <nobr>200001&nbsp;&times;&nbsp;90040</nobr>:
+</p>
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200001</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;90040</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">-----------</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;8000040</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">180000900</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">-----------</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">18008090040</span><br style="font-family: monospace;">
+<p>
+The rightmost digit of the second operand is a&nbsp;0, causing
+a&nbsp;0 to be placed in the rightmost column of the first partial
+product.  However, rather than continue to a new line, the partial
+product of <nobr>4&nbsp;&times;&nbsp;200001</nobr> is placed on the
+same line as that&nbsp;0.  The third and fourth least-significant
+digits of the second operand are zeros, each resulting in a&nbsp;0 in
+the second partial product on the same line as the result of
+<nobr>9&nbsp;&times;&nbsp;200001</nobr>.
+</p>
+
+<p>
+As a final special case, if there is only one line in the partial
+answer, it constitutes a full answer, and so there is no need for
+computing a sum.  For example,
+a computation of <nobr>246 &times; 70</nobr> would be formatted as
+</p>
+<p>
+<span style="font-family: monospace;">&nbsp;&nbsp;246</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;70</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">-----</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">17220</span><br style="font-family: monospace;">
+</p>
+
+
+<p>Your job is to generate the solution displays.</p>
+
+<p><b>Input:</b> The input contains one or more data sets.&nbsp; Each
+data set consists of two positive integers on a line, designating the
+operands in the desired order.  Neither number will have more than
+6&nbsp;digits, and neither will have leading zeros.
+After the last data set is a line containing only <nobr>0 0</nobr>. <br>
+</p>
+<p><b>Output:</b> For each data set, output a label line containing
+<nobr>"Problem "</nobr> with the number of the problem, followed by the
+complete multiplication problem in accordance with the format
+rules described above.
+</p>
+<p></p>
+<p>Warning:&nbsp; A standard int type cannot properly handle
+12-digit numbers.  You should use a 64-bit type (i.e., a <tt>long</tt>
+in Java, or a <tt>long&nbsp;long</tt> in C++).<br>
+</p>
+
+
+
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;" valign="top">432 5678<br>
+200001 90040<br>
+246 70<br>
+0 0<br>
+</td>
+       <td style="font-family: monospace;" valign="top">Problem 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;432<br>
+&nbsp;&nbsp;&nbsp;5678<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;3456<br>
+&nbsp;&nbsp;3024<br>
+&nbsp;2592<br>
+2160<br>
+-------<br>
+2452896<br>
+Problem 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 200001<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 90040<br>
+-----------<br>
+&nbsp;&nbsp;&nbsp; 8000040<br>
+180000900<br>
+-----------<br>
+18008090040<br>      
+Problem 3<br>
+&nbsp; 246<br>
+&nbsp;&nbsp; 70<br>
+-----<br>
+17220<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+</body></html>

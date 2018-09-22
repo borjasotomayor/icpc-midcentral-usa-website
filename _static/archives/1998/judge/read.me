@@ -1,0 +1,55 @@
+              INSTRUCTIONS FOR USING THE JUDGING UTILITIES
+
+
+To install the utilities, put the diskette in drive A: and type "a:install".
+This will create subdirectories C:\TEAM and C:\JUDGE, and will put a batch
+file J.BAT in the root of drive C:.  If you are using Windows NT, you may 
+need the system administrator to give you the privileges to create and use
+these directories.
+
+To judge a program, just type "\J n", where n is the problem number.  
+This batch file will
+
+1. delete the contents of C:\TEAM in preparation for judging,
+2. search the A: drive for a valid source file for problem n,
+3. copy the source file into C:\TEAM,
+4. copy the correct input file into C:\TEAM,
+5. compile the program,
+6. run the program,
+7. compare the program's output with the correct output, and
+8. allow you to visually compare the two output files if necessary.
+
+Instructions will be displayed on the screen, and you can stop the batch
+file when necessary by pressing Ctrl-C.
+
+In step 7 the files are compared using the diff utility. If the two files
+are identical it will say so, and otherwise it will show the differences.
+The output of diff is fairly clear when it all fits on one screen.  If
+there are a lot of errors it may be easier to see them in step 8.
+
+Step 8 is necessary if it is not obvious that there are wrong answers,
+and you need to check for a presentation error.  The batch file uses the
+LIST program to view both the team's output and the correct output.  Use
+Ctrl-PgUp and Ctrl-PgDn to switch between the two files.  The status line
+at the top of the screen tells you which file you're looking at.  The team's
+output is in C:\TEAM, and the correct output is in C:\JUDGE.  If necessary
+you can use Alt-H to display the files in hexadecimal; this might help you
+find missing end-of-line characters or extraneous whitespace.  Use the arrow
+keys to move around in the files if necessary, and press ESC or F10 to exit.
+
+IMPORTANT NOTE:
+These batch files assume that the following command-line compilers are in
+the executable path: "tpc" for Turbo Pascal 7.0, and "tcc" for Turbo C++ 3.0.
+If you are using different compilers you will need to change the three lines
+in \JUDGE\J2.BAT following ":do_c", ":do_cpp", and ":do_pas" so that they
+run the correct compiler.  If you are using a more recent Borland compiler,
+you will probably have to replace "tcc" with "bcc".  C++ and C files are 
+compiled using the large memory model (that's the -ml option to tcc) because
+it most closely matches the Turbo Pascal memory model.  If you use a 
+non-Borland compiler you will need to modify this flag as well.
+
+NOTE 2:
+If you want to see both files at once using the LIST program:
+1) press Alt-W followed by Return to get two views of the same file, then
+2) press Ctrl-PgDn to display the second file in the bottom window.  
+Use Ctrl-V to switch windows.

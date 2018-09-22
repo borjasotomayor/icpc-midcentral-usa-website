@@ -1,0 +1,6 @@
+Author's comments:  
+
+The judge's test data includes the extreme cases where the robot exits
+immediately after the first instruction, and where all instructions are part
+of a loop.
+

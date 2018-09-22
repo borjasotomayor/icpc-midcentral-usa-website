@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+
+
+<title>Programming Environment Requirements</title></head>
+<body>
+
+<table width="100%">
+<tr valign="top">
+<td align="left"><font size="+3"><b>Programming Environment<br />Requirements</b></font></td>
+<td align="right"><font size="-1"><i>Last modified: May 20, 2009</i></font></td>
+</tr>
+</table>
+
+<p><b>Operating Systems</b>
+</p>
+
+<p>One of the following is required: Windows XP/Vista or higher, Mac OS
+10.4 or higher, or any *NIX variant that will fully support Sun's 6.x
+Java Development Kit either natively or via Linux emulation.
+</p>
+
+<p><b>Compilers</b>
+</p>
+
+<p>In the past we allowed sites to choose any compilers that met certain
+minimum criteria.  We are now requiring specific freely available
+compilers region-wide for three reasons: (1) consistency, (2) since the
+compilers are free, all teams will be able to practice with the contest
+compilers in advance, and (3) we will eventually move to region-wide
+automated judging, at which time it will be mandatory for the compilers
+used at the sites to be the same as the ones used by the regional
+judges.
+</p>
+
+<dl>
+<dt>C/C++
+</dt>
+<dd>
+<p>GNU's <a href="http://gcc.gnu.org/">gcc</a> 3.3 or higher is
+required, plus a compatible version of GNU's <a
+href="http://www.gnu.org/software/gdb/gdb.html">gdb</a> debugger.
+Windows sites should use the <a href="http://www.mingw.org/">MinGW</a>
+port.  Mac OS 10.4 and higher have a suitable <i>gcc</i> and
+<i>gdb</i> available as part of the developer tools, which ship with
+the OS but are not installed by default.  Solaris sites should visit
+<a href="http://www.sunfreeware.com/">sunfreeware.com</a> for current
+packages.  Other *NIX distributions should have a suitable
+<i>gcc</i> and <i>gdb</i> preinstalled.
+</p>
+</dd>
+
+<dt>Java</dt>
+<dd>
+<p>Sun's <a href="http://java.sun.com/javase/6/">
+   Java SE Development Kit (JDK) 6.0</a> or higher is required.  
+   It will include the <i>jdb</i> debugger.  
+</p>
+</dd>
+</dl>
+
+<p><em>Note.</em> Having additional compilers beyond those listed
+above is prohibited.  Sometimes code that works fine with one compiler
+will not work with a different compiler.  This has actually happened
+during past contests.
+</p>
+
+<p><b>Integrated Development Environments (IDEs)</b>
+</p>
+
+<p>GNU's <i>gcc</i> and Sun's <i>javac</i> (from the JDK) are
+command-line compilers, and <i>gdb</i> and <i>jdb</i> are command-line
+debuggers, so graphical IDEs are not required.  It is sufficient to
+provide one or more good text editors and a command line.  <a
+href="http://www.gnu.org/software/emacs/emacs.html">Emacs</a>, <a
+href="http://www.vim.org/">Vim</a>, and <a
+href="http://www.jedit.org/">jEdit</a> are powerful editors that
+support all required languages and work on virtually all operating
+systems.
+</p>
+
+<p>However, sites are encouraged to provide IDEs if possible.  C/C++
+IDEs must work with <i>gcc</i>, and Java IDEs must work with Sun's
+JDK.  In addition, IDEs must be freely available so teams can practice
+with them in advance before the contest. The following IDEs meet these
+requirements.  Eclipse and jGRASP have the advantage of working with
+all three contest languages. In addition, Eclipse is used at the World
+Finals.
+</p>
+
+<blockquote><table border="1">
+<tr><td><i> IDE </i></td><td><i> Language(s) </i></td><td><i> Operating
+System(s) </i> </td>
+</tr>
+<tr>
+<td><a href="http://www.bluej.org">BlueJ</a></td>
+<td>Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.bloodshed.net/devcpp.html">Dev-C++</a></td>
+<td>C, C++</td>
+<td>Windows</td>
+</tr>
+<tr>
+<td><a href="http://drjava.sourceforge.net">DrJava</a></td>
+<td>Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.eclipse.org">Eclipse</a> (plus
+<a href="http://eclipse.org/cdt/">CDT</a>)</td>
+<td>C, C++, Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.codegear.com/downloads/free/jbuilder">Turbo JBuilder</a></td>
+<td>Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.jcreator.com">JCreator LE</a></td>
+<td>Java</td>
+<td>Windows</td>
+</tr>
+<tr>
+<td><a href="http://www.jgrasp.org/">jGRASP</a></td>
+<td>C, C++, Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.netbeans.org">NetBeans</a></td>
+<td>Java</td>
+<td>all</td>
+</tr>
+<tr>
+<td><a href="http://www.objectcentral.com/objectcentral/vide.htm">V IDE</a></td>
+<td>C, C++, Java</td>
+<td>Windows, Linux</td>
+</tr>
+<tr>
+<td><a href="http://developer.apple.com/tools/xcode/">Xcode</a></td>
+<td>C, C++, Java</td>
+<td>Mac OS X</td>
+</tr>
+</table></blockquote>
+
+<p><em>Note.</em> IDEs must be configured to use the same compiler
+settings as the judges (who will use <i>gcc</i> and
+<i>javac</i> directly).  If they use different settings for
+optimization, debugging, etc., a program that works correctly for a
+team when using the IDE may fail when the judges test it.  This
+<em>has</em> happened in a past contest.
+</p>
+
+
+<p><b>Computers</b>
+</p>
+
+<p>Computers must support the software required above, and must be
+configured so that they are all functionally identical.  If possible,
+they should also be physically identical, although it is sufficient to
+have the same CPU and RAM.
+</p>
+
+<p><b>Physical Configuration</b>
+</p>
+
+<p>Teams must have a workstation (which may consist of more than one
+desk) large enough to allow all three team members to work
+simultaneously, one using the computer while the other two work on
+paper. Teams must be separated from each other far enough so that
+team members may talk quietly among themselves without risk of being
+overheard by nearby teams. Many configurations are possible.  Some
+sites put each team in a classroom by themselves, and at the World
+Finals all teams are together in a large hall.
+</p>
+
+<p>If teams do not have a room to themselves, it is desirable to
+provide one or more additional large common rooms with several large
+whiteboards or chalkboards where team members may go to discuss ideas.
+</p>
+
+<p>Regardless of physical configuration, sites must take reasonable
+steps to ensure that there is no physical communication between a
+contestant and anyone but his or her team members.
+</p>
+
+<p><b>Network Security</b>
+</p>
+
+<p>If team computers are connected to a network, they must be
+configured so that they can only access those network resources
+necessary to run the contest, and no more.  Teams must not be able to
+communicate over the network with anyone except the judges, and of
+course general Internet access must be blocked.
+</p>
+
+</body></html>

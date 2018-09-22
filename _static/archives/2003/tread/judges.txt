@@ -1,0 +1,10 @@
+The song tests are:
+Program 1: Sample from problem statement
+Program 2: Sample from problem statement
+Program 3: Chirp at end of song
+Program 4: Chirp at beginning of song
+Program 5: Consecutive chirps
+Program 6: Consecutive chirps - different time boundary
+Program 7: Expanded sample from Song 2
+Program 8: Expanded sample from Song 2, 1 second earlier.
+Program 9: Expanded sample from Song 2, 1/3 sec earlier

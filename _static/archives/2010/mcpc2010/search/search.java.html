@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title></title>
+  <style type="text/css">
+    <!--code { font-family: Courier New, Courier; font-size: 10pt; margin: 0px; }-->
+  </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head><body>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter 5.0 [2006-02-26] by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<font color="#3f7f5f">/*&nbsp;Quick&nbsp;Search,&nbsp;MCPC&nbsp;2010&nbsp;Problem&nbsp;G&nbsp;by&nbsp;Andy&nbsp;Harrington</font><br />
+<font color="#3f7f5f">input:</font><br />
+<font color="#ffffff"></font><br />
+<font color="#3f7f5f">Each&nbsp;dataset:</font><br />
+<font color="#3f7f5f">s&nbsp;n&nbsp;p&nbsp;&lt;paths&gt;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;sites,&nbsp;searchers,&nbsp;number&nbsp;of&nbsp;connecting&nbsp;paths&nbsp;</font><br />
+<font color="#3f7f5f">Each&nbsp;path&nbsp;token&nbsp;is&nbsp;a&nbsp;pair&nbsp;of&nbsp;capital&nbsp;letters.</font><br />
+<font color="#ffffff"></font><br />
+<font color="#3f7f5f">Algorithm:&nbsp;&nbsp;The&nbsp;input&nbsp;data&nbsp;gives&nbsp;a&nbsp;*site*&nbsp;graph.&nbsp;&nbsp;</font><br />
+<font color="#3f7f5f">A&nbsp;breadth&nbsp;first&nbsp;search&nbsp;is&nbsp;done&nbsp;over&nbsp;a&nbsp;related&nbsp;*state*&nbsp;graph.&nbsp;In&nbsp;the</font><br />
+<font color="#3f7f5f">state&nbsp;graph&nbsp;a&nbsp;node&nbsp;is&nbsp;a&nbsp;pair&nbsp;of&nbsp;integers&nbsp;encoding&nbsp;the&nbsp;sorted&nbsp;current</font><br />
+<font color="#3f7f5f">sites&nbsp;of&nbsp;searches&nbsp;and&nbsp;set&nbsp;of&nbsp;sites&nbsp;already&nbsp;visited&nbsp;as&nbsp;a&nbsp;bit&nbsp;field:</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">The&nbsp;variable&nbsp;length&nbsp;location&nbsp;array&nbsp;is&nbsp;encoded&nbsp;as&nbsp;a&nbsp;single&nbsp;integer,&nbsp;base&nbsp;s.</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">Add&nbsp;site&nbsp;i&nbsp;to&nbsp;those&nbsp;visited:&nbsp;&nbsp;&nbsp;visted&nbsp;|=&nbsp;1&nbsp;&lt;&lt;&nbsp;i</font><br />
+<font color="#3f7f5f">A&nbsp;state&nbsp;graph&nbsp;edge&nbsp;involves&nbsp;each&nbsp;searcher&nbsp;moving&nbsp;along&nbsp;a&nbsp;path&nbsp;of</font><br />
+<font color="#3f7f5f">the&nbsp;site&nbsp;graph&nbsp;-&nbsp;a&nbsp;possible&nbsp;single&nbsp;time&nbsp;step.</font><br />
+<font color="#ffffff"></font><br />
+<font color="#3f7f5f">Because&nbsp;of&nbsp;the&nbsp;variable&nbsp;number&nbsp;of&nbsp;searchers,&nbsp;the&nbsp;full&nbsp;collection</font><br />
+<font color="#3f7f5f">of&nbsp;neighbors&nbsp;in&nbsp;the&nbsp;state&nbsp;graph&nbsp;is&nbsp;found&nbsp;recursively.</font><br />
+<font color="#ffffff"></font><br />
+<font color="#3f7f5f">A&nbsp;boolean&nbsp;array&nbsp;stored&nbsp;which&nbsp;states&nbsp;have&nbsp;been&nbsp;found.&nbsp;&nbsp;What&nbsp;states&nbsp;needs&nbsp;to&nbsp;be&nbsp;</font><br />
+<font color="#3f7f5f">traversed&nbsp;(at&nbsp;current&nbsp;distance,&nbsp;at&nbsp;next&nbsp;distance)&nbsp;are&nbsp;stored&nbsp;in&nbsp;Lists.</font><br />
+<font color="#ffffff"></font><br />
+<font color="#3f7f5f">The&nbsp;breadth-first&nbsp;search&nbsp;terminates&nbsp;when&nbsp;a&nbsp;state&nbsp;is&nbsp;reached&nbsp;with&nbsp;all</font><br />
+<font color="#3f7f5f">sites&nbsp;visited.</font><br />
+<font color="#3f7f5f">*/</font><br />
+<font color="#ffffff"></font><br />
+<font color="#7f0055"><b>import&nbsp;</b></font><font color="#000000">java.util.*;</font><br />
+<font color="#7f0055"><b>import&nbsp;</b></font><font color="#000000">java.io.*;</font><br />
+<font color="#7f0055"><b>import&nbsp;static&nbsp;</b></font><font color="#000000">java.lang.Math.*;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#7f0055"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">search&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;version&nbsp;with&nbsp;big&nbsp;encoded&nbsp;boolean&nbsp;array:&nbsp;found</font><br />
+<font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">s,&nbsp;n,&nbsp;p,&nbsp;</font><font color="#3f7f5f">//&nbsp;#&nbsp;nodes,&nbsp;searchers,&nbsp;edges</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">allVisited,&nbsp;</font><font color="#3f7f5f">//&nbsp;visited&nbsp;bitfield&nbsp;in&nbsp;terminal&nbsp;node&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">MIN_S&nbsp;=&nbsp;</font><font color="#990000">2</font><font color="#000000">,&nbsp;MAX_S&nbsp;=&nbsp;</font><font color="#990000">10</font><font color="#000000">,&nbsp;MAX_N&nbsp;=&nbsp;</font><font color="#990000">4</font><font color="#000000">,&nbsp;MAX_P&nbsp;=&nbsp;</font><font color="#990000">20</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//match&nbsp;final&nbsp;problem!</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>boolean</b></font><font color="#000000">[][]&nbsp;</font><font color="#000000">edge;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;in&nbsp;original&nbsp;graph</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>boolean</b></font><font color="#000000">[][]</font><font color="#000000">found;&nbsp;</font><font color="#3f7f5f">//found[vCode][locCode]&nbsp;true&nbsp;when&nbsp;find&nbsp;state&nbsp;&nbsp;</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">locCode</font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">loc</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">lc&nbsp;=&nbsp;loc.clone</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Arrays.sort</font><font color="#000000">(</font><font color="#000000">lc</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">sum&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;=&nbsp;n-</font><font color="#990000">1</font><font color="#000000">;&nbsp;i&nbsp;&gt;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;i--</font><font color="#000000">)&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">sum&nbsp;=&nbsp;s*sum&nbsp;+&nbsp;lc</font><font color="#000000">[</font><font color="#000000">i</font><font color="#000000">]</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">sum;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">locCodeToLoc</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">lCode</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">loc&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[</font><font color="#000000">n</font><font color="#000000">]</font><font color="#000000">;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;i&nbsp;&lt;&nbsp;n;&nbsp;i++</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">loc</font><font color="#000000">[</font><font color="#000000">i</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;lCode&nbsp;%&nbsp;s;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">lCode&nbsp;/=&nbsp;s;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">loc;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>public&nbsp;static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">main</font><font color="#000000">(</font><font color="#000000">String</font><font color="#000000">[]&nbsp;</font><font color="#000000">args</font><font color="#000000">)&nbsp;</font><font color="#7f0055"><b>throws&nbsp;</b></font><font color="#000000">Exception&nbsp;</font><font color="#000000">{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">String&nbsp;file&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#000000">args.length&nbsp;&gt;&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;</font><font color="#000000">?&nbsp;args</font><font color="#000000">[</font><font color="#990000">0</font><font color="#000000">]&nbsp;</font><font color="#000000">:&nbsp;</font><font color="#2a00ff">&#34;search.in&#34;</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">Scanner&nbsp;in&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">Scanner</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">File</font><font color="#000000">(</font><font color="#000000">file</font><font color="#000000">))</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>while&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">s&nbsp;&nbsp;=&nbsp;in.nextInt</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">s&nbsp;==&nbsp;</font><font color="#990000">0</font><font color="#000000">)&nbsp;</font><font color="#7f0055"><b>break</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">n&nbsp;=&nbsp;in.nextInt</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">p&nbsp;=&nbsp;in.nextInt</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">judgeParamCheck</font><font color="#000000">()</font><font color="#000000">;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;just&nbsp;for&nbsp;judges</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">edge&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>boolean</b></font><font color="#000000">[</font><font color="#000000">s</font><font color="#000000">][</font><font color="#000000">s</font><font color="#000000">]</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;i&nbsp;&lt;&nbsp;p;&nbsp;i++</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">String&nbsp;e&nbsp;=&nbsp;in.next</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">from&nbsp;=&nbsp;e.charAt</font><font color="#000000">(</font><font color="#990000">0</font><font color="#000000">)&nbsp;</font><font color="#000000">-&nbsp;</font><font color="#990000">'A'</font><font color="#000000">,&nbsp;to&nbsp;=&nbsp;e.charAt</font><font color="#000000">(</font><font color="#990000">1</font><font color="#000000">)&nbsp;</font><font color="#000000">-&nbsp;</font><font color="#990000">'A'</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">judgeEdgeCheck</font><font color="#000000">(</font><font color="#000000">from,&nbsp;to</font><font color="#000000">)</font><font color="#000000">;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;just&nbsp;for&nbsp;judges</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">edge</font><font color="#000000">[</font><font color="#000000">to</font><font color="#000000">][</font><font color="#000000">from</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;edge</font><font color="#000000">[</font><font color="#000000">from</font><font color="#000000">][</font><font color="#000000">to</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#000000">calc</font><font color="#000000">())</font><font color="#000000">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//breadth&nbsp;first&nbsp;search&nbsp;through&nbsp;states</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//returns&nbsp;number&nbsp;of&nbsp;step&nbsp;to&nbsp;first&nbsp;visiting&nbsp;all&nbsp;sites</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">calc</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">allVisited&nbsp;=&nbsp;</font><font color="#000000">(</font><font color="#990000">1&nbsp;</font><font color="#000000">&lt;&lt;&nbsp;s</font><font color="#000000">)&nbsp;</font><font color="#000000">-&nbsp;</font><font color="#990000">1</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">found&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>boolean</b></font><font color="#000000">[</font><font color="#000000">allVisited+</font><font color="#990000">1</font><font color="#000000">][(</font><font color="#7f0055"><b>int</b></font><font color="#000000">)</font><font color="#000000">pow</font><font color="#000000">(</font><font color="#000000">s,n</font><font color="#000000">)]</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">List&lt;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]</font><font color="#000000">&gt;&nbsp;curDist&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ArrayList&lt;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]</font><font color="#000000">&gt;</font><font color="#000000">()</font><font color="#000000">,</font><font color="#3f7f5f">//traverse&nbsp;current&nbsp;dist</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">nextDist;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//record&nbsp;neighbors&nbsp;at&nbsp;next&nbsp;distance</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">curDist.add</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[]{</font><font color="#990000">1</font><font color="#000000">,</font><font color="#990000">0</font><font color="#000000">})</font><font color="#000000">;&nbsp;</font><font color="#3f7f5f">//all&nbsp;at&nbsp;node&nbsp;0,&nbsp;only&nbsp;node&nbsp;0&nbsp;visited</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">found</font><font color="#000000">[</font><font color="#990000">1</font><font color="#000000">][</font><font color="#990000">0</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">steps&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>while</b></font><font color="#000000">(</font><font color="#7f0055"><b>true</b></font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">nextDist&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">ArrayList&lt;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]</font><font color="#000000">&gt;</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">steps&nbsp;+=&nbsp;</font><font color="#990000">1</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">st&nbsp;:&nbsp;curDist</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">doNeighbors</font><font color="#000000">(</font><font color="#990000">0</font><font color="#000000">,&nbsp;locCodeToLoc</font><font color="#000000">(</font><font color="#000000">st</font><font color="#000000">[</font><font color="#990000">1</font><font color="#000000">])</font><font color="#000000">,&nbsp;st</font><font color="#000000">[</font><font color="#990000">0</font><font color="#000000">]</font><font color="#000000">,&nbsp;nextDist</font><font color="#000000">))</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;</b></font><font color="#000000">steps;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">curDist&nbsp;=&nbsp;nextDist;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;nextSearcher&nbsp;0&nbsp;..&nbsp;n-1&nbsp;&nbsp;recursively&nbsp;find&nbsp;neighbor&nbsp;for&nbsp;nextSearcher,&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;nextSearcher&nbsp;=&nbsp;n;&nbsp;all&nbsp;searcher&nbsp;set:</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;true&nbsp;if&nbsp;find&nbsp;terminal&nbsp;state</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;add&nbsp;to&nbsp;next&nbsp;search&nbsp;distance</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>boolean&nbsp;</b></font><font color="#000000">doNeighbors</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">nextSearcher,&nbsp;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]&nbsp;</font><font color="#000000">at,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">visited,&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">List&lt;</font><font color="#7f0055"><b>int</b></font><font color="#000000">[]</font><font color="#000000">&gt;&nbsp;nextDist</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">nextSearcher&nbsp;==&nbsp;n</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">i&nbsp;:&nbsp;at</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">visited&nbsp;|=&nbsp;</font><font color="#990000">1&nbsp;</font><font color="#000000">&lt;&lt;&nbsp;i;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">visited&nbsp;==&nbsp;allVisited</font><font color="#000000">)&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">lCode&nbsp;=&nbsp;locCode</font><font color="#000000">(</font><font color="#000000">at</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">!found</font><font color="#000000">[</font><font color="#000000">visited</font><font color="#000000">][</font><font color="#000000">lCode</font><font color="#000000">])&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">nextDist.add</font><font color="#000000">(</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#7f0055"><b>int</b></font><font color="#000000">[]{</font><font color="#000000">visited,&nbsp;lCode</font><font color="#000000">})</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">found</font><font color="#000000">[</font><font color="#000000">visited</font><font color="#000000">][</font><font color="#000000">lCode</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;</font><font color="#7f0055"><b>true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">from&nbsp;=&nbsp;at</font><font color="#000000">[</font><font color="#000000">nextSearcher</font><font color="#000000">]</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>for&nbsp;</b></font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">to&nbsp;=&nbsp;</font><font color="#990000">0</font><font color="#000000">;&nbsp;to&nbsp;&lt;&nbsp;s;&nbsp;to++</font><font color="#000000">)&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">edge</font><font color="#000000">[</font><font color="#000000">from</font><font color="#000000">][</font><font color="#000000">to</font><font color="#000000">])&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">at</font><font color="#000000">[</font><font color="#000000">nextSearcher</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;to;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">doNeighbors</font><font color="#000000">(</font><font color="#000000">nextSearcher+</font><font color="#990000">1</font><font color="#000000">,&nbsp;at,&nbsp;visited,&nbsp;nextDist</font><font color="#000000">))</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;true</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">at</font><font color="#000000">[</font><font color="#000000">nextSearcher</font><font color="#000000">]&nbsp;</font><font color="#000000">=&nbsp;from;&nbsp;</font><font color="#3f7f5f">//&nbsp;now&nbsp;at[nextSearcher]&nbsp;in&nbsp;the&nbsp;original&nbsp;call</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>return&nbsp;false</b></font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#3f7f5f">//&nbsp;The&nbsp;rest&nbsp;is&nbsp;judge's&nbsp;checks.</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">judgeParamCheck</font><font color="#000000">()&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">MIN_S&nbsp;&gt;&nbsp;s&nbsp;||&nbsp;MAX_S&nbsp;&lt;&nbsp;s&nbsp;||&nbsp;MAX_N&nbsp;&lt;&nbsp;n&nbsp;||&nbsp;MAX_P&nbsp;&lt;&nbsp;p</font><font color="#000000">)</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">System.out.format</font><font color="#000000">(</font><font color="#2a00ff">&#34;param&nbsp;out&nbsp;of&nbsp;range!&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#ffffff"></font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>static&nbsp;</b></font><font color="#7f0055"><b>void&nbsp;</b></font><font color="#000000">judgeEdgeCheck</font><font color="#000000">(</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">from,&nbsp;</font><font color="#7f0055"><b>int&nbsp;</b></font><font color="#000000">to</font><font color="#000000">)&nbsp;{</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">from&nbsp;&gt;=&nbsp;to</font><font color="#000000">)&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#2a00ff">&#34;Wrong&nbsp;order!&#34;</font><font color="#000000">)</font><font color="#000000">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#7f0055"><b>if&nbsp;</b></font><font color="#000000">(</font><font color="#000000">edge</font><font color="#000000">[</font><font color="#000000">to</font><font color="#000000">][</font><font color="#000000">from</font><font color="#000000">])&nbsp;</font><font color="#000000">System.out.println</font><font color="#000000">(</font><font color="#2a00ff">&#34;Repeated&nbsp;edge!&#34;</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<font color="#000000">}</font><br />
+<font color="#ffffff"></font><font color="#ffffff">
+</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+
+</body></html>

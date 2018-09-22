@@ -1,0 +1,19 @@
+yes
+need quorum
+tie
+no
+need quorum
+tie
+yes
+no
+tie
+yes
+no
+need quorum
+no
+yes
+need quorum
+yes
+tie
+yes
+need quorum

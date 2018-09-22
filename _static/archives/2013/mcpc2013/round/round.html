@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Round Robin</title>
+  
+
+  
+  
+  <meta name="Author" content="Eric Shade">
+
+  
+  <meta name="author" content="Andy Harrington"></head><body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem B: Round Robin<br>
+</h1>
+
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>round.</tt>{<tt>c</tt>, <tt>cpp</tt>,
+      <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>round.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p>
+Suppose that N players sit in order and take turns
+in a game, with the first person following the last person, to continue
+in cyclic order. While doing so, each player keeps track of the number
+of turns he or she has taken. The game
+consists of rounds, and in each round T turns are taken. After a
+round, the player who just had a turn is eliminated from the game. If
+the remaining players have all had the same number of turns, the game
+ends. Otherwise, they continue with another round of T moves, starting
+with the player just after the one who was most recently eliminated.
+</p>
+
+
+<p>
+As an example, assume we begin a game with
+N=5 and T=17, labeling the players in order as A, B, C, D, and E, with
+all counts initially zero.
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+  <caption><br>
+  </caption><tbody>
+    <tr>
+      <td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      <td style="vertical-align: top;">B<br>
+      </td>
+      <td style="vertical-align: top;">C<br>
+      </td>
+      <td style="vertical-align: top;">D<br>
+      </td>
+      <td style="vertical-align: top;">E<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">0<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+Beginning with A, 17 turns are taken. B will have taken the last of
+those turn, leaving our counts as follows:
+</p>
+
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+  <caption><br>
+  </caption><tbody>
+    <tr>
+      <td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      <td style="vertical-align: top; background-color: silver;">B<br>
+      </td>
+      <td style="vertical-align: top;">C<br>
+      </td>
+      <td style="vertical-align: top;">D<br>
+      </td>
+      <td style="vertical-align: top;">E<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top; background-color: silver;">4<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+Suppose that after <span style="font-style: italic;">every</span> 17
+turns, the player who just had a turn is eliminated from the game.
+All remaining players then compare their counts. If all of those
+counts are equal, everyone has had a fair number of turns and the game
+is considered completed. Otherwise, they continue with another round
+of 17 moves starting with the player just after the one who was most
+recently eliminated.
+</p>
+
+<p>
+Continuing with our example, B will leave the game, 
+and the next turn will be for C.
+</p>
+
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+  <caption><br>
+  </caption><tbody>
+    <tr>
+      <td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      
+      <td style="vertical-align: top;">C<br>
+      </td>
+      <td style="vertical-align: top;">D<br>
+      </td>
+      <td style="vertical-align: top;">E<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+After 17 more turns starting with C, we find that A, D and E received
+4 turns, while C received 5 turns, including the last:
+</p>
+
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+<caption><br>
+</caption><tbody><tr><td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      <td style="vertical-align: top; background-color: silver;">C<br>
+      </td>
+      
+      <td style="vertical-align: top;">D<br>
+      </td>
+      <td style="vertical-align: top;">E<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top; background-color: silver;">8<br>
+      </td>
+      
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">7<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+Then C leaves, and since the remaining counts are not all the same, a
+new round beings with D having the next turn.
+</p>
+
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+<caption><br>
+</caption><tbody><tr><td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      
+      
+      <td style="vertical-align: top;">D<br>
+      </td>
+      <td style="vertical-align: top;">E<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      
+      
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">7<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<br>
+<br>
+The next 17 turns start with D and end with E.&nbsp;&nbsp;  A adds 5 turns, while D and E add 6:<br>
+
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+<caption><br>
+</caption><tbody><tr><td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      <td style="vertical-align: top;">D<br>
+      </td>
+<td style="vertical-align: top; background-color: silver;">E<br>
+      </td>
+      
+      
+      
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">13<br>
+      </td>
+      <td style="vertical-align: top;">13<br>
+      </td>
+<td style="vertical-align: top; background-color: silver;">13<br>
+      </td>
+      
+      
+      
+    </tr>
+  </tbody>
+</table>
+
+
+
+<br>
+Then E leaves.<br>
+<table style="text-align: left; width: 250px; height: 50px;" border="1" cellpadding="2" cellspacing="2">
+
+  
+<caption><br>
+</caption><tbody><tr><td style="vertical-align: top;">Player</td>
+      <td style="vertical-align: top;">A<br>
+      </td>
+      <td style="vertical-align: top;">D<br>
+      </td>
+      
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Count<br>
+      </td>
+      <td style="vertical-align: top;">13<br>
+      </td>
+      <td style="vertical-align: top;">13<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p>
+At this point, notice that the two remaining players have the same
+count of 13. Therefore, the game ends. (We note that E's count was
+irrelevant to the decision to end the game.)
+</p>
+
+
+<p><b>Input:</b>&nbsp; The input will contain one or more
+datasets.&nbsp; Each dataset will be described with a single line containing two
+integers, <span style="font-style: italic;">N</span> and <span style="font-style: italic;">T</span>, where <span style="font-style: italic;">N </span> (2 &#8804; <span style="font-style: italic;">N</span>
+&#8804; 100) is the initial number of&nbsp; players, and <span style="font-style: italic;">T</span> (2 &#8804; <span style="font-style: italic;">T</span> &#8804; 100) is the number of
+turns after which the player with the most recently completed turn
+leaves.&nbsp; Following the last dataset is a line containing only
+0.<br> </p>
+
+<p><b>Output:</b> There is one line of output for
+each dataset, containing two numbers, <span style="font-style: italic;">p</span> and <span style="font-style: italic;">c</span>.&nbsp;
+At the time the game ends <em>p</em> is the number of players that
+remain in the game and <em>c</em> is the common count they all have.
+</p>
+
+<table border="1" cellpadding="10">
+
+  <thead><tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td style="font-family: monospace;">5 17 <br>
+7 10<br>
+90 2<br>
+0<br>
+      </td>
+      <td style="font-family: monospace;" valign="top">2 13<br>
+5 3<br>
+45 1<br>
+<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<small><i>ACM Mid-Central Programming Competition 2013</i></small><br>
+</body></html>

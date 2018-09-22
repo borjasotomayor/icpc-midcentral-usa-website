@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (Windows NT 5.0; I) [Netscape]">
+   <title>Using the Judging Utilities</title>
+</head>
+<body>
+
+<center>
+<h1>
+Using the Judging Utilities</h1></center>
+The installation and grading works exactly the same way as last year.&nbsp;
+To install the utilities:
+<ol>
+<li>
+If you are not already in DOS, open a Command Prompt (or MS-DOS Prompt).</li>
+
+<li>
+Change to a directory in which you have write access, under which you want
+the <tt>mcpc2003</tt> directory and subdirectories copied.</li>
+
+<li>
+Put the judge's diskette in drive A: and type "<tt>A:\INSTALL</tt>".</li>
+</ol>
+This will copy the entire floppy disk, creating subdirectories <tt>mcpc2003</tt>,
+<tt>mcpc2003\TEAM</tt>,
+<tt>mcpc2003\JUDGE</tt>,
+<tt>mcpc2003\BACK</tt>,
+<tt>mcpc2003\NOTES</tt>,
+and directories with each of the individual problems, and make the current
+directory <tt>mcpc2003\TEAM</tt>.
+<p>All directories mentioned below are relative to the <tt>mcpc2003</tt>
+directory.
+<p>To judge a program, make sure the current directory is still <tt>TEAM</tt>,
+and then just type
+<br><tt>&nbsp;&nbsp;&nbsp; J L #</tt>
+<br>where <tt>L</tt> is the problem letter, and <tt>#</tt> is the team
+number as in "<tt>j e 12</tt>" to grade problem e for team 12.
+<p>This batch file will
+<ol>
+<li>
+search the <tt>A:</tt> drive for a valid source file for problem L,</li>
+
+<li>
+delete the relevant contents of <tt>TEAM</tt> in preparation for judging,</li>
+
+<li>
+copy the source file into <tt>TEAM</tt>,</li>
+
+<li>
+make a uniquely named archival copy of the source file in <tt>BACK</tt>,</li>
+
+<li>
+copy the correct input file into <tt>TEAM</tt>,</li>
+
+<li>
+compile the program,</li>
+
+<li>
+run the program,</li>
+
+<li>
+compare the program's output with the correct output, and if they don't
+match,</li>
+
+<li>
+allow you to visually compare the two output files.</li>
+</ol>
+Instructions will be displayed on the screen, and you can stop the batch
+file when necessary by pressing <tt>Ctrl-C</tt>.
+<p>In step 8 the files are compared using the <tt>diff</tt> utility. If
+the two files are identical it will say so, and otherwise it will show
+the differences.&nbsp; The output of <tt>diff</tt> is fairly clear when
+it all fits on one screen.&nbsp; If there are a lot of errors it may be
+easier to see them in step 9.
+<p>Step 9 is necessary if it is not obvious that there are wrong answers,
+and you need to check for a presentation error.&nbsp; The batch file uses
+the <tt>LIST</tt> program to view both the team's output and the correct
+output.
+<p><b>Using the <tt>list</tt> program:</b>
+<ul>
+<li>
+Use <tt>Ctrl-PgUp</tt> and <tt>Ctrl-PgDn</tt> to switch between the two
+files.</li>
+
+<li>
+The status line at the top of the screen tells you which file you're looking
+at:</li>
+
+<li>
+The team's output is in the current directory <tt>TEAM </tt>(no path shown),
+and</li>
+
+<li>
+the correct output is in the directory starting <tt>..\</tt> followed by
+the problem's name.</li>
+
+<li>
+If necessary you can use <tt>Alt-H</tt> to display the files in hexadecimal;
+this might help you find missing end-of-line characters or extraneous whitespace.</li>
+
+<li>
+Use the arrow keys to move around in the files if necessary, and</li>
+
+<li>
+Press <tt>ESC</tt> or <tt>F10</tt> to exit.</li>
+</ul>
+If you want to see both files at once using the <tt>LIST</tt> program:
+<ul>
+<li>
+Press <tt>Alt-W</tt> followed by Return to get two views of the same file,
+then</li>
+
+<li>
+Press <tt>Ctrl-PgDn</tt> to display the second file in the bottom window.</li>
+
+<li>
+Use <tt>Ctrl-V</tt> to switch windows.</li>
+</ul>
+<b>IMPORTANT NOTE:&nbsp; SITE SPECIFIC MODIFICATIONS TO THE GRADING UTILITIES</b>
+<p>
+These batch files assume that <tt>java.exe</tt> and <tt>javac.exe</tt> are
+in the execution path and that there is a default installation of Visual
+Studio .Net 2003 on drive C: to compile C++ and C files.
+If you are allowing Pascal, you must substitute your own compiler and
+linker call for the placeholder line in <tt>JUDGE\j2.bat</tt>
+   <pre>compileLinkPascal %2.pas</pre>
+where <tt>%2.pas</tt> is the source file name. If you are using Visual
+Studio .Net 2003 for C and C++, but put it somewhere other than the default
+location on drive C:, then you can edit the environment variable set in
+<tt>JUDGE\vcpp.bat</tt>. If you are using another compiler, you can modify
+<tt>vcpp.bat</tt> or replace both the places it is called in
+<tt>JUDGE\j2.bat</tt>, so that C and C++ files are compiled and linked in your
+environment.
+<p>
+If you modified <tt>j2.bat</tt> and/or <tt>vcpp.bat</tt> last year, and they
+still work, you may use them again this year, as long as that does not mean
+anyone will be using a 16-bit compiler implementation.  If you are reading
+this before receiving your official packet, and you need to set up for this
+year, you can obtain last year's <tt>j2.bat</tt> and <tt>vcpp.bat</tt> from
+the judge's disk zip file at
+ <a href="http://www.cs.smsu.edu/~mcpc/archives/mcpc2002.zip">
+http://www.cs.smsu.edu/~mcpc/archives/mcpc2002.zip</a>.
+If you modify the 2002 <tt>JUDGE\j2.bat</tt> file and or
+<tt>JUDGE\vcpp.bat</tt>, and it works, use it to replace the corresponding
+files on this year's disk.
+</p>
+<p><b>Archive of submitted programs</b>
+<p>Example:&nbsp; The 4th time that team 7 has a C++ program for problem
+E graded on the same computer, the batch file <tt>JUDGE\NEXTBACK.BAT</tt> is
+called to copy their source program to
+<br>&nbsp;&nbsp;&nbsp;<tt> BACK\7E4.CPP</tt>
+<p><b>Browsing in your spare time</b>
+<p>All the judges' files are copied by <tt>install.bat</tt>.&nbsp; While
+waiting for the next problem to grade, or even if you do not use the judging
+utilities at all, you can browse through the problem files and administrative
+information files by starting a web browser at the local
+file <tt>browse.html</tt> in the <tt>mcpc2003</tt> directory.
+<p>
+<hr>
+<address>
+Andy Harrington<br>
+Regional Chief Judge: Toolsmith<br>
+Loyola University Chicago
+</address>
+<p><i><font size=-1>Last modified on October 23, 2003 at 4:47 PM.</font></i>
+</body>
+</html>

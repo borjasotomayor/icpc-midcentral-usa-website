@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Black Vienna</title>
+
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Andy Harrington"></head>
+<body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem D: &nbsp;Black Vienna</h1>
+<center>
+<table>
+<tbody>
+<tr>
+<td>Source file:</td>
+<td><tt>vienna.</tt>{<tt>c</tt>, <tt>cpp</tt>,
+<tt>java</tt>}</td>
+</tr>
+<tr>
+<td>Input file:</td>
+<td><tt>vienna.in</tt></td>
+</tr>
+</tbody>
+</table>
+</center>
+<p><span class="postbody">This problem is based on
+the game of Black Vienna. In this version there are three players and 18 cards labeled&nbsp;A-R. Three of the cards are set
+aside (hidden) and form the
+"Black Vienna" gang. The remaining cards are shuffled and dealt to the
+players so that each player has 5 cards. Players never reveal their
+cards to each other. There is a separate deck&nbsp;of
+"interrogation
+cards" which contain three distinct letters in ascending order, like ACG
+or BHR. &nbsp;Turns rotate through players 1, 2, and 3.
+&nbsp;On each player's turn, that player selects an interrogation
+card, puts it
+face up in front of another player, and that other player must indicate
+the total number of these cards being held, without&nbsp;saying which ones. &nbsp;All players see the result of the
+"interrogation".&nbsp;The play
+continues until a player&nbsp;deduces the three cards in the "gang".
+&nbsp;&nbsp; &nbsp;</span></p>
+<p><span class="postbody">For example, suppose the
+cards are distributed as follows, and the game then proceeds:</span></p>
+<p style="margin-left: 40px;"><span class="postbody">Player 1: DGJLP; Player 2:
+EFOQR; Player 3:&nbsp;</span><span class="postbody">AC</span><span class="postbody">HMN; &nbsp;Gang: BIK</span></p>
+<p style="margin-left: 40px;"><span class="postbody">Turn 1: &nbsp;Player 1
+interrogates player 2 with BJK; answer 0</span><span class="postbody"><br>
+Turn 2: &nbsp;Player 2 interrogates player 3 with ABK; answer 1<br>
+</span><span class="postbody">Turn 3:
+&nbsp;Player 3 interrogates player 2 with DEF; answer 2</span><span class="postbody"><br>
+</span><span class="postbody">Turn 4:
+&nbsp;Player 1 interrogates player&nbsp;2 with EIL; answer 1</span><span class="postbody"><br>
+</span><span class="postbody">Turn 5:
+&nbsp;Player 2 interrogates player 3 with FIP; answer 0<br>
+</span><span class="postbody">Turn 6:
+&nbsp;Player 3 interrogates player 1 with GMO; answer 1<br>
+</span><span class="postbody">Turn 7: &nbsp;</span><span class="postbody">Player 1 interrogates player 2
+with&nbsp;OQR; answer 3<br>
+</span><span class="postbody">Turn 8:
+&nbsp;Player 2 interrogates player 3 with ADQ; answer 1<br>
+</span><span class="postbody">Turn 9:
+&nbsp;Player 3 interrogates player 1 with EGJ; answer 2</span><span class="postbody"><br>
+</span><span class="postbody"></span></p>
+<p>In fact, the game does not need to get to turn 9.
+&nbsp;With enough thought, player 1 can deduce after turn 8 that the
+gang is BIK. &nbsp;It is your job to analyze records of games and
+deduce the earliest time that the gang could be determined for sure.</p>
+<p><b>Input:</b> The input will
+consist of one to twelve data
+sets, followed by a line containing only 0. &nbsp; </p>
+<p>The first line of a dataset contains the number, <span style="font-style: italic;">t</span>, of turns reported,
+2 &#8804;&nbsp;<span style="font-style: italic;">t </span>&#8804;
+15. &nbsp;</p>
+<p>The next line contains four blank separated
+strings for the&nbsp;hands of&nbsp;players 1, 2, and 3,  followed by the cards for
+the gang.</p>
+<p>The remaining <span style="font-style: italic;">t</span>
+lines of the data set contain the data for each turn in order.
+&nbsp;Each line contains three blank separated tokens:&nbsp; the number of the player
+interrogated, the string of interrogation letters, and the answer
+provided.</p>
+<p>All letter strings&nbsp;will contain only capital letters
+from A to R, in strictly increasing alphabetical order. &nbsp;The
+same interrogation string may appear in more than one turn of a game.</p><p><b>Output:</b>&nbsp;There is one line of
+output for
+each data set. &nbsp;The line contains the single character "?" if no
+player can be sure of the gang after all the turns listed. &nbsp;If
+a player can determine the gang, the line contains the earliest turn after
+which one or more players can be sure of the answer.</p>
+<table border="1" cellpadding="10">
+<thead><tr>
+<td><b>Example input:</b></td>
+<td><b>Example output:</b></td>
+</tr>
+</thead> <tbody>
+<tr>
+<td style="font-family: monospace;">
+<p style="font-family: monospace;"><span class="postbody">9<br>
+DGJLP EFOQR&nbsp;</span><span class="postbody">AC</span><span class="postbody">HMN&nbsp;BIK<br>
+2 BJK 0</span><span class="postbody"><br>
+3 ABK 1<br>
+</span><span class="postbody">2 DEF 2</span><span class="postbody"><br>
+</span><span class="postbody">2 EIL 1</span><span class="postbody"><br>
+</span><span class="postbody">3 FIP 0<br>
+</span><span class="postbody">1 GMO 1<br>
+</span><span class="postbody"></span><span class="postbody">2 OQR 3<br>
+</span><span class="postbody">3 ADQ 1<br>
+</span><span class="postbody">1 EGJ 2<br>
+3<br>
+ABCDE FGHIJ KLMNO PQR<br>
+3 BKQ 1<br>
+1 ADE 3<br>
+2 CHJ 2<br>
+0</span>
+</p></td>
+<td style="font-family: monospace;" valign="top">8<br>
+?<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<p><small><i>Last modified on October 18, 2009 at 10:01 AM.</i></small></p>
+</body></html>

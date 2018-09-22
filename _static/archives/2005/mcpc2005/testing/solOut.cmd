@@ -1,0 +1,1 @@
+forAll runSol %1

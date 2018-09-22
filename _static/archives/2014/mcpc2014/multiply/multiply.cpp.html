@@ -1,0 +1,160 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// multiply.cpp
+</span><span class=comment>// (More) Multiplication, MCPC 2014, Problem A
+</span><span class=comment>// C++ solution by James Feher
+</span>
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;cstring&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;multiply.in&quot; );
+<span class=keyword>bool</span> DEBUG = <span class=keyword>false</span>;      <span class=comment>// Make sure to set to false on submission
+</span>
+<span class=keyword>void</span> printChars(<span class=keyword>char</span> c, <span class=keyword>int</span> num2print) {
+<span class=comment>// INPUT  : character to print, number of times to print it
+</span><span class=comment>// OUTPUT : None
+</span><span class=comment>// PURPOSE: Print char c num2print times
+</span><span class=comment>//          Make it easier to print spaces and lines for output
+</span>  <span class=keyword>int</span> i;
+  <span class=keyword>for</span> (i=0; i&lt;num2print; i++)
+    cout &lt;&lt; c;
+} <span class=comment>// end printChars
+</span>
+<span class=keyword>void</span> printLine(<span class=keyword>int</span> numXdig) {
+<span class=comment>// INPUT  : number of X digits
+</span><span class=comment>// OUTPUT : None
+</span><span class=comment>// PURPOSE: Print a line the appropriate length
+</span>  cout &lt;&lt; &quot;| &quot;;
+  cout &lt;&lt; &quot;+&quot;;
+  <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; numXdig; j++) {
+      printChars('-', 3);
+      cout &lt;&lt; &quot;+&quot;;
+  }
+  cout &lt;&lt; &quot; |&quot; &lt;&lt; endl;
+} <span class=comment>// end printLine
+</span>
+<span class=keyword>int</span> main() {   
+
+  <span class=comment>// numRdigits contains the number of result digits
+</span>  <span class=keyword>int</span> X, Y, i, j, result, numXdigits, numYdigits, numRdigits;
+  <span class=keyword>int</span> Xdigits[5], Ydigits[5], Rdigits[10];
+  <span class=keyword>bool</span> firstDigitZero;
+
+  fin &gt;&gt; X &gt;&gt; Y;             <span class=comment>// Get the numbers to multiply
+</span>
+  <span class=keyword>while</span> (X &gt; 0) {
+    DEBUG &amp;&amp; cout &lt;&lt; &quot;Got Data -- X: &quot; &lt;&lt; X &lt;&lt; &quot;\tY: &quot; &lt;&lt; Y &lt;&lt; endl;
+  
+    <span class=comment>// determing the number of digits required for each number
+</span>    <span class=keyword>for</span> (i=1, numXdigits=0; i&lt;=X; i*=10) numXdigits++;
+    <span class=keyword>for</span> (i=1, numYdigits=0; i&lt;=Y; i*=10) numYdigits++;
+    <span class=comment>// Now get the individual digits
+</span>    <span class=keyword>for</span> (i=0, j=X; j&gt;0; i++) {
+      Xdigits[i] = j%10;
+      j /= 10;
+    }
+    <span class=keyword>for</span> (i=0, j=Y; j&gt;0; i++) {
+      Ydigits[i] = j%10;
+      j /= 10;
+    }
+    <span class=comment>// Do the same for the result
+</span>    result = X*Y;
+    <span class=keyword>for</span> (i=1, numRdigits=0; i&lt;=result; i*=10) numRdigits++;
+    <span class=keyword>for</span> (i=0, j=result; j&gt;0; i++) {
+      Rdigits[i] = j%10;
+      j /= 10;
+    }
+
+    DEBUG &amp;&amp; cout &lt;&lt; &quot;  Num digits X: &quot; &lt;&lt; numXdigits 
+                  &lt;&lt; &quot;\tNum digits Y: &quot; &lt;&lt; numYdigits
+                  &lt;&lt; &quot;\tNum digits R: &quot; &lt;&lt; numRdigits 
+                  &lt;&lt; &quot;\tResult: &quot; &lt;&lt; result &lt;&lt; endl;
+
+    <span class=comment>// print top row
+</span>    cout &lt;&lt; &quot;+&quot;;
+    printChars('-', 3+4*numXdigits);
+    cout &lt;&lt; &quot;+&quot; &lt;&lt; endl;
+
+    <span class=comment>// print X formatted appropriately
+</span>    cout &lt;&lt; &quot;|   &quot;;            <span class=comment>// start out with | and 3 spaces
+</span>    <span class=keyword>for</span> (i=0; i&lt;numXdigits; i++) {
+      cout &lt;&lt; Xdigits[numXdigits-i-1];
+      printChars(' ', 3);
+    }
+    cout &lt;&lt; &quot;|&quot; &lt;&lt; endl;      <span class=comment>// end with | 
+</span>    
+    <span class=comment>// Now print each row of the results
+</span>    firstDigitZero = <span class=keyword>false</span>;
+    printLine(numXdigits);
+    <span class=keyword>for</span> (i=numYdigits-1; i&gt;=0; i--) {
+      <span class=keyword>int</span> topDigit, botDigit;
+      <span class=comment>// if top row see if the highest order digit is zero
+</span>      <span class=keyword>if</span> (i==numYdigits-1) 
+        <span class=keyword>if</span> ( (Xdigits[numXdigits-1]*Ydigits[i]) /10 &lt;= 0 ) 
+          firstDigitZero = <span class=keyword>true</span>;
+
+      <span class=comment>// print the top digits
+</span>      <span class=comment>// first line or second line with zero as top digit
+</span>      <span class=keyword>if</span> (i==numYdigits-1 || (i==numYdigits-2 &amp;&amp; firstDigitZero))
+        cout &lt;&lt; &quot;| |&quot;;
+      <span class=keyword>else</span> 
+        cout &lt;&lt; &quot;|/|&quot;;
+      <span class=keyword>for</span> (j=numXdigits-1; j&gt;=0; j--) {
+        topDigit = Xdigits[j]*Ydigits[i] / 10;  
+        cout &lt;&lt; topDigit &lt;&lt; &quot; /|&quot;;  
+      }
+      cout &lt;&lt; &quot; |&quot; &lt;&lt; endl;
+
+      <span class=comment>// now print the middle
+</span>      cout &lt;&lt; &quot;| |&quot;;
+      <span class=keyword>for</span> (j=numXdigits-1; j&gt;=0; j--) 
+        cout &lt;&lt; &quot; / |&quot;; 
+      cout &lt;&lt; Ydigits[i] &lt;&lt; &quot;|&quot; &lt;&lt; endl;
+
+      <span class=comment>// now print the bottom digits
+</span>      cout &lt;&lt; &quot;|&quot;;
+      <span class=keyword>if</span> ((i == numYdigits-1) &amp;&amp; firstDigitZero) 
+        cout &lt;&lt; &quot; |&quot;;
+      <span class=keyword>else</span> 
+        cout &lt;&lt; Rdigits[i+numXdigits] &lt;&lt; &quot;|&quot;;
+      <span class=keyword>for</span> (j=numXdigits-1; j&gt;=0; j--) {
+        botDigit = Xdigits[j]*Ydigits[i] % 10;
+        cout &lt;&lt; &quot;/ &quot; &lt;&lt; botDigit &lt;&lt; &quot;|&quot;;  
+      }
+      cout &lt;&lt; &quot; |&quot; &lt;&lt; endl;
+
+      printLine(numXdigits);
+    }
+
+    <span class=comment>// print Result formatted appropriately
+</span>    cout &lt;&lt; &quot;|&quot;;            <span class=comment>// start out with |
+</span>    <span class=keyword>for</span> (i=0; i&lt;numXdigits; i++) {
+      <span class=keyword>if</span> (firstDigitZero &amp;&amp; numYdigits == 1) {
+        cout &lt;&lt; &quot;  &quot;;
+      } <span class=keyword>else</span> {
+        cout &lt;&lt; &quot;/ &quot;;
+      }
+      cout &lt;&lt; Rdigits[numXdigits-i-1] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; &quot;   |&quot; &lt;&lt; endl;      <span class=comment>// end with three spaces and | 
+</span>    
+    <span class=comment>// print bottom row
+</span>    cout &lt;&lt; &quot;+&quot;;
+    printChars('-', 3+4*numXdigits);
+    cout &lt;&lt; &quot;+&quot; &lt;&lt; endl;
+
+    fin &gt;&gt; X &gt;&gt; Y;             <span class=comment>// Get the numbers to multiply
+</span>  }
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

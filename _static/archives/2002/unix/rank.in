@@ -1,0 +1,58 @@
+1
+Plutonians 123 234 345 456 167 278 389
+4
+Xap 0 0 0 0 0 0 0
+Foo 20 30 0 50 40 0 10
+Bar 0 50 20 0 10 40 30
+Baz 0 0 0 0 0 0 0
+3
+Venus 213 0 0 57 0 0 0
+Neptune 0 0 0 117 153 0 0
+Mars 0 150 0 0 0 0 120
+3
+Comet 0 0 0 213 0 0 0
+Meteor 37 0 48 10 96 0 22
+Asteroid 0 113 0 0 100 0 0
+3
+Plane 40 90 120 120 200 0 200
+Train 60 90 160 200 200 0 60
+Automobile 60 60 120 120 160 250 0
+1
+TenLetters 0 0 0 0 0 0 0
+3
+checkcase 1 2 3 4 5 6 7
+CheckCase 1 2 3 4 5 6 7
+CHECKCASE 1 2 3 4 5 6 7
+2
+Z 8 8 8 8 8 8 8
+Q 4 4 8 128 8 4 4
+7
+Red 500 0 0 0 0 0 0
+Orange 0 500 0 0 0 0 0
+Yellow 0 0 500 0 0 0 0
+Green 0 0 0 500 0 0 0
+Blue 0 0 0 0 500 0 0
+Indigo 0 0 0 0 0 500 0
+Violet 0 0 0 0 0 0 500
+20
+Apple 42 0 0 0 0 0 0
+Banana 0 57 0 0 0 0 0
+Mango 0 0 23 0 0 0 0
+Pear 0 0 0 11 0 0 201
+Kiwi 0 143 0 0 56 0 0
+Peach 32 0 0 0 0 100 97
+Pear 0 87 0 0 265 0 173
+Cherry 50 60 0 0 0 70 80
+Pineapple 0 90 40 70 60 0 0
+Watermelon 0 50 0 80 0 70 60
+Cantaloupe 1 2 3 4 5 0 0
+Orange 0 9 8 7 6 5 0
+Grape 0 1 9 0 2 8 3
+Lime 0 9 9 9 1 1 0
+Lemon 7 7 6 6 5 0 0
+Blueberry 44 55 66 0 77 88 99
+Blackberry 87 0 76 65 54 43 32
+Cranberry 12 23 34 45 56 67 0
+Grapefruit 0 45 56 67 78 89 90
+Coconut 500 499 498 497 496 495 494
+0

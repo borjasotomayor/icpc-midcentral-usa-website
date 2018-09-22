@@ -1,0 +1,134 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Sokoban, MCPC 2011 Problem G, C++ solution by Michael Goldwasser */</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;string&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=comment>// let's avoid symbol confusion
+</span><span class=pp>#define</span> EMPTY              '.'
+<span class=pp>#define</span> WALL               '#'
+<span class=pp>#define</span> TARGET             '+'
+<span class=pp>#define</span> BOX                'b'
+<span class=pp>#define</span> BOX_ON_TARGET      'B'
+<span class=pp>#define</span> WORKER             'w'
+<span class=pp>#define</span> WORKER_ON_TARGET   'W'
+
+<span class=pp>#define</span> MAX_R 15
+
+ifstream fin(&quot;sokoban.in&quot;);
+
+<span class=keyword>int</span> R,C;
+string board[MAX_R];   <span class=comment>// represent &quot;2D&quot; board as array of strings
+</span>
+<span class=keyword>void</span> printBoard(ostream&amp; out = cout) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; R; j++) out &lt;&lt; board[j] &lt;&lt; endl;
+}
+
+<span class=keyword>bool</span> isBox(<span class=keyword>char</span> c) {
+    <span class=keyword>return</span> (c == BOX || c == BOX_ON_TARGET);
+}
+
+<span class=keyword>bool</span> isVacant(<span class=keyword>char</span> c) {
+    <span class=keyword>return</span> (c == EMPTY || c == TARGET);
+}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>int</span> game(1);
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        fin &gt;&gt; R &gt;&gt; C;
+        <span class=keyword>if</span> (R == 0) <span class=keyword>break</span>;
+
+        <span class=keyword>int</span> misplacedBoxes = 0;
+        <span class=keyword>int</span> wr(-1),wc(-1);  <span class=comment>// worker's current position
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i &lt; R; i++) {
+            fin &gt;&gt; board[i];
+
+            <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; C; j++) {
+                <span class=keyword>switch</span> (board[i][j]) {
+                <span class=keyword>case</span> BOX:
+                    misplacedBoxes++;
+                    <span class=keyword>break</span>;
+
+                <span class=keyword>case</span> WORKER:
+                <span class=keyword>case</span> WORKER_ON_TARGET:
+                    wr = i; wc = j;
+                    <span class=keyword>break</span>;
+                }
+            }
+        }
+
+        string moves;
+        fin &gt;&gt; moves;
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i &lt; moves.size() &amp;&amp; misplacedBoxes &gt; 0; i++) {    <span class=comment>// process moves[i]
+</span>            <span class=keyword>int</span> dr, dc;
+            <span class=keyword>switch</span> (moves[i]) {
+            <span class=keyword>case</span> 'U':
+                dc = 0;
+                dr = -1;
+                <span class=keyword>break</span>;
+            <span class=keyword>case</span> 'D':
+                dc = 0;
+                dr = 1;
+                <span class=keyword>break</span>;
+            <span class=keyword>case</span> 'L':
+                dc = -1;
+                dr = 0;
+                <span class=keyword>break</span>;
+            <span class=keyword>case</span> 'R':
+                dc = 1;
+                dr = 0;
+                <span class=keyword>break</span>;
+            }
+
+            <span class=keyword>char</span> &amp;current = board[wr][wc];
+            <span class=keyword>char</span> &amp;neighbor = board[wr+dr][wc+dc];
+            <span class=keyword>bool</span> willMove = <span class=keyword>false</span>;
+
+            <span class=keyword>if</span> (isVacant(neighbor))
+                willMove = <span class=keyword>true</span>;
+            <span class=keyword>else</span> <span class=keyword>if</span> (isBox(neighbor)) {
+                <span class=comment>// possible move.
+</span>                <span class=keyword>char</span> &amp;lookahead = board[wr+2*dr][wc+2*dc];
+                <span class=keyword>if</span> (isVacant(lookahead)) {
+                    willMove = <span class=keyword>true</span>;
+                    <span class=keyword>if</span> (lookahead == TARGET) {
+                        lookahead = BOX_ON_TARGET;
+                        misplacedBoxes--;
+                    } <span class=keyword>else</span> {
+                        lookahead = BOX;
+                    }
+
+                    <span class=keyword>if</span> (neighbor == BOX_ON_TARGET) {
+                        neighbor = TARGET;
+                        misplacedBoxes++;
+                    } <span class=keyword>else</span> {
+                        neighbor = EMPTY;
+                    }
+                }
+            }
+
+            <span class=keyword>if</span> (willMove) {
+                current = (current == WORKER_ON_TARGET) ? TARGET : EMPTY;
+                neighbor = (neighbor == TARGET) ? WORKER_ON_TARGET : WORKER;
+                wr += dr;
+                wc += dc;
+            }
+        }
+
+        cout &lt;&lt; &quot;Game &quot; &lt;&lt; game++ &lt;&lt; &quot;: &quot; &lt;&lt; ((misplacedBoxes == 0) ? &quot;complete&quot; : &quot;incomplete&quot;) &lt;&lt; endl;
+        printBoard();
+    }
+}
+</pre></body>
+</html>

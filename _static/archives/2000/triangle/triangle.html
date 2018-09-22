@@ -1,0 +1,86 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.72 [en] (Windows NT 5.0; I) [Netscape]">
+   <meta name="Author" content="Andrew Harrington">
+   <title>Problem A: The Triangle Game</title>
+</head>
+<body>
+
+<center>
+<h1>
+Problem A: The Triangle Game</h1></center>
+
+<center><table>
+<tr>
+<td>Source file:</td>
+
+<td><tt>triangle.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>, <tt>pas</tt>}</td>
+</tr>
+
+<tr>
+<td>Input file:</td>
+
+<td><tt>triangle.in</tt></td>
+</tr>
+
+<tr>
+<td>Output file:</td>
+
+<td><tt>triangle.out</tt></td>
+</tr>
+</table></center>
+
+<center><img SRC="tri.gif" VSPACE=10 height=201 width=404></center>
+In the triangle game you start off with six triangles numbered on each
+edge, as in the example above.&nbsp; You can slide and rotate the triangles
+so they form a hexagon, but the hexagon is only legal if edges common to
+two triangles have the same number on them.&nbsp; You may not flip any
+triangle over.&nbsp; Two legal hexagons formed from the six triangles are
+illustrated below.
+<center><img SRC="hex.gif" VSPACE=10 height=208 width=493></center>
+The score for a legal hexagon is the sum of the numbers on the outside
+six edges.
+<p>Your problem is to find the highest score that can be achieved with any six
+particular triangles.
+<p>The input file will contain one or
+more data sets.&nbsp; Each data set is a sequence of six lines with three
+integers from 1 to 100 separated by blanks on each line.&nbsp; Each line
+contains the numbers on the triangles in clockwise order.&nbsp; Data sets
+are separated by a line containing only an asterisk.&nbsp; The last data
+set is followed by a line containing only a dollar sign.
+<p>For each input data set, the output
+is a line containing only the word "none" if there are no legal hexagons
+or the highest score if there is a legal hexagon.
+<p><b>Example input:</b>
+<blockquote><tt>1 4 20</tt>
+<br><tt>3 1 5</tt>
+<br><tt>50 2 3</tt>
+<br><tt>5 2 7</tt>
+<br><tt>7 5 20</tt>
+<br><tt>4 7 50</tt>
+<br><tt>*</tt>
+<br><tt>10 1 20</tt>
+<br><tt>20 2 30</tt>
+<br><tt>30 3 40</tt>
+<br><tt>40 4 50</tt>
+<br><tt>50 5 60</tt>
+<br><tt>60 6 10</tt>
+<br><tt>*</tt>
+<br><tt>10 1 20</tt>
+<br><tt>20 2 30</tt>
+<br><tt>30 3 40</tt>
+<br><tt>40 4 50</tt>
+<br><tt>50 5 60</tt>
+<br><tt>10 6 60</tt>
+<br><tt>$</tt></blockquote>
+<p><b>Example output:</b>
+<blockquote><tt>152</tt>
+<br><tt>21</tt>
+<br><tt>none</tt></blockquote>
+
+<P><SMALL><I>Last modified Tue Oct 24 20:38:19 2000
+</I></SMALL>
+</body>
+</html>
