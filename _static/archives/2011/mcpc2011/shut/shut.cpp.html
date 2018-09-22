@@ -1,0 +1,138 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Shut the Box, MCPC 2011 Problem F, C++ solution by Michael Goldwasser */</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;set&gt;
+
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> MAX_N 22      <span class=comment>// assumed to be at most 31 for using 32-bit codes
+</span><span class=pp>#define</span> MAX_VAL 22  
+
+ifstream fin(&quot;shut.in&quot;);
+<span class=keyword>int</span> N;                           <span class=comment>// actual N for current trial
+</span>vector&lt;<span class=keyword>int</span>&gt; choices[MAX_VAL+1];  <span class=comment>// choices[v] is set of possible turn codes for value v
+</span>
+<span class=comment>//-------------------- utilities for piece codes ------------------------
+</span><span class=comment>// We use int as bitfield to code which pieces are unmarked, with bit for
+</span><span class=comment>// 2^{p-1} being set if piece p is unmarked (i.e., least significant
+</span><span class=comment>// bit is piece 1). We will also use these codes to describe subsets
+</span><span class=comment>// of pieces that can be marked during a single turn.
+</span>
+<span class=comment>// Return true if piece p is unmarked
+</span><span class=keyword>bool</span> unmarked(<span class=keyword>int</span> code, <span class=keyword>int</span> p) {
+  <span class=keyword>return</span> (code &amp; (1 &lt;&lt; (p-1))) &gt; 0;   <span class=comment>// bit is set
+</span>}
+
+<span class=comment>// returns true if every piece of turn is unmarked
+</span><span class=keyword>bool</span> legal(<span class=keyword>int</span> code, <span class=keyword>int</span> turn) {
+  <span class=keyword>return</span> ((code &amp; turn) == turn);  <span class=comment>// i.e. turn is subset of code
+</span>}
+
+<span class=comment>// return new code with extra piece marked
+</span><span class=keyword>int</span> markPiece(<span class=keyword>int</span> code, <span class=keyword>int</span> p) {   
+  <span class=keyword>return</span> code | (1 &lt;&lt; (p-1));   <span class=comment>// clear the bit
+</span>}
+
+<span class=comment>// return new code based on marking pegs from given turn (assuming legal)
+</span><span class=keyword>int</span> reduce(<span class=keyword>int</span> code, <span class=keyword>int</span> turn) {   
+  <span class=keyword>return</span> (code ^ turn);    <span class=comment>// exclusive or 
+</span>}
+
+<span class=comment>// Returns number of marked pegs
+</span><span class=keyword>int</span> numMarked(<span class=keyword>int</span> code) {
+  <span class=keyword>int</span> total(0);
+  <span class=keyword>for</span> (<span class=keyword>int</span> p=1; p &lt;= N; p++)
+    <span class=keyword>if</span> (!unmarked(code,p))
+      total++;
+  <span class=keyword>return</span> total;
+}
+
+<span class=comment>// Returns sum of the values of those pieces marked in the code
+</span><span class=keyword>int</span> pegSum(<span class=keyword>int</span> code) {
+  <span class=keyword>int</span> total(0);
+  <span class=keyword>for</span> (<span class=keyword>int</span> p=1; p &lt;= N; p++)
+    <span class=keyword>if</span> (unmarked(code,p))
+      total += p;
+  <span class=keyword>return</span> total;
+}
+
+<span class=comment>// this function only needs to be called once, to precompute list of choices
+</span><span class=keyword>void</span> initChoices() {
+  <span class=keyword>int</span> half = MAX_VAL / 2;
+  <span class=keyword>int</span> halfcode = 1 &lt;&lt; half;
+  <span class=comment>// to save time, we will only cycle through codes for bottom half of pegs.
+</span>  <span class=comment>// can use at most one other peg.
+</span>  <span class=keyword>for</span> (<span class=keyword>int</span> code = 0; code &lt; halfcode; code++) {
+    <span class=keyword>int</span> total = pegSum(code);
+    <span class=keyword>if</span> (total &lt;= MAX_VAL) {
+      choices[total].push_back(code);
+      <span class=keyword>for</span> (<span class=keyword>int</span> p = half+1; p &lt;= MAX_VAL; p++) {
+        <span class=keyword>if</span> (total + p &lt;= MAX_VAL)
+          choices[total+p].push_back(markPiece(code,p));
+        <span class=keyword>else</span>
+          <span class=keyword>break</span>;
+      }
+    }
+  }
+}
+
+<span class=keyword>int</span> main() {
+  <span class=keyword>int</span> game(1);
+
+  N = MAX_N;      <span class=comment>// for initialization
+</span>  initChoices();  <span class=comment>// call only once
+</span>
+  <span class=keyword>while</span> (<span class=keyword>true</span>) {
+    <span class=keyword>int</span> T;
+    vector&lt;<span class=keyword>int</span>&gt; turns;
+
+    fin &gt;&gt; N &gt;&gt; T;
+    <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; T; k++) {
+      <span class=keyword>int</span> temp;
+      fin &gt;&gt; temp;
+      turns.push_back(temp);
+    }
+
+    set&lt;<span class=keyword>int</span>&gt; reachable;
+    <span class=keyword>int</span> initial = (1 &lt;&lt; N) - 1;   <span class=comment>// all N pegs unmarked
+</span>    <span class=keyword>int</span> mostMarked(0);
+    reachable.insert(initial);
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> t=0; t &lt; T; t++) {
+      <span class=keyword>int</span> turn = turns[t];
+      set&lt;<span class=keyword>int</span>&gt; newReach;
+
+      <span class=keyword>for</span> (set&lt;<span class=keyword>int</span>&gt;::const_iterator it = reachable.begin(); it != reachable.end(); ++it) {
+        <span class=keyword>int</span> curCode = *it;
+        <span class=keyword>for</span> (<span class=keyword>int</span> k = 0; k &lt; choices[turn].size(); k++) {
+          <span class=keyword>int</span> subset = choices[turn][k];
+          <span class=keyword>if</span> (legal(curCode,subset)) {
+            <span class=keyword>int</span> newCode = reduce(curCode,subset);
+            newReach.insert(newCode);
+            <span class=keyword>int</span> score = numMarked(newCode);
+            <span class=keyword>if</span> (score &gt; mostMarked)
+              mostMarked = score;
+          }
+        }
+      }
+      reachable = newReach;
+      <span class=keyword>if</span> (reachable.size() == 0) <span class=keyword>break</span>; <span class=comment>// no reason to continue
+</span>    }
+
+    cout &lt;&lt; &quot;Game &quot; &lt;&lt; game++ &lt;&lt; &quot;: &quot; &lt;&lt; mostMarked &lt;&lt; endl;
+  }
+}
+</pre></body>
+</html>

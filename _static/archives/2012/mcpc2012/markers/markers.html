@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>The Mark of a Wizard</title>
+
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Andy Harrington"></head><body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem E: The Mark of a Wizard<br>
+</h1>
+<center>
+<table>
+<tbody>
+<tr>
+<td>Source file:</td>
+<td><tt>markers.</tt>{<tt>c</tt>, <tt>cpp</tt>,
+<tt>java</tt>}</td>
+</tr>
+<tr>
+<td>Input file:</td>
+<td><tt>markers.in</tt></td>
+</tr>
+</tbody>
+</table>
+</center>
+<br>
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><img style="width: 116px; height: 141px;" alt="too many markers" src="markbad.png"><br>
+</td>
+<td>
+<p><img alt="only one mark" src="markgood.png"><br>
+</p>
+</td>
+</tr>
+<tr>
+<td>Figure 1</td>
+<td>Figure 2</td>
+</tr>
+</tbody>
+</table>
+</center>
+
+<br>
+<p>Goblins have a web of tunnels up from their underground lairs. A
+schematic for one of their simpler systems is shown in Figure&nbsp;1.&nbsp;
+The vertical direction is oriented upward on the page.&nbsp; The lair is at label
+A.&nbsp; The surface is at label F.&nbsp; The other labels mark tunnel
+intersections.&nbsp; Tunnels heading toward the surface from a given
+intersection are oriented as such in our diagram.&nbsp;This is a 2D
+schematic of a 3D tunnel system, so the paths shown 
+crossing elsewhere than at a lettered intersection do not actually
+intersect. (For example, in the above model, the edge BD does not intersect the edge CE.)</p>
+<p>A
+group of good wizards finds the need to rush through such tunnels to
+the surface in many of their adventures, following an upward path that takes
+the minimum amount of time. Many upward tunnels can leave an
+intersection, and there is no obvious way to choose the
+best tunnel in general. The wizards took the trouble to map the tunnels
+systems, noting the time required to travel up from one intersection to
+the next, as labeled in the above figures.&nbsp; They do not have
+opportunity to consult elaborate notes
+when in a hurry.&nbsp; Nor do they want to help their
+enemies that might be rushing through the same tunnels. They decide to
+put up a very discreet private mark at intersections where
+needed. A mark on a tunnel leaving an intersection means that wizards
+should follow that tunnel. They
+hope that they can make marks that only they will recognize,
+as there is a possibility that their system is discovered,
+particularly if they put up too many markers.&nbsp; It is important to
+mark as few intersections of tunnels as possible, while still
+guaranteeing that a wizard who always heads up at any intersection, and
+always take a marked tunnel where shown, will emerge in the minimum
+time.&nbsp; In Figure&nbsp;1 possible direction markings are shown as arrow
+heads at A pointing toward B, and then at B pointing toward C.&nbsp;
+There is only one route up from C, so then any wizard following the
+markings to C would head for F and be out of the tunnels, with the
+total time of 3+1+4 = 8, the minimum possible.</p>
+Figure&nbsp;2 shows the
+same schematic, except there is just one mark, directing any wizard at
+E to go to D.&nbsp; This does not totally determine a path, but it does
+ensure the minimum time:&nbsp; A wizard can go from A toward either B
+or E.&nbsp; If the wizard goes to B, there are two choices again, but
+all these paths heading upward cover the same minimum distance,
+8.&nbsp; The only marker, at E, cannot be removed, or a wizard might
+try the route AECF for a total distance of 2+3+4=9.&nbsp; Hence to
+guarantee getting through the tunnels in minimum time (8), the minimum
+number of markers needed is 1.&nbsp; As an aside, there is another way
+to place just one marker for this example:&nbsp; at A pointing toward B.&nbsp;  <br> 
+<br>
+You are to help the wizard plan the use of markers.&nbsp; Be careful of your algorithm.&nbsp; This could be time-consuming.<br>
+<p><b>Input:</b> The&nbsp;input will
+consist&nbsp;of one to 16 data
+sets,&nbsp;followed by a line containing only 0. &nbsp;</p>
+<p>The first line of a data set contains an
+integer<span style="font-style: italic;"> n</span>,&nbsp; (2 &#8804; <span style="font-style: italic;">n</span>
+&#8804;&nbsp; 17), which is the number of labeled places; those
+consist of the starting point,
+ending point, and any intersections in the tunnel system in
+between.&nbsp; <br>
+</p>
+<p>Each of the next <span style="font-style: italic;">n</span> lines
+describes the upward tunnels from one labeled point.&nbsp; Each
+line has the same form, with blank separated 
+parts: The first part is a letter labeling a tunnel starting point,
+then an integer, <span style="font-style: italic;">u</span>, that is
+the number of upward tunnels from that point.
+After the label letter and <span style="font-style: italic;">u</span> come <span style="font-style: italic;">u</span> pairs, <span style="font-style: italic;">letter time, </span>giving the integer <span style="font-style: italic;">time</span> (1 &#8804; <span style="font-style: italic;">time</span> &#8804; 500) to go through a tunnel from the current labeled point to the point with label <span style="font-style: italic;">letter</span>.
+The labels at the beginning of the <span style="font-style: italic;">n</span> lines will be taken in order from the beginning of the capital letters.&nbsp; <span style="font-style: italic;">A</span>
+will always be the starting point and the last letter used will always
+be the exit.&nbsp; Only the final line (for the exit) will have <span style="font-style: italic;">u</span> = 0.&nbsp; For previous lines, 1 &#8804; <span style="font-style: italic;">u</span> &#8804;&nbsp; 6.&nbsp;  <br>
+</p>
+<p>Limiting assumptions:<br>
+</p>
+<ul>
+  <li>Wizards may only follow upward tunnels out of any intersection.</li>
+  <li>The total number of tunnels is at most 35.</li>
+  <li>There is always a path from the lair to the surface using the
+      minimum time and involving at most 7 tunnels.</li>
+  <li>All labeled points other than the starting point and the exit have at least
+one tunnel coming up <span style="font-style: italic;">to</span> it, at least one heading up <span style="font-style: italic;">from</span> it.</li>
+</ul>
+
+<p>The first sample input corresponds to that given in the
+introductory figures.<br>
+
+</p>
+
+<p><b>Output:</b> There is one line of output for
+each data set, with two space-separated numbers:&nbsp; the
+minimum time to travel from the lair to the surface, 
+and the minimum number of markers needed to assure that all wizards
+travel that minimum time.<br>
+</p>
+<table border="1" cellpadding="10">
+<thead><tr>
+<td><b>Example input:</b></td>
+<td><b>Example output:</b></td>
+</tr>
+</thead> <tbody>
+<tr>
+<td style="font-family: monospace;">6<br>
+A 2 B 3 E 2<br>
+B 2 C 1 D 4<br>
+C 1 F 4<br>
+D 1 F 1<br>
+E 2 C 3 D 5<br>
+F 0<br>
+7<br>
+A 3 B 1 C 5 D 4<br>
+B 2 C 2 E 5<br>
+C 2 E 4 F 3<br>
+D 2 C 2 F 3<br>
+E 1 G 6<br>
+F 1 G 4<br>
+G 0<br>
+7<br>
+A 2 B 2 C 4<br>
+B 2 D 4 C 1<br>
+C 2 D 3 E 5<br>
+D 2 F 4 E 2<br>
+E 2 F 2 G 5<br>
+F 1 G 2<br>
+G 0<br>
+0<br>
+</td>
+<td style="font-family: monospace;" valign="top">8 1<br>
+10 3<br>
+12 2<br>
+<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<p><small><i>Last modified on October 20, 2012.</i></small></p>
+</body></html>

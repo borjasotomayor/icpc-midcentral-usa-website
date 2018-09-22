@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Painter</title>
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Eric Shade">
+</head>
+
+<body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem F: Painter</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td><tt>painter.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td><tt>painter.in</tt></td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>The local toy store sells small fingerpainting kits with between
+three and twelve 50ml bottles of paint, each a different color. The
+paints are bright and fun to work with, and have the useful property
+that if you mix <i>X</i> ml each of any three different colors, you
+get <i>X</i> ml of gray. (The paints are thick and &quot;airy&quot;,
+almost like cake frosting, and when you mix them together the volume
+doesn't increase, the paint just gets more dense.)  None of the
+individual colors are gray; the only way to get gray is by mixing
+exactly three distinct colors, but it doesn't matter which three. Your
+friend Emily is an elementary school teacher and every Friday she does
+a fingerpainting project with her class.  Given the number of
+different colors needed, the amount of each color, and the amount of
+gray, your job is to calculate the number of kits needed for
+her class.</p>
+
+<p><b>Input:</b> The input consists of one or more test cases,
+followed by a line containing only zero that signals the end of the
+input.  Each test case consists of a single line of five or more
+integers, which are separated by a space.  The first integer <i>N</i>
+is the number of different colors (3 &le; <i>N</i> &le; 12). Following
+that are <i>N</i> different nonnegative integers, each at most 1,000,
+that specify the amount of each color needed.  Last is a nonnegative
+integer <i>G</i> &le; 1,000 that specifies the amount of gray needed.
+All quantities are in ml.</p>
+
+<p><b>Output:</b> For each test case, output the smallest number of
+fingerpainting kits sufficient to provide the required amounts of all
+the colors and gray.  Note that all grays are considered equal, so in
+order to find the minimum number of kits for a test case you may need
+to make grays using different combinations of three distinct
+colors.</p>
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;">
+        3 40 95 21 0<br>
+        7 25 60 400 250 0 60 0 500<br>
+        4 90 95 75 95 10<br>
+        4 90 95 75 95 11<br>
+        5 0 0 0 0 0 333<br>
+        0<br>
+       </td>
+       <td valign="top" style="font-family: monospace;">
+        2<br>
+        8<br>
+        2<br>
+        3<br>
+        4<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+
+<p><small><i>Last modified on October 29, 2005 at 12:05 PM.</i></small></p>
+
+</body>
+</html>

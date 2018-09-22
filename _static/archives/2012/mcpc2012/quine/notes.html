@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Judges Notes for Quine</title>
+  </head>
+  <body>
+    <h1>Judges Notes for Quine</h1>
+    <p>
+      This should be a very simple string parsing problem: check for each of
+      the five pieces.
+    </p>
+    <p style="margin-bottom: 0">
+      The <em>only</em> restrictions on the sentences are:
+    </p>
+    <ol style="margin: 0">
+      <li>They consist of only uppercase letters, quotes, and spaces.</li>
+      <li>
+        They do not contain leading, trailing, or consecutive whitespace.
+      </li>
+    </ol>
+    <p>
+      If the sentence really is Quine(A), it follows from the whitespace
+      restrictions that A will not have any leading, trailing, or consecutive
+      whitespace either.  However, that really should not matter, as there is
+      no reason to examine the phrase A at all&mdash;only to do a string
+      comparison to make sure it is the same both places.
+    </p>
+  </body>
+</html>

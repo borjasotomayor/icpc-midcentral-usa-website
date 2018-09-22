@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Judges' notes for Falling Ice</title>
+  <meta name="author" content="Andy Harrington">
+</head>
+
+
+<body style="background-color: white;">
+
+
+
+<h1 style="text-align: center;" align="center">Judges' Notes for Falling Ice</h1>
+<p>The judge's solution is initially set to be a legal contest submission. 
+To see graphical output for all judge's data sets, you need to make two changes. 
+In the judge's checking code at the end, initialize the variable hideGraphics to false and uncomment 
+the first if statement in the method dataSetCheck.
+
+The alt subdirectory shows a solution with a different algorithm (rolling rather than falling). </p>
+
+<h2>Floating Point Issues</h2>
+<p>With floating point arithmetic and complicated patterns in different
+algorithms it is notoriously difficult to ensure identical results with
+different (correct) algorithms.  Three kinds of tests were made in
+the judge's solutions to be sure such problems were avoided.</p>
+<p>If the solution is run set to generate summary statistics with the judge's input, the following is produced:</p>
+<p>Overall minimums:<br>
+Roundoff Leeway: 0.000402; Circle Separation: 0.027864; Badness diff: 0.020083</p>
+
+<p>1.  Rounding to many fewer places than full double precision
+generally gives the same results to different implementations, but
+this fails if the actual value is too close to a transition between
+roundoff values.  No answer was closer than 0.000402 to a value with a different rounded answer.</p>
+<p>2.  The entire topology of the solution can change based on
+numerical inaccuracies if one solution has a circle barely catching on
+two boundary points while another algorithm has it barely passing
+without catching.  The closeness to this transition was noted for
+all calculations, and circles either caught or completely missed
+catching by at least 0.027864.  This was further checked by
+adjusting the separations where a circle was declared to catch or
+not interfere with another.  This was encoded in the variable
+OkSep, which mathematically should be 0, but it could be adjusted with
+a command line parameter.  The program was run three times:</p>
+<span style="font-family: monospace;">java falling &gt; falling.out</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">java falling falling.in 0.01 &gt; falling01.out</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">java falling falling.in -0.01 &gt; falling-01.out</span><br style="font-family: monospace;">
+<br>
+setting this parameter to 0, 0.01 and -0.01.  The three output files are identical.<br>
+<br>
+The sample data has similar statistics, so contestants should be able to reproduce the sample data.<br>
+<br>
+3.  The problem claimed the data produces unique best resting
+places.  The solution compared all candidate positions to the
+lowest chosen, and found no measures closer than 0.020083.<br>
+<h2>Judge's Input Choices</h2>
+The last two data sets, 14 and 15, illustrate the need for the test
+for a clockwise direction: the reference to clockwiseTo in the
+addCircle function.  With that test, the two data sets
+give different results.  With the test omitted, the
+result for Dataset 15 incorrectly changes to match that of Dataset 14.<br>
+<br>
+</body>
+</html>

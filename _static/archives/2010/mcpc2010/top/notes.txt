@@ -1,0 +1,135 @@
+Discussion:  
+
+  If you consider checkerboard coloring, all pieces other than C
+  contain two squares of each color.  Therefore, any puzzle with an
+  odd number of C pieces collectively is certain to be unsolvable.
+  In our examples and tests, we make sure to rely on unsolvable
+  puzzles with an even number of C pieces.
+
+
+#########################################
+Public Examples
+#########################################
+
+Input: BCC  BDE
+
+#####.     CCCBB   EEDDD
+.##.#.      Cc B    EE D
+..###.       ccB     BBB
+..#...       c       B
+......
+......
+
+Note:      This is the primary example discussed in the prose.
+           Demonstrates two copies of same piece of same color (but
+           different rotations), and two copies of sampe peice, one in
+           each color (again with different rotations).  Also
+           demonstrates that there could be a hole in the resulting shape.
+Pieces:    BCDE
+Rotations: B(0), B(90), C(0), C(270), D(0), E(0)
+
+============================================
+
+Input: BCC EFG
+
+Impossible  (slight variation from first case)
+
+============================================
+
+Input: AAA CCE
+
+####..  AAAA    CCCE
+.####.   aaaa    CEEc 
+..####    AAAA    Eccc
+......
+......
+......
+
+============================================
+
+Input: ADG DEE
+
+####..   AAAA    EEee
+.####.    DDDG    EEee
+...###      DGG    DDD
+.....#        G      D
+......
+......
+
+Note:      Just a fun shape.  Uses all six columns, but never in the same row.
+Pieces:    ADEG
+Rotations: A(0), D(0), E(0), G(90)
+
+
+#########################################
+Judge Tests
+#########################################
+
+Input: AAD CCF
+
+##....    DD    FF
+##....    DA    FF
+###...    DAa   CCC
+.##...     Aa    Cc
+.##...     Aa    cc
+..#...      a     c
+
+Note: uses all six rows
+Pieces:     ACDF
+Rotations:  A(90), D(270), F(*), C(0), C(90)
+
+============================================
+
+Input: BCC GGG
+
+.####.     CBBC    1122  
+######    CCCBCC  112233 
+...##.       BC	     33  
+......
+......
+......
+
+Note: top-left corner is left empty.
+      Uses all six columns in second row.
+      Blue is a triple of same piece,
+      and ends up laid out without any rotaiton.
+      Red has a double, with one rotated and one not.
+Pieces:     BCG
+Rotations:  B(90), C(180), C(270), G(0)
+
+============================================
+
+Input: CFG CCC
+
+Impossible
+
+============================================
+
+Input: ADF BEG
+
+####..    AAAA   BBBG
+#####.    DDDFF  BEEGG
+..###.      DFF    EEG
+......
+......
+......
+
+Note:       Uses six distinct pieces.
+Pieces:     ABDEFG
+Rotations:  A(0), D(0), F(0),  B(0), E(0), G(90)
+
+============================================
+
+Input: AEE BDG
+
+###...   AEE    BBB
+#.##..   A EE   B DD
+#.#...   A e    G D
+###...   Aee    GGD
+.#....    e      G
+......
+
+
+Pieces:    ABDEG
+Rotations: A(90), B(0), D(90), E(0), e(90), G(90)
+

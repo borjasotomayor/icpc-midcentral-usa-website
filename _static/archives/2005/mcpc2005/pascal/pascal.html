@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Pascal's Travels</title>
+  <meta name="Author" content="Jerry Cain">
+  <meta content="Jerry Cain" name="author">
+  <meta content="Stanford University" name="description">
+</head>
+<body style="background-color: white;" lang="EN-US">
+<h1 style="text-align: center;" align="center">Problem A: Pascal's
+Travels<br>
+</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>pascal.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>pascal.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<p>An <span style="font-style: italic;">n</span> x <span
+ style="font-style: italic;">n</span> game board is populated with
+integers, one nonnegative integer per square. The goal is to travel
+along any legitimate path from the upper left corner to the lower right
+corner of the board. The integer in any one square dictates how large a
+step away from that location must be. If the step size would advance
+travel off the game board, then a step in that particular direction is
+forbidden. All steps must be either to the right or toward the bottom.
+Note that a 0 is a dead end which prevents any further progress.<br>
+</p>
+<p>Consider the 4 x 4 board shown in Figure 1, where the solid circle
+identifies the start position and the dashed circle identifies the
+target. Figure 2 shows the three paths from the start to the target,
+with the irrelevant numbers in each removed.<br>
+</p>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; text-align: center;"><img
+ src="image001.gif" title="" alt="Original board"
+ style="width: 147px; height: 147px;"></td>
+      <td style="vertical-align: top; text-align: center;"><img
+ src="image002.gif" title="" alt="Three solution boards"
+ style="width: 460px; height: 147px;"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; text-align: center;">Figure 1<br>
+      </td>
+      <td style="vertical-align: top; text-align: center;">Figure 2<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> </p>
+<span style="font-weight: bold;">Input:</span> The input contains data
+for one to thirty boards, followed by a final line containing only the
+integer -1. The data for a board starts with a line containing a single
+positive integer <span style="font-style: italic;">n</span>, 4 &#8804; <span
+ style="font-style: italic;">n</span> &#8804; 34, which is the number of rows
+in this board. This is followed by <span style="font-style: italic;">n</span>
+rows of data. Each row contains <span style="font-style: italic;">n</span>
+single digits, 0-9, with no spaces between them. <br>
+<span style="font-weight: bold;"><br>
+Output:</span> The output consists of one line for each board,
+containing a single integer, which is the number of paths from the
+upper
+left corner to the lower right corner. There will be fewer than 2<sup><font
+ size="-2">63</font></sup> paths for any board.<br>
+<br>
+<span style="font-weight: bold;"> <span style="font-style: italic;">Warning</span></span>:
+Brute force methods examining every path will likely exceed the
+allotted time limit. 64-bit integer values are available as <span
+ style="font-style: italic;">long </span>values in Java or<span
+ style="font-style: italic;"> long long</span> values using the contest's
+ C/C++ compilers.
+<p><span style="font-weight: bold;"> <span style="font-style: italic;"></span></span></p>
+<span style="font-weight: bold;"></span>
+<table border="1" cellpadding="2">
+  <thead> <tr>
+    <td> <b>Example input:</b> </td>
+    <td style="vertical-align: top;"> <b>Example output:</b> </td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+      <pre>4<br>2331<br>1213<br>1231<br>3110<br>4<br>3332<br>1213<br>1232<br>2120<br>5<br>11101<br>01111<br>11111<br>11101<br>11101<br>-1<br></pre>
+      </td>
+      <td style="vertical-align: top;">
+      <pre>3<br>0<br>7<br></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 26, 2005 at 6:45 PM.</i></small></p>
+</body>
+</html>

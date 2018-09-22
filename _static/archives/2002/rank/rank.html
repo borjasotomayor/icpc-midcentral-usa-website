@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Problem A: Programmer, Rank Thyself</title>
+</head>
+<body bgcolor=white>
+<h1 align="center">Problem A: Programmer, Rank Thyself</h1>
+
+<center><table>
+<tr><td>Source file:</td><td><tt>rank.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>, <tt>pas</tt>}</td></tr>
+<tr><td>Input file:</td><td><tt>rank.in</tt></td></tr>
+<tr><td>Output file:</td><td><tt>rank.out</tt></td></tr>
+</table></center>
+
+<p>Implement a ranking program similar to the one used for this
+programming contest.
+
+<p>The input file contains one or more contests followed by a line
+containing only zero that signals the end of the file.  Each contest
+begins with a line containing a positive integer <i>c</i> no greater
+than 20 indicating the number of teams in the contest, and is followed
+by <i>c</i> lines that contain a team name and the solution times for
+seven problems, separated by spaces.  Team names consist of between
+one and ten letters.  All team names within a contest are unique.
+Times are nonnegative integers no greater than 500.
+
+<p>As described in the <a href="../notes/teams.html">Notes to Teams</a>,
+teams are ranked first by greatest number of problems solved, then by
+least total time, then by least geometric mean of all nonzero times.
+Teams that are still tied are given the same numeric ranking and are
+listed in alphabetical order, using case-sensitive string comparison.
+The numeric ranking for a team is always one more than the number of
+teams ranked ahead of (not tied with) that team.  For this problem
+all geometric means will be rounded to an integer as described below,
+and only the rounded value will be used when computing rankings and
+displaying results.
+
+<p>If all times are zero, then the geometric mean is also zero.
+Otherwise, if there are <i>n</i> nonzero times
+<i>t</i><sub><small>1</small></sub>, ...,
+<i>t</i><sub><small><i>n</i></small></sub>,
+then the geometric mean is defined to be
+
+<p align=center>
+exp ((ln <i>t</i><sub><small>1</small></sub> +
+      ln <i>t</i><sub><small>2</small></sub> + ... +
+      ln <i>t</i><sub><small><i>n</i></small></sub>) / <i>n</i>)
+</p>
+
+<p>where exp <i>x</i> means
+<i>e</i><sup><small><i>x</i></small></sup> and ln <i>x</i> means the
+natural logarithm of <i>x</i>.  (There are other mathematically
+equivalent definitions of the geometric mean, but they may produce
+slightly different answers due to roundoff and/or overflow problems.
+Use this definition to get the same answers as the judges.)  After
+computing the geometric mean, round it to an integer by adding 0.5 and
+truncating any fractional digits.  (C/C++ and Java automatically
+truncate fractions when casting a floating-point type to an integral
+type.  In Pascal use the <tt>trunc</tt> function.)
+
+<p>For each contest you must output the rankings in a table.  All
+tables will have the same width, with the length equal to the number
+of teams entered in the contest.  Use the <i>exact</i> format shown in
+the examples.  Each contest has a numbered header followed by a table
+with one team entry per line.  Each entry contains the ranking, team
+name, problems solved, total time, geometric mean, and then the
+individual solution times in the same order they appeared in the
+input.  In the first example all values completely fill their fields.
+In general you may need to pad values with spaces (never tabs) so that
+they have the correct field width.  The team name is left-justified,
+and all other fields are right-justified.  The ranking always has two
+digits, including a leading zero if necessary.  Spaces will never
+appear at the beginning or end of lines.
+
+<p><b>Example input:</b></p>
+
+<blockquote><pre>1
+Plutonians 123 234 345 456 167 278 389
+4
+Xap 0 0 0 0 0 0 0
+Foo 20 30 0 50 40 0 10
+Bar 0 50 20 0 10 40 30
+Baz 0 0 0 0 0 0 0
+3
+Venus 213 0 0 57 0 0 0
+Neptune 0 0 0 117 153 0 0
+Mars 0 150 0 0 0 0 120
+0
+</pre></blockquote>
+
+<p><b>Example output:</b></p>
+
+<blockquote><pre>CONTEST 1
+01 Plutonians 7 1992 261 123 234 345 456 167 278 389
+CONTEST 2
+01 Bar        5  150  26   0  50  20   0  10  40  30
+01 Foo        5  150  26  20  30   0  50  40   0  10
+03 Baz        0    0   0   0   0   0   0   0   0   0
+03 Xap        0    0   0   0   0   0   0   0   0   0
+CONTEST 3
+01 Venus      2  270 110 213   0   0  57   0   0   0
+02 Mars       2  270 134   0 150   0   0   0   0 120
+02 Neptune    2  270 134   0   0   0 117 153   0   0
+</pre></blockquote>
+
+<p><small><i>Last modified on October 26, 2002 at 7:26 PM.</i></small></p>
+
+</body></html>

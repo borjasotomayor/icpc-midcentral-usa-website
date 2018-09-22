@@ -1,0 +1,52 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  lru.cpp
+  LRU Caching, MCPC 2012 Problem F
+  C++ solution by Gabriel Foust
+*/</span>
+
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;lru.in&quot; );
+
+<span class=keyword>int</span> main()
+{
+  <span class=keyword>int</span> cache_size;
+  <span class=keyword>int</span> count= 0;
+  <span class=keyword>while</span> (fin &gt;&gt; cache_size &amp;&amp; cache_size &gt; 0)
+  {
+    string cache;
+    string command;
+    cout &lt;&lt; &quot;Simulation &quot; &lt;&lt; ++count &lt;&lt; endl;
+    fin &gt;&gt; command;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; command.size(); ++i)
+    {
+      <span class=keyword>if</span> (command[i] == '!')
+        cout &lt;&lt; (cache.empty() ? &quot;empty&quot; : cache) &lt;&lt; endl;
+      <span class=keyword>else</span>
+      {
+        size_t pos= cache.find_first_of( command[i] );
+        <span class=keyword>if</span> (pos != string::npos)
+          cache.erase( pos, 1 );
+        <span class=keyword>else</span> <span class=keyword>if</span> (cache.size() == cache_size)
+          cache.erase( 0, 1 );
+        cache+= command[i];
+      }
+    }
+  }
+
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

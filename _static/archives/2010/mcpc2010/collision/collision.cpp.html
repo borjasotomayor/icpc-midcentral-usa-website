@@ -1,0 +1,61 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Queen Collison, MCPC 2010 Problem D, C++ solution by Michael Goldwasser */</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+fstream fin(&quot;collision.in&quot;);
+
+<span class=keyword>int</span> main() {
+  <span class=keyword>int</span> n,g;
+  fin &gt;&gt; n;
+  <span class=keyword>while</span> (n &gt; 0) {
+
+    <span class=comment>/*
+     * tallies[0][x]        tracks each row from 1 to n
+     * tallies[1][y]        tracks each column from 1 to n
+     * tallies[2][x+y]      tracks each diagonal from 2 to 2*n
+     * tallies[3][n+1+x-y]  tracks each reverse diagonal from 2 to 2*n
+     */</span>
+    <span class=keyword>int</span> tallies[4][2*n+1];
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;4; j++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt;= 2*n; k++)
+        tallies[j][k] = 0;
+
+    fin &gt;&gt; g;
+    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;g; i++) {
+      <span class=keyword>int</span> k,x,y,s,t;
+      fin &gt;&gt; k &gt;&gt; x &gt;&gt; y &gt;&gt; s &gt;&gt; t;
+      <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;k; j++) {
+        tallies[0][x]++;
+        tallies[1][y]++;
+        tallies[2][x+y]++;
+        tallies[3][1+n+x-y]++;
+
+        x += s;
+        y += t;
+      }
+    }
+
+    <span class=comment>// compute number of collisions
+</span>    <span class=keyword>long</span> count = 0;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;4; j++)
+      <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt;= 2*n; k++)
+        <span class=keyword>if</span> (tallies[j][k] &gt; 1)
+          count += (tallies[j][k] - 1);
+
+    cout &lt;&lt; count &lt;&lt; endl;
+    fin &gt;&gt; n;
+  }
+}
+</pre></body>
+</html>

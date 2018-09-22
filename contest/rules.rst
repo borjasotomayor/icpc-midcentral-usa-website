@@ -37,7 +37,7 @@ Higher math may include:
 Number of Problems
 ------------------
 
-We are required to have at least six problems, and we will never have more than nine. The exact number will be posted on the home page a few days before the contest.
+Historically, the Mid-Central problem set has had at least nine problems, but has sometimes had more than that. The exact number will be posted on the home page a few days before the contest.
 
 Reference Materials
 -------------------

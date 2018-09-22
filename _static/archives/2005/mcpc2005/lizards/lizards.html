@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Leapin' Lizards</title>
+  <meta name="Author" content="Eric Shade">
+  <meta name="author" content="Tom Capaul">
+  <meta content="Eastern Washington University" name="description">
+</head>
+<body style="background-color: white;" lang="EN-US">
+<h1 style="text-align: center;" align="center">Problem H: Leapin'
+Lizards<br>
+</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>lizards.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>lizards.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+
+<p>Your platoon of wandering lizards has entered a strange room in the
+labyrinth you are exploring. As you are looking around for hidden
+treasures, one of the rookies steps on an innocent-looking stone and
+the room's floor suddenly disappears! Each lizard in your platoon is
+left standing on a fragile-looking pillar, and a fire begins to rage
+below...</p>
+
+<p>Leave no lizard behind! Get as many lizards as possible out of the
+room, and report the number of casualties.</p>
+
+<p>The pillars in the room are aligned as a grid, with each pillar one
+unit away from the pillars to its east, west, north and south. Pillars
+at the edge of the grid are one unit away from the edge of the room
+(safety). Not all pillars necessarily have a lizard. A lizard is able
+to leap onto any unoccupied pillar that is within <i>d</i> units of
+his current one. A lizard standing on a pillar within leaping distance
+of the edge of the room may always leap to safety... but there's
+a catch: each pillar becomes weakened after each jump, and will soon
+collapse and no longer be usable by other lizards. Leaping onto
+a pillar does not cause it to weaken or collapse; only leaping off of
+it causes it to weaken and eventually collapse. Only one lizard may be
+on a pillar at any given time.</p>
+
+<p><b>Input:</b> The input file will begin with a line containing
+a single integer representing the number of test cases, which is at
+most 25. Each test case will begin with a line containing a single
+positive integer <i>n</i> representing the number of rows in the map,
+followed by a single non-negative integer <i>d</i> representing the
+maximum leaping distance for the lizards. Two maps will follow, each
+as a map of characters with one row per line. The first map will
+contain a digit (0-3) in each position representing the number of
+jumps the pillar in that position will sustain before collapsing (0
+means there is no pillar there). The second map will follow, with an
+<tt>'L'</tt> for every position where a lizard is on the pillar and
+a <tt>'.'</tt> for every empty pillar. There will never be a lizard on
+a position where there is no pillar.</p>
+
+<p>Each input map is guaranteed to be a rectangle of size <span
+ style="font-style: italic;">n</span> x <span
+ style="font-style: italic;">m</span>, where 1 &#8804; <span
+ style="font-style: italic;">n</span> &#8804; 20 and 1 &#8804; <span
+ style="font-style: italic;">m</span> &#8804; 20. The leaping distance is
+always 1 &#8804; <span style="font-style: italic;">d</span> &#8804; 3.</p>
+
+<p><b>Output:</b> For each input case, print a single line containing
+the number of lizards that could not escape. The format should follow
+the samples provided below.<p>
+
+<p><b>Warning:</b> Brute force methods examining every path will
+likely exceed the allotted time limit.</p>
+
+<table border="1" cellpadding="5">
+  <thead> <tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td style="font-family: monospace;">4<br>
+3 1<br>
+1111<br>
+1111<br>
+1111<br>
+LLLL<br>
+LLLL<br>
+LLLL<br>
+3 2<br>
+00000<br>
+01110<br>
+00000<br>
+.....<br>
+.LLL.<br>
+.....<br>
+3 1<br>
+00000<br>
+01110<br>
+00000<br>
+.....<br>
+.LLL.<br>
+.....<br>
+5 2<br>
+00000000<br>
+02000000<br>
+00321100<br>
+02000000<br>
+00000000<br>
+........<br>
+........<br>
+..LLLL..<br>
+........<br>
+........<br>
+      </td>
+      <td style="font-family: monospace;" valign="top">Case #1: 2
+lizards were left behind.<br>
+Case #2: no lizard was left behind.<br>
+Case #3: 3 lizards were left behind.<br>
+Case #4: 1 lizard was left behind.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 30, 2005 at 1:15 PM.</i></small></p>
+</body>
+</html>

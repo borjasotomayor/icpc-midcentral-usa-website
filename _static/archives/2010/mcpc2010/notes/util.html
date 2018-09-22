@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+<meta name="generator" content="HTML Tidy for Linux/x86 (vers 1 July 2005), see www.w3.org">
+
+  
+
+
+<meta name="GENERATOR" content="Mozilla/4.72 [en] (Windows NT 5.0; I) [Netscape]">
+
+
+<title>Using the Judging Utilities</title></head>
+<body>
+
+<table width="100%">
+
+  <tbody>
+
+    <tr valign="top">
+
+      <td align="left"><font size="+3"><b>Using the Judging Utilities</b></font></td>
+
+      <td align="right"><font size="-1"><i>Last modified Fri Oct 29 22:18:52 2010</i></font></td>
+
+    </tr>
+
+
+  </tbody>
+</table>
+
+<p>The installation and grading work exactly the same way as last year
+by default.  To install the utilities in Windows:</p>
+
+<ol>
+
+<li>Open a Command Prompt (usually under Start<tt>-&gt;</tt>All
+Programs<tt>-&gt;</tt>Accessories).</li>
+
+<li>Change to a directory in which you have write access, under which
+you want the <tt>mcpc2010</tt> directory and subdirectories
+copied.</li>
+
+<li>Put the judges' CD-ROM into a CD/DVD drive. Then enter the command
+"<tt>e:\install</tt>", where "<tt>e:</tt>" should be replaced by the
+correct drive letter for your CD/DVD drive.</li>
+
+</ol>
+
+<p>This will copy the subdirectory <tt>mcpc2010</tt>, and
+subdirectories <tt>mcpc2010\team</tt>, <tt>mcpc2010\judge</tt>,
+<tt>mcpc2010\back</tt>, <tt>mcpc2010\notes</tt>,
+and directories with each of the individual problems, and make the
+current directory <tt>mcpc2010\team</tt>.</p>
+
+<p>All directories mentioned below are relative to
+the <tt>mcpc2010</tt> directory.</p>
+
+<p>To judge a program, make sure the current directory is
+still <tt>team</tt>, and then just type</p>
+
+<blockquote><pre>j L #<br></pre></blockquote>
+
+<p>where <tt>L</tt> is the problem letter and <tt>#</tt> is the team
+number, as in "<tt>j e 12</tt>" to grade problem e for team 12.</p>
+
+<p>This script file as written will</p>
+
+<ol>
+
+<li>search the <tt>a:</tt> drive for a valid source file for problem
+L, (see below to change <span style="font-family: monospace;">a:</span> to another drive)</li>
+
+<li>delete the relevant contents of <tt>team</tt> in preparation for
+judging,</li>
+
+<li>copy the source file into <tt>team</tt>,</li>
+
+<li>make a uniquely named archival copy of the source file
+in <tt>back</tt>,</li>
+
+<li>copy the correct input file into <tt>team</tt>,</li>
+
+<li>compile the program,</li>
+
+<li>run the program,</li>
+
+<li>compare the program's output with the correct output, and if they
+don't match,</li>
+
+<li>visually compare the two output files if they are different.</li>
+
+</ol>
+
+<p>Instructions will be displayed on the screen, and you can stop the
+batch file when necessary by pressing <tt>Ctrl-C</tt>.
+</p><p>In step 8 the files are compared using fc. If the two files are
+identical it will say so, and otherwise it will show the differences.
+The output of fc is fairly clear when it all fits on one screen. If
+there are a lot of errors it may be easier to see them in step 9.</p>
+
+<p>Step 9 starts in a popup KDiff3 window automatically if the files
+are not exactly alike.  This may be unnecessary if it is clear from
+the fc output that there is a wrong answer.  KDiff3 has several useful
+features for evaluating errors:</p>
+
+<ul>
+<li>It highlights individual character differences.</li>
+<li>It allows you to jump to the next difference.</li>
+<li>It can compare without treating extra whitespace as an error.</li>
+<li>If you set it to display line numbers, a missing final newline is
+most clearly displayed.</li>
+<li>If the only difference is different operating system specific
+newline sequences, a popup window says the <span style="font-style: italic;">text</span> is equal (as opposed to <span style="font-style: italic;">binary</span> equal).</li>
+</ul>
+
+<p>Determine whether any difference is a wrong answer or if all errors
+are presentation errors.</p>
+
+<b>IMPORTANT NOTE: Site-Specific Modifications to the Grading Utilities</b>
+
+<p>These batch files assume that g++ and gcc and Oracle/Sun's version 1.6 or
+greater of <tt>java.exe</tt> and <tt>javac.exe</tt> are in the
+execution path. If you have an IDE that adds additional flags when it
+invokes g++, gcc or javac, make sure you
+alter <span style="font-family: monospace;">j2.cmd</span> to match. If
+you have a modified <tt>j2.cmd</tt> from 2006 and your site
+configuration has not changed, you should be able to use it this year,
+but test it to be sure.</p>
+
+<p>To allow problem submissions to arrive on a flash drive or any
+media not read through drive a:, the script <span style="font-family: monospace;">j1.cmd</span> has a line right near the top setting the
+environment variable MCPCdrive. If you want a drive other than
+a: used, change it.</p>
+
+<p style="font-weight: bold;">Testing Scripts Ahead of Time</p>
+
+<p>The scripts will arrive with your official packet in the week of
+the competition, but if you are planning to use them or variants of
+them, you are strongly encouraged to test early for this year's
+setup.  You can obtain a test setup
+in <a href="http://mcpc.cigas.net/utilTest2010.zip">utilTest2010.zip</a>. That zip also contains benchmarking programs to evaluate the efficiency of the computing systems used throughout the region.</p><p style="font-weight: bold;">Testing Judge's Solutions on the Day of the Competition</p><p>There is a directory <span style="font-family: monospace;">mcpc2010/solDir</span><span style="font-family: monospace;"></span>&nbsp;<span style="font-family: monospace;"></span>containing
+a copy of all the solutions. &nbsp;For easy testing of correct
+solutions with the judging utilites, just copy the contents to a flash
+drive. &nbsp;Note the times for execution on your system. &nbsp;They
+should all be substantially less than a minute.</p>
+<!--
+<p><span style="font-weight: bold;">Utilities Specifically for </span><span style="font-weight: bold;">Testing </span></p>
+<p>There are a few possibly useful Windows setup testing
+utilities, all in the MCPC2006 directory, and all that should be run
+from that directory.</p>
+<ul>
+  <li> <span style="font-weight: bold;">sol2flop.cmd</span>
+ - copies all judges' solutions to a floppy disk, so you can use
+then to test correct execution with the grading utilities.  Modify
+copysrc.cmd if you want to copy somewhere other than a:.</li>
+  <li> <span style="font-weight: bold;">solCompile.cmd</span>  - compiles all judges' solutions automatically into individual problem directories.  This is <span style="font-style: italic;">needed before the following:</span></li>
+  <li> <span style="font-weight: bold;">solOut.cmd [fileSuffix]</span>-
+ runs all solutions, allowing you to see if any take long on your
+system.  If the fileSuffix is omitted, output goes to the screen.
+ If the fileSuffix is specified, output goes to a file in the
+problem directory named by concatenating the problem name and the
+suffix.  <span style="font-style: italic;">You must compile first</span> <span style="font-style: italic;">with solCompile</span>.<br>
+  </li>
+</ul>
+<p>The following support scripts are called by the scripts above:  forAll.cmd,  copysrc.cmd,  compilesrc.cmd,  runsol.cmd</p>
+-->
+
+<p><b>Archive of submitted programs</b></p>
+
+<p>Example: The 4th time that team 7 has a C++ program for problem E
+graded on the same computer, the batch
+file <tt>judge\nextback.cmd</tt> is called to copy their source
+program to <tt>back\7e4.cpp</tt>.</p>
+
+<p><b>Browsing in your spare time</b></p>
+
+<p>All the judges' files are copied by <tt>install.cmd</tt>. While
+waiting for the next problem to grade, you can browse through the
+problem files and administrative information files by starting a web
+browser at the local file <tt>browse.html</tt> in
+the <tt>mcpc2010</tt> directory.</p>
+
+</body></html>

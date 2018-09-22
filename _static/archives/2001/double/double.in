@@ -1,0 +1,71 @@
+3 2 2
+oo oo .o
+o. .o o.
+3 2 2
+oo oo .o
+o. .o oo
+5 5 3
+.o. .o. oo. oo. o.o
+o.o .o. ..o ..o o.o
+o.o .o. .o. oo. ooo
+o.o .o. o.. ..o ..o
+.o. .o. ooo oo. ..o
+1 2 4
+.o..
+...o
+1 1 1
+o
+13 7 5
+.ooo. oooo. .ooo. oooo. ooooo ooooo .ooo. o...o ooooo ooooo o...o o.... o...o
+o...o o...o o...o o...o o.... o.... o...o o...o ..o.. ...o. o..o. o.... oo.oo
+o...o o...o o.... o...o o.... o.... o.... o...o ..o.. ...o. o.o.. o.... o.o.o
+ooooo oooo. o.... o...o ooo.. ooo.. o..oo ooooo ..o.. ...o. oo... o.... o.o.o
+o...o o...o o.... o...o o.... o.... o...o o...o ..o.. ...o. o.o.. o.... o...o
+o...o o...o o...o o...o o.... o.... o...o o...o ..o.. .o.o. o..o. o.... o...o
+o...o oooo. .ooo. oooo. ooooo o.... .ooo. o...o ooooo ..o.. o...o ooooo o...o
+13 7 5
+o.... ..... ..... ..... ..o.. ...o. ....o ...o. ooooo ..... ..... ..... .....
+.o... o.... ..... ..... ...o. ....o ...o. ..o.o o.o.o ooooo ..... ..... .....
+..o.. .o... o.... ..... ....o ...o. ..o.. .o... o.o.o o.ooo ooooo ..... .....
+...o. ..o.. .o... o.... ...o. ..o.. .o... o.... o.o.o o.ooo o.ooo ooooo .....
+....o ...o. ..o.. .o... ..o.. .o... o.... ..... o.o.o o.ooo o.ooo o.ooo ooooo
+...o. ....o ...o. ..o.o .o... o.... ..... ..... ooooo ooooo ooooo ooooo ooooo
+..o.. ...o. ....o ...o. o.... ..... ..... ..... ooooo ooooo ooooo ooooo ooooo
+40 10 1
+o o o o o o o o o . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+o . . . . . . . . o o o o o o o o . . . . . . . . . . . . . . . . . . . . . . .
+. o . . . . . . . o . . . . . . . o o o o o o o . . . . . . . . . . . . . . . .
+. . o . . . . . . . o . . . . . . o . . . . . . o o o o o o . . . . . . . . . .
+. . . o . . . . . . . o . . . . . . o . . . . . o . . . . . o o o o o . . . . .
+. . . . o . . . . . . . o . . . . . . o . . . . . o . . . . o . . . . o o o o .
+. . . . . o . . . . . . . o . . . . . . o . . . . . o . . . . o . . . o . . . o
+. . . . . . o . . . . . . . o . . . . . . o . . . . . o . . . . o . . . o . . o
+. . . . . . . o . . . . . . . o . . . . . . o . . . . . o . . . . o . . . o . .
+. . . . . . . . o . . . . . . . o . . . . . . o . . . . . o . . . . o . . . o .
+2 1 39
+o.oo.ooo.oooo.ooooo.oooooo.ooooooo.ooo. o.o..ooo.oooo.ooooo.oooooo.ooooooo.oooo
+2 1 39
+oooo.oooo.oooo.oooo.oooo.oooo.oooo.oooo .oo...oo...oo...oo...oo...oo...oo...oo.
+8 10 9
+ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo
+ooooooooo o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo
+ooooooo.o ooooooooo o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o
+o.ooooooo ooooooo.o ooooooooo o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo
+ooooooo.o o.ooooooo ooooooo.o ooooooooo o.ooooooo ooooooo.o o.ooooooo ooooooo.o
+o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooooo o.ooooooo ooooooo.o o.ooooooo
+ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooooo o.ooooooo ooooooo.o
+o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooooo o.ooooooo
+ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooooo
+ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo
+1 10 79
+ooooooooo.oo.....oo.ooooooooo......ooooooooo......ooooooooo.oo.....oo.ooooooo..
+ooooooooo.oo.....oo.ooooooooo.....o.........o.....ooooooooo.ooo....oo.oooooooo.
+....oo....oo.....oo.o............o..oo...oo..o....oo........oooo...oo.oo.....oo
+....oo....oo.....oo.o...........o...oo...oo...o...oo........oo.oo..oo.oo.....oo
+....oo....ooooooooo.ooooo.......o.............o...ooooo.....oo..oo.oo.oo.....oo
+....oo....ooooooooo.ooooo.......o..o.......o..o...ooooo.....oo...oooo.oo.....oo
+....oo....oo.....oo.o...........o...o.....o...o...oo........oo....ooo.oo.....oo
+....oo....oo.....oo.o............o...ooooo...o....oo........oo.....oo.oo.....oo
+....oo....oo.....oo.ooooooooo.....o.........o.....ooooooooo.oo.....oo.oooooooo.
+....oo....oo.....oo.ooooooooo......ooooooooo......ooooooooo.oo.....oo.ooooooo..
+0 0 0

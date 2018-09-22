@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>2003 Call for Problems</TITLE>
+</HEAD>
+<BODY>
+<H1 ALIGN=CENTER>2003 ACM Programming Contest<BR>
+Mid-Central Region<BR>
+Call for Problems</H1>
+
+<P>We are now accepting contest problems for the 2003 ACM Mid-Central
+Regional Programming Contest.  If you have a good problem fermenting in
+your brain, or you have been dissatisfied with the problems in previous
+contests, now is your chance!  Using problems from different authors
+keeps our problem set fresh and interesting for the teams. Our biggest
+need is for easy problems. Instructions for submitting a problem are at
+the end of this page.  Please read this announcement completely before
+you submit a problem.
+
+
+<P>The regional programming contest has two primary goals: to select the two
+strongest teams to represent our region in the international finals, and
+to provide a valuable educational experience for all teams.  To ensure
+that these primary goals are met, we have the following requirements.
+
+<OL>
+<LI>All teams can solve at least one problem, but few teams can solve them all.
+<LI>All problem specifications are clear and unambiguous.
+<LI>All problems can be graded quickly by machine.
+<LI>No problems favor the use of one programming language over another.
+</OL>
+
+<P>The rest of this announcement provides some guidelines for meeting
+these requirements.
+
+<H2>1. Writing Solvable Problems</H2>
+
+<P>Several years ago, all the problems were generally hard. Many teams
+failed to solve even one and no teams solved them all. Our goal is to
+have a mix of easy and hard problems, but none that are impossible.
+
+<P>We don't have an exact definition of a <I>solvable</I> problem, but here
+are two useful guidelines.  First, try to fit the problem description
+(including sample input and output) on a single page.  Second, make sure
+that there is only <em>one</em> nontrivial problem to solve; eliminate
+all other details.  For example, if you write a maze-search problem,
+then you're testing a team's ability to implement a search algorithm.
+That's the essence of the problem.  If, in addition, you require elaborate
+input and output formats, then you're also testing a team's ability to
+parse complex input and generate complex output.  In effect, you're
+writing three problems.  Decide what the essence of the problem is,
+and simplify the remaining details as much as possible.
+
+<H2>2. Writing Clear and Unambiguous Problems</H2>
+
+<P>Problems must be clear, concise, and unambiguous.  We will not
+accept ambiguous problems.  All necessary information must either be stated
+explicitly in the problem, or must be inferrable from what <em>is</em>
+stated. 
+
+<P>Here are some things to keep in mind.
+
+<OL>
+<LI><B>Define limits.</B><br>
+How big can the maze be?  Are negative numbers allowed?  What
+happens when the string is empty?  How large can the result of that
+calculation be?  Are characters case-sensitive?
+
+<LI><B>Don't write 'one-shot' problems.</B><br>
+The 1992 contest included a problem called <i>Puttin' on the Hex</i> that 
+defined a large hexagonal maze and required teams to write a 
+program to find a path through the maze.  There was no input (teams
+had to hard-code the maze in their program) and there was only a single 
+output.  Problems like this make it tempting for teams to try to solve
+the problem by hand and then simply write a program that outputs the answer
+without performing any computations. Even if the problem seems too
+difficult to solve by hand, some team might get lucky.  We want to avoid
+this situation, so in general we will not accept such problems.
+
+<LI><B>If the obvious solution won't work, say so.</B><br>
+A classic problem is <i>coin changing</i>, in which you are supposed to
+calculate the fewest number of coins necessary to make a certain amount
+of change.  For example, the minimum number of U.S. coins needed to make
+87 cents is 6 (3 quarters, 1 dime, and 2 pennies).  It's easy to
+calculate this using a <i>greedy</i> strategy; use as many quarters as
+possible, then as many dimes as possible, then as many nickels as
+possible, and then as many pennies as possible.  The trick is that the
+value of the coins is part of the input.  If quarters are worth
+23 cents, dimes are worth 11 cents, nickels are worth 4 cents, and
+pennies are worth 1 cent, then the greedy strategy will not work; it will
+use 5 coins to make 33 cents (23+4+4+1+1), but the actual minimum needed
+is 3 coins (11+11+11).  One of us has used this problem in practice sessions, and most
+students fail to realize that the greedy strategy won't work in general.
+<B>Moral:</b> if you write a seemingly simple problem in which
+the obvious strategy will not work, <em>say so</em>, and provide sample
+input and output to illustrate it.  (Of course, you shouldn't give them
+the correct strategy.)
+
+<LI><B>If the obvious solution is too slow, say so.</B><br>
+One of us  once wrote a problem that, given <i>n</i>, required students to find all
+integers <i>x</i> and <i>y</i> such that (1) <i>x - y = n</i>, and (2)
+<i>x</i> and <i>y</i> together used all ten digits once each.  An efficient
+solution must use the magnitude of <i>n</i> to constrain <i>x</i>
+and <i>y</i>.  For example, if <i>n &lt; 1000</i> then <i>x</i> and
+<i>y</i> must both be 5-digit numbers whose first digits differ by 1.
+Some students tried to solve this problem by brute force, in effect
+trying all possible values of <i>x</i> (from 0 to 987654321).  This
+example is extreme, but there are many problems that have simple but
+wildly inefficient solutions.  If yours is one of them, explicitly state
+that the obvious brute-force solution is too slow.
+
+<LI><B>State any window dressing concisely.</B><br>
+It is traditional to 'dress up' a problem to make it interesting, and we
+heartily approve of this.  We don't want all the problems to sound like
+exercises from a data structures textbook.  While you have unlimited
+artistic license, don't let problem descriptions drag on too long, and
+don't provide irrelevant facts if they may mislead a team.
+</OL>
+
+<H2>3. Writing Machine-Gradable Problems</H2>
+
+<P>To ensure that programs can be graded
+quickly and accurately, all problems must be machine gradable.
+Specifically,
+
+<OL>
+<LI>output must be unique, so that it can be compared to the correct
+output using a file-comparison utility,
+<LI>programs must not require excessive amounts of time, and
+<LI>programs must be gradable using a single input file.
+</OL>
+
+<P>To ensure that output is unique, you must pay
+particular attention to spacing, spelling, punctuation, and format of
+floating-point output.  For some problems you may need to require that
+output be sorted in some fashion.  If you require output in the form of
+sentences, pay attention to plurals: will you require <i>Barney needs 4
+bandersnatch<u>es</u></i> but <i>Barney needs 1 bandersnatch</i>, or
+will you use a neutral <i>Barney needs 1 bandersnatch(es)</i>?
+In general, select output formats that make
+life easy for the programmer.  Avoid elaborate tabular formats that
+require programmers to count spaces.
+
+<P>Be careful if your problem requires case-insensitive string sorting.
+There are two reasonable ways to perform such a sort if the language
+does not provide case-insensitive comparisons (and not all do). One way
+is to sort based on the lowercased versions of each string, and the
+other is to sort based on the uppercased versions of each string. These
+two methods may give different results if the strings contain any of the
+characters ('<tt>[</tt>', '<tt>\</tt>', '<tt>]</tt>', '<tt>^</tt>',
+'<tt>_</tt>', '<tt>`</tt>'),
+whose ASCII codes are between
+those of the uppercase and lowercase letters. So either avoid those
+characters, or specify the exact sorting method to use.
+
+<P>Ensure that correct programs require less than 1 minute to process all
+of the judge's input data.
+
+<P>Problems should be designed to work with a single input file that
+may contain any number of test cases.  We will not accept problems that
+require each test case to be in a separate file.
+
+<H2>4. Writing Language-Independent Problems</H2>
+
+<P>Teams can use C, C++, Java, or Turbo Pascal, and these languages
+have different strengths and weaknesses.  Use the following guidelines
+to ensure that you don't inadvertently write problems that provide a
+significant advantage for one language over the other.
+
+<OL>
+<LI><B>Use only ASCII characters.</B><br>
+In C/C++, characters can be signed (-128..127) or unsigned (0-255).  Turbo 
+Pascal characters are always unsigned.  To avoid problems, only use printable
+ASCII characters in the range 32..126 (other than the CR/LF at the end of
+each line, of course).
+<LI><B>Use simple formatting.</B><br>
+C and C++ support fairly sophisticated features for formatted I/O.  (C has 
+printf/scanf and C++ has the iostream library.)  Java and Pascal are 
+more limited; you can specify a field width, left or right justification,
+and a precision for floating-point output (but no scientific notation),
+and that's about it.
+
+<LI><B>Use sentinels to signal the end of the input</B><br>
+End-of-file handling differs between languages and sometimes between
+different compilers for the same language. It can cause problems for teams
+using tools that they're not used to. 
+
+<LI><B>Don't require strings longer than 255 characters.</B><br>
+Turbo Pascal strings have a maximum length of 255 characters.  This
+limit also applies to lines in input files (not including the CR/LF
+end-of-line marker).
+
+<LI><B>Don't use whitespace other than blanks.</B><br>
+The only whitespace in input and output is blanks and newlines.
+The general rule is that only single blanks appear, and only after
+the beginning of a line and before the end of a line, and there are no
+blank lines.  In some cases, for instance with output in columns, you
+may want to break this rule and allow multiple blanks and blanks at the
+beginning of some lines. In this case mention the rule change explicitly.
+
+<LI><B>Don't use 32-bit unsigned integers</B><br>
+Java and Turbo Pascal only support signed 32-bit integers, i.e., 
+they have no type analogous to C's <i>unsigned long</i>.
+
+<LI><B>Don't use NaNs and infinities.</B><br>
+The floating-point units in modern processors support NaNs (Not-a-Number) and
+infinities.  These are wonderful but are only directly supported by Java.
+(Support for the other languages is compiler-dependent.)
+Don't use them.
+
+<LI><B>Don't require data structures larger than 64K.</B><br>
+Using the standard memory models, DOS C/C++ and Turbo Pascal compilers
+do not allow more than 64K of global static data, and do not allow a
+single object larger than 64K to be allocated from the heap.
+(Technically, the limit is 64K-16 = 65520 bytes.)
+
+<LI><B>Make sure that all input lines end with CR/LF.</B><br>
+In MS-DOS, lines in text files end with a CR/LF sequence (hex 0D/0A).
+This includes the last line of the file.  Many years ago, text files also
+had a Ctrl-Z character to mark the end of the file, but this convention
+is no longer used.  Normally issues like these are transparent to the
+programmer, but a few years ago during the regional contest one line in
+an input file was missing the CR from the CR/LF sequence.  C/C++
+programs still worked OK, but Pascal programs treated it as end-of-file
+and didn't process all the test cases.  Be careful if you prepare a
+problem on a UNIX system, because UNIX uses LF instead of CR/LF as the
+end-of-line marker.
+</OL>
+
+<H2>Submitting a Problem</H2>
+
+<P>Before you start working on a problem, call one of us with your idea
+so that we can make sure it will blend well with the other problems.
+We will also arrange a way for you to send the problem securely.
+<I>Never send an unencrypted problem via email!</I>
+
+<P>When you submit a problem, we will need: (1) the problem description
+(which must include sample input and output), (2) source code for a
+solution, written in any language supported by the contest but preferably
+C++ or Java, and (3) the input file to be used for judging.  We will
+use your program to generate the correct output to be used for judging.
+
+<H2>Addresses</H2>
+
+<P>Feel free to contact any of the Regional Chief Judges listed below.  
+
+<P><ADDRESS>
+<A HREF="mailto://cigas@acm.org">John Cigas</A> (Editor) <BR>
+Rockhurst University <BR>
+816-501-4534
+</ADDRESS>
+
+<P><ADDRESS>
+<A HREF="mailto://anh@math.luc.edu">Andy Harrington</A> (Toolsmith) <BR>
+Loyola University Chicago <BR>
+773-508-3569
+</ADDRESS>
+
+<P><ADDRESS>
+<A HREF="mailto://EricShade@smsu.edu">Eric Shade</A> (Webmaster) <BR>
+Southwest Missouri State University <BR>
+417-836-4944
+</ADDRESS>
+
+</BODY>
+</HTML>

@@ -9,6 +9,12 @@
 <!-- TODO: Google Analytics -->
 {% endblock %}
 
+{% block content %}
+<header class="masthead container">
+  <div class="jumbotron hidden-xs hidden-sm"></div>
+</header>	 
+{{ super() }} 	
+{% endblock %}
 
 {% block htmltitle %}
 {%- if pagename == master_doc %}

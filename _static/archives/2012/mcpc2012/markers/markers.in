@@ -1,0 +1,202 @@
+6
+A 2 B 3 E 2
+B 2 C 1 D 4
+C 1 F 4
+D 1 F 1
+E 2 C 3 D 5
+F 0
+7
+A 3 B 1 C 5 D 4
+B 2 C 2 E 5
+C 2 E 4 F 3
+D 2 C 2 F 3
+E 1 G 6
+F 1 G 4
+G 0
+7
+A 2 B 2 C 4
+B 2 D 4 C 1
+C 2 D 3 E 5
+D 2 F 4 E 2
+E 2 F 2 G 5
+F 1 G 2
+G 0
+6
+A 2 B 3 D 2
+B 2 C 4 E 3
+C 1 F 2
+D 2 C 3 E 2
+E 1 F 1
+F 0
+6
+A 2 B 3 E 2
+B 2 C 1 D 4
+C 1 F 4
+D 1 F 1
+E 2 C 2 D 5
+F 0
+6
+A 2 B 4 E 2
+B 2 C 1 D 4
+C 1 F 4
+D 1 F 1
+E 2 C 2 D 5
+F 0
+17
+A 3 B 2 L 1 K 3
+B 3 C 2 O 5 M 2
+C 2 D 4 O 3
+D 2 E 2 P 1
+E 1 F 2
+F 1 Q 2
+G 1 Q 3
+H 1 G 1
+I 2 P 1 H 2
+J 3 N 1 P 4 I 3
+K 2 O 4 J 2
+L 2 M 3 K 2
+M 3 O 3 N 2 J 1
+N 2 P 3 I 2
+O 2 E 3 P 2
+P 3 F 3 G 2 H 1
+Q 0
+17
+A 3 B 2 L 1 K 3
+B 3 C 2 O 5 M 2
+C 2 D 4 O 3
+D 2 E 2 P 1
+E 1 F 2
+F 1 Q 2
+G 1 Q 3
+H 1 G 1
+I 2 P 1 H 2
+J 3 N 1 P 4 I 3
+K 2 O 4 J 2
+L 2 M 3 K 2
+M 3 O 3 N 2 J 1
+N 2 P 3 I 2
+O 2 E 3 P 5
+P 3 F 3 G 2 H 1
+Q 0
+17
+A 3 B 2 L 1 K 3
+B 3 C 2 O 5 M 2
+C 2 D 4 O 3
+D 2 E 2 P 1
+E 1 F 2
+F 1 Q 2
+G 1 Q 3
+H 1 G 1
+I 2 P 1 H 2
+J 3 N 1 P 4 I 3
+K 2 O 4 J 2
+L 2 M 3 K 2
+M 3 O 3 N 2 J 1
+N 2 P 3 I 2
+O 2 E 4 P 5
+P 3 F 3 G 2 H 1
+Q 0
+17
+A 3 B 2 L 1 K 3
+B 3 C 2 O 5 M 2
+C 2 D 4 O 3
+D 2 E 2 P 1
+E 1 F 2
+F 1 Q 4
+G 1 Q 3
+H 1 G 1
+I 2 P 1 H 2
+J 3 N 1 P 4 I 3
+K 2 O 4 J 2
+L 2 M 3 K 2
+M 3 O 3 N 2 J 1
+N 2 P 3 I 2
+O 2 E 3 P 2
+P 3 F 3 G 4 H 1
+Q 0
+17
+A 3 J 30 F 60 B 30
+B 2 C 30 E 60
+C 2 E 30 D 90
+D 2 N 60 O 90
+E 1 D 60
+F 2 G 30 I 60
+G 2 I 30 H 60
+H 2 N 60 O 90
+I 1 H 30
+J 2 K 30 M 60
+K 2 M 30 L 60
+L 2 N 90 O 120
+M 1 L 30
+N 2 P 61 Q 90
+O 2 P 32 Q 60
+P 1 Q 30
+Q 0
+17
+A 3 N 60 O 60 P 60
+B 1 Q 60
+C 1 Q 60
+D 1 Q 60
+E 1 Q 60
+F 2 B 60 C 60
+G 2 B 60 C 60
+H 2 C 60 D 60
+I 2 D 60 E 60
+J 2 F 60 G 60
+K 2 F 60 H 60
+L 2 G 60 I 60
+M 2 H 60 I 60
+N 2 J 60 K 60
+O 3 J 60 K 60 L 60
+P 3 K 60 L 60 M 60
+Q 0
+17
+A 3 B 150 C 241 E 30
+B 2 C 90 D 152
+C 2 D 60 Q 153
+D 1 Q 90
+E 2 F 30 G 60
+F 2 G 30 H 60
+G 2 H 30 I 60
+H 2 I 30 J 60
+I 2 J 30 K 60
+J 2 K 30 L 60
+K 2 L 30 M 60
+L 2 M 30 N 60
+M 2 N 30 O 60
+N 2 O 30 P 60
+O 2 P 30 Q 60
+P 1 Q 30
+Q 0
+17
+A 3 N 60 O 61 P 62
+B 2 E 60 Q 123
+C 2 E 60 Q 124
+D 2 E 60 Q 125
+E 1 Q 60
+F 2 B 66 C 60
+G 2 B 60 C 60
+H 2 C 60 D 60
+I 2 C 60 D 60
+J 2 F 60 G 60
+K 2 F 60 H 67
+L 2 G 60 I 60
+M 2 H 60 I 60
+N 2 J 68 K 60
+O 3 J 60 K 60 L 60
+P 3 K 60 L 60 M 60
+Q 0
+2
+A 1 B 200
+B 0
+9
+A 2 B 30 C 61
+B 2 C 30 D 62
+C 2 D 30 E 63
+D 2 E 30 F 64
+E 2 F 30 G 65
+F 2 G 30 H 66
+G 2 I 60 H 30
+H 1 I 37
+I 0
+0

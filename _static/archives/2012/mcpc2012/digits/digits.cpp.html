@@ -1,0 +1,42 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  digits.cpp
+  Digit Solitaire, MCPC 2012 Problem B
+  C++ solution by Michael Goldwasser
+*/</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;digits.in&quot;);
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> v;
+        fin &gt;&gt; v;
+        <span class=keyword>if</span> (v == 0) <span class=keyword>break</span>;
+        cout &lt;&lt; v;                     <span class=comment>// initial number; no space
+</span>        <span class=keyword>while</span> (v &gt; 9) {
+            <span class=comment>// compute the product
+</span>            <span class=keyword>int</span> product(1);
+            <span class=keyword>while</span> (v &gt; 0) {
+                product *= v % 10;
+                v /= 10;
+            }
+            cout &lt;&lt; &quot; &quot; &lt;&lt; product;    <span class=comment>// note leading space
+</span>            v = product;
+        }
+        cout &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

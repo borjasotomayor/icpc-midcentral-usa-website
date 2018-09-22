@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+<title>MCPC - Changes for 2009</title>
+</head><body>
+
+
+<h1>Proposed Changes for 2010</h1>
+<ol>
+<li><p>Mathematics requirements</p>
+<p>
+(a) We assume discrete math, college algebra, and trigonometry.
+</p>
+<p>
+(b) At least half of the problems can be solved with no additional math.
+(That's at least 4 out of 7 problems or 5 out of 9 problems.)
+Specifically, this means that either the problem doesn't use higher math at
+all, or if it does, formulas are provided that can be understood by teams
+that just know (a).
+</p>
+<p>
+(c) "Higher math" may include matrix operations and 3D vector operations. In
+other situations needed mathematical formulas will be provided, for instance
+for statistics or numerical calculation or approximation of areas or volumes
+not covered in (a). <i>Note that the world finals assume at least this 
+much math.</i>
+</p></li>
+<li><p>Input Specifications</p>
+<p>
+The current input specification goes back to the time when Pascal was an allowed
+contest language, and all input was structured to accommodate Pascal's
+I/O limitations.  That is no longer the
+case.  In an input file where all the data to read is numbers, and we have
+explicitly given counts or sentinels, line structure is irrelevant.  For
+example, to read the next integer into variable n from input stream inf in C
+or C++ or a Scanner inf in Java:  
+<br>C: fscanf(inf, "%d", &amp;n);
+<br>C++:  inf  &gt;&gt; n;  
+<br>Java:  n = inf.nextInt()
+</p>
+<p>  Specifying whitespace structure encourages
+teams to use fancier input mechanisms than needed, and makes it harder for
+the judges to have automated tests of their input format. Our opinion is that
+having <i>less</i>
+structure for the input will result in simpler student programs and more 
+reliable judging data.
+</p>
+<p>
+The proposed input specification is:
+</p>
+<p><cite>
+ "The input specification for a problem will refer to a <i><b>line</b></i> of input when
+the line is considered as a unit where the number and position of the spaces
+are significant.  A line is always terminated by a newline.  All other data
+in an input specification will be individual pieces of data that are strings
+called <i><b>tokens</b></i>.  Tokens are numbers, words, and any strings which do not
+contain any whitespace.  A token may be preceded by any combination of
+blanks and newlines.  Line data not at the beginning of the input must be
+preceded by a line ending with a nonblank character.  No line ends with
+whitespace.  The only whitespace will be blanks and newlines."
+</cite></p>
+<p>
+ When token data directly precedes line data, teams need to remember to
+clear the newline after the last token at the end of the line before the
+line data.
+</p>
+<p>
+Examples of some old and new input specifications follow.  Where ... appears
+in both an old and new example, they refer to the same text, not having to
+do with spacing:
+
+</p>
+<hr>
+<p>
+<b>MCPC 2007 D. Persistent Bits</b>
+
+</p>
+<p>
+<b>Input:</b> There are from one to sixteen datasets followed by a line
+containing only 0. Each dataset is a line containing decimal integer values
+for A, B, C, and S, separated by single blanks.
+
+</p>
+<p>
+could be rewritten for 2010 as
+
+</p>
+<p>
+<b>Input:</b> There are from one to sixteen datasets followed by a 0. Each
+dataset contains decimal integer values for A, B, C, and S.
+
+</p>
+<hr>
+<p>
+
+<b>MCPC 2007 G. Guard</b>
+
+</p>
+<p>
+<b>Input:</b> The input will consist of one to sixteen data sets, followed by a
+line containing only 0. On each line the data will consist of blank
+separated tokens.
+
+</p>
+<p>
+The first line of a dataset contains integers <i>p c g</i>, where.....
+</p>
+<p>
+Next in the dataset are a total of <i>p</i> groups of four tokens, each
+consisting of a capital letter and three nonnegative integers <i>L x y v</i>
+indicating the point (
+<i>x</i>, <i>y</i>) with label <i>L</i> contains an item with value <i>v</i>. If <i>p</i> is no
+greater than 6, these groups will all be on one line. If <i>p</i> is greater than
+6, then the seventh and further groups will be on the next line. .....
+
+</p>
+<p>
+The last line of a dataset contains <i>c </i>strings of letters, ....
+
+</p>
+<p>
+
+would be simpler in the new spcification:
+
+</p>
+<p>
+<b>Input:</b> The input will consist of one to sixteen data sets, followed by a
+0.
+</p>
+<p>
+
+A dataset starts with integers <i>p, c, and g</i>, where ....
+</p>
+<p>
+
+Next in the dataset are a total of <i>p</i> groups of four tokens, each
+consisting of a capital letter and three nonnegative integers <i>L, x,
+y, v </i>indicating the point (
+x, y) with label <i>L</i> contains an item with value <i>v</i>.  .....
+
+</p>
+<p>
+The dataset ends with <i>c </i>strings of letters, ....
+</p>
+<hr>
+<p>
+
+<b>MCPC 2006 A. Quicksum</b>
+is line oriented, and would remain the same:
+</p>
+<p>
+
+<b>Input:</b> The input consists of one or more packets followed by a line
+containing only # that signals the end of the input. Each packet is on a
+line by itself, does not begin or end with a space, and contains from 1 to
+255 characters.
+
+</p>
+<hr>
+<p>
+Finally, a made-up new format input to illustrate the combination of tokens
+and newlines:
+
+</p>
+<p>
+<b>Input:</b> The input starts with a number T, the total number of datasets to
+follow.  Each dataset starts with a title line, followed by a number <i>n</i>,
+and then <i>n</i> integers.
+
+</p>
+<hr>
+<p>
+
+<i>Sample</i> input will likely continue to be presented as shown in the MCPC
+2007 examples D and G, putting related parts on one line for human readers.
+On problems like these, where all data is tokens, the <i>judge's</i> data could
+all be on one line with multiple spaces separating tokens, or in theory one
+token could be on every other line....  Reading a token at a time, these
+variations in whitespace would not matter.  Problem A from 2006 is line
+oriented, so each string would continue to be separated by a single
+newline.  In the final made-up example each number should be read as a
+token.  The newline before each title needs to be explicitly read past
+before the title line is read.
+
+</p>
+<p>
+The detailed output files specifications are remaining the same to continue
+to allow solution checking by file matching.
+</p>
+<br>
+</li></ol>
+
+</body></html>

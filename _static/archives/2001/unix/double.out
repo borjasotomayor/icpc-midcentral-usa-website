@@ -1,0 +1,63 @@
+Test 1
+impossible
+Test 2
+#o #o .o
+#. .# ##
+Test 3
+.#. .o. #o. oo. o.#
+#.o .#. ..o ..o o.o
+o.o .o. .o. #o. ooo
+o.o .o. #.. ..o ..o
+.o. .o. ooo #o. ..o
+Test 4
+.#..
+...o
+Test 5
+#
+Test 6
+impossible
+Test 7
+#.... ..... ..... ..... ..#.. ...#. ....# ...#. o#ooo ..... ..... ..... .....
+.#... #.... ..... ..... ...#. ....o ...#. ..o.o o.o.o ##ooo ..... ..... .....
+..o.. .#... #.... ..... ....o ...#. ..o.. .#... o.o.o o.ooo ##ooo ..... .....
+...o. ..o.. .#... #.... ...o. ..o.. .o... o.... o.o.o o.ooo o.ooo ##ooo .....
+....o ...o. ..o.. .#... ..o.. .o... o.... ..... o.o.o o.ooo o.ooo o.ooo ##ooo
+...o. ....o ...o. ..o.o .o... o.... ..... ..... ooooo ooooo ooooo ooooo ooooo
+..o.. ...o. ....o ...o. o.... ..... ..... ..... ooooo ooooo ooooo ooooo ooooo
+Test 8
+# # # # # # # # # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+# . . . . . . . . # # # # # # # # . . . . . . . . . . . . . . . . . . . . . . .
+. # . . . . . . . # . . . . . . . # # # # # # # . . . . . . . . . . . . . . . .
+. . # . . . . . . . # . . . . . . # . . . . . . # # # # # # . . . . . . . . . .
+. . . # . . . . . . . # . . . . . . # . . . . . # . . . . . # # # # # . . . . .
+. . . . # . . . . . . . # . . . . . . # . . . . . # . . . . # . . . . # # # # .
+. . . . . # . . . . . . . # . . . . . . # . . . . . # . . . . # . . . # . . . #
+. . . . . . # . . . . . . . # . . . . . . # . . . . . # . . . . # . . . # . . #
+. . . . . . . # . . . . . . . # . . . . . . # . . . . . # . . . . # . . . # . .
+. . . . . . . . # . . . . . . . # . . . . . . # . . . . . # . . . . # . . . # .
+Test 9
+o.o#.ooo.oooo.ooooo.oooooo.ooooooo.ooo. o.o..ooo.oooo.ooooo.oooooo.ooooooo.ooo#
+Test 10
+impossible
+Test 11
+ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo
+o#ooooo#o o.ooooo#o ooooooo.o o.ooooooo ooooooo.o o.ooooooo o#ooooo.o o.ooooooo
+ooooooo.o ooooooo#o o.ooooo#o ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o
+o.ooooooo ooooooo.o ooooooo#o o.ooooo#o ooooooo.o o.ooooooo ooooooo.o o.ooooooo
+ooooooo.o o.ooooooo ooooooo.o ooooooo#o o.ooooo#o ooooooo.o o.ooooooo ooooooo.o
+o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooo#o o.ooooo#o ooooooo.o o.ooooooo
+ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooo#o o.ooooo#o ooooooo.o
+o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooooo o.ooooo#o
+ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o o.ooooooo ooooooo.o ooooooo#o
+ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo ooooooooo
+Test 12
+#oooooooo.oo.....oo.ooooooooo......ooooooooo......ooooooooo.oo.....oo.ooooooo..
+ooooooooo.oo.....oo.ooooooooo.....o.........o.....ooooooooo.ooo....oo.oooooooo.
+....oo....oo.....oo.o............o..oo...oo..o....oo........oooo...oo.oo.....oo
+....oo....oo.....oo.o...........o...oo...oo...o...oo........oo.oo..oo.oo.....oo
+....oo....ooooooooo.ooooo.......o.............o...ooooo.....oo..oo.oo.oo.....oo
+....oo....ooooooooo.ooooo.......o..o.......o..o...ooooo.....oo...oooo.oo.....oo
+....oo....oo.....oo.o...........o...o.....o...o...oo........oo....ooo.oo.....oo
+....oo....oo.....oo.o............o...ooooo...o....oo........oo.....oo.oo.....oo
+....oo....oo.....oo.ooooooooo.....o.........o.....ooooooooo.oo.....oo.oooooooo.
+....oo....oo.....oo.ooooooooo......ooooooooo......ooooooooo.oo.....oo.ooooooo..

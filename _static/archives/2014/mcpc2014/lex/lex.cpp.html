@@ -1,0 +1,95 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// lex.cpp
+</span><span class=comment>// Lexicography, MCPC 2014, Problem C
+</span><span class=comment>// C++ version by Michael Goldwasser
+</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_LEN = 16;
+
+ifstream fin(&quot;lex.in&quot;);
+
+<span class=keyword>long</span> <span class=keyword>long</span> factorial(<span class=keyword>int</span> k) {
+    <span class=keyword>long</span> <span class=keyword>long</span> ans = 1;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=2; j &lt;= k; j++)
+        ans *= j;
+    <span class=keyword>return</span> ans;
+}
+
+<span class=comment>// returns the number of distinct anagrams for given frequency profile
+</span><span class=keyword>long</span> <span class=keyword>long</span> count(<span class=keyword>int</span> length, <span class=keyword>const</span> map&lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt;&amp; freq) {
+    <span class=keyword>long</span> <span class=keyword>long</span> answer = factorial(length);
+    <span class=keyword>for</span> (map&lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt;::const_iterator it = freq.begin(); it != freq.end(); ++it)
+        <span class=keyword>if</span> (it-&gt;second &gt; 1)
+            answer /= factorial(it-&gt;second);
+    <span class=keyword>return</span> answer;
+}
+
+<span class=comment>// produces alphabetical frequency count in form of a map
+</span>map&lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt; profile(<span class=keyword>const</span> string&amp; s) {
+    map&lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt; counts;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; s.size(); j++)
+        counts[s[j]]++;
+    <span class=keyword>return</span> counts;
+}
+
+string solve(<span class=keyword>const</span> string&amp; original, <span class=keyword>long</span> <span class=keyword>long</span> rank) {
+    string answer;
+    map &lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt; freq = profile(original);
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> length = original.size(); length &gt; 0; --length) {
+        <span class=keyword>for</span> (map&lt;<span class=keyword>char</span>,<span class=keyword>int</span>&gt;::iterator it = freq.begin(); it != freq.end(); ++it) {
+            <span class=keyword>if</span> (it-&gt;second &gt; 0) {
+                <span class=comment>// consider it-&gt;first as next char of answer
+</span>                freq[it-&gt;first]--;
+                <span class=keyword>long</span> <span class=keyword>long</span> sub = count(length-1, freq);
+                <span class=keyword>if</span> (sub &gt;= rank) {
+                    answer += it-&gt;first;
+                    <span class=keyword>break</span>;    <span class=comment>// exit innermost loop
+</span>                } <span class=keyword>else</span> {
+                    freq[it-&gt;first]++;
+                    rank -= sub;
+                }
+            }
+        }
+    }
+    <span class=keyword>return</span> answer;
+}
+
+<span class=comment>// used only by judges to validate input for test set
+</span><span class=keyword>void</span> validateInput(<span class=keyword>const</span> string&amp; original, <span class=keyword>long</span> <span class=keyword>long</span> K) {
+    <span class=keyword>if</span> (original.size() &gt; MAX_LEN)
+        cerr &lt;&lt; &quot;ERROR: string is too long&quot; &lt;&lt; endl;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;original.size(); j++) {
+        <span class=keyword>if</span> (original[j] &lt; 'A' || original[j] &gt; 'Z')
+            cerr &lt;&lt; &quot;ERROR: illegal character in string&quot;;
+    }
+    <span class=keyword>if</span> (K &lt; 1 || K &gt; count(original.size(), profile(original)))
+        cerr &lt;&lt; &quot;ERROR: illegal rank &quot; &lt;&lt; K &lt;&lt; endl;
+}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        string orig;
+        <span class=keyword>long</span> <span class=keyword>long</span> K;
+        fin &gt;&gt; orig &gt;&gt; K;
+        <span class=keyword>if</span> (K == 0) <span class=keyword>break</span>;
+        cout &lt;&lt; solve(orig, K) &lt;&lt; endl;
+
+        validateInput(orig,K);   <span class=comment>// sanity check for juding only
+</span>    }
+}
+
+</pre></body>
+</html>

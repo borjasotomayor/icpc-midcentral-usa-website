@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Michael Goldwasser">
+    <title>Digit Solitaire</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem B: Digit Solitaire</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>digits.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>digits.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+    Despite the glorious fall colors in the midwest, there is a great
+    deal of time to spend while on a train from St.&nbsp;Louis to
+    Chicago.  On a recent trip, we passed some time with the following game.
+    </p>
+
+    <p>
+    We start with a positive integer <em>S</em>. So long as it has
+    more than one digit, we compute the product of its digits and
+    repeat.  For example, if starting with 95, we compute
+    <nobr>9 &times; 5 = 45</nobr>.  Since 45 has more than one digit,
+    we compute <nobr>4 &times; 5 = 20</nobr>. Continuing with 20, we compute
+    <nobr>2 &times; 0 = 0</nobr>.  Having reached 0, which is a
+    single-digit number, the game is over.
+    </p>
+
+    <p>
+    As a second example, if we begin with 396, we get the following computations:
+    <br><nobr>3 &times; 9 &times; 6 = 162</nobr>
+    <br><nobr>1 &times; 6 &times; 2 = 12</nobr>
+    <br><nobr>1 &times; 2 = 2</nobr>
+    <br>and we stop the game having reached 2.
+    </p>
+
+
+    <p>
+      <b>Input:</b>&nbsp; Each line contains a single integer
+      <em>1 &le; S &le; 100000</em>, designating the starting value.
+    The value <em>S</em> will not have any leading zeros.
+    A value of&nbsp;0 designates the end of the input.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each nonzero input value, a single line
+      of output should express the ordered sequence of values that are
+      considered during the game, starting with the original value.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>95
+396
+28
+4
+40
+0</td>
+
+          <td>95 45 20 0
+396 162 12 2
+28 16 6
+4
+40 0</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </body>
+</html>

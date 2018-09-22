@@ -18,6 +18,8 @@ import os
 import shlex
 import sphinx_bootstrap_theme
 
+YEAR = "2018"
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -31,7 +33,7 @@ import sphinx_bootstrap_theme
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = []
+extensions = ["sphinx.ext.githubpages"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -48,9 +50,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'ICPC Mid-Central USA Regional Contest'
-copyright = '2015, ICPC Mid-Central USA Regional Contest'
-author = 'ICPC Mid-Central USA Regional Contest'
+project = 'ICPC Mid-Central USA Regional Contest {}'.format(YEAR)
+copyright = '{}, ICPC Mid-Central USA Regional Contest'.format(YEAR)
+author = 'ICPC Mid-Central USA Regional Contest {}'.format(YEAR)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -121,7 +123,7 @@ html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 # theme further.
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    'navbar_title': "ICPC Mid-Central USA",
+    'navbar_title': "ICPC Mid-Central USA {}".format(YEAR),
 
     # Tab name for entire site. (Default: "Site")
     'navbar_site_name': "Site",
@@ -165,7 +167,7 @@ html_theme_options = {
 
     # Fix navigation bar to top of page?
     # Values: "true" (default) or "false"
-    'navbar_fixed_top': "true",
+    'navbar_fixed_top': "false",
 
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
@@ -175,13 +177,15 @@ html_theme_options = {
     #
     # Options are nothing (default) or the name of a valid theme
     # such as "amelia" or "cosmo".
-    'bootswatch_theme': "united",
+    'bootswatch_theme': "cosmo",
 
     # Choose Bootstrap version.
     # Values: "3" (default) or "2" (in quotes)
     'bootstrap_version': "3",
 }
 
+def setup(app):
+    app.add_stylesheet("mcpc.css")
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

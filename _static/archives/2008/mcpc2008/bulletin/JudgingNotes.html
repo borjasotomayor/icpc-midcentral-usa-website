@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Checking Bulletin Board Answers</title><meta content="Andy Harrington" name="author"></head><body><h2>Judge's Notes on Bulletin Board</h2><p>The
+last datasets are big, with 100 posters of large dimensions.
+&nbsp;The last
+two are shuffled in a random order, but the set of entries follow a
+simple pattern making the answer easy to check.</p><p>One set has rectanges of width 49900 and height 39900 with corners at (0, 0), (1, 1), (2, 2), ... (99, 99)
+&nbsp;leaving a region of area (49900-99)*(39900-99) = 1982129601
+covered by all 100. &nbsp; The clear space is in&nbsp;stairstep
+patterns in two corners plus the last row and column: 2*(1 + 2 + 3 +
+.... + 99) + 50000 + 40000 - 1 = 99899.</p>The next dataset is a
+regular rectangular 10*10 arrangement of 4999 by 3999 tiles overlapping
+&nbsp;by 3 horizontally and 4 vertically, so there are 9*9 places where
+four overlap in a rectangle of area 3*4, for a total of 81*12 = 972.
+&nbsp;Overall the tiles cover a large rectangle leaving clear 50000*
+40000 - (10*4996 + 3)*(10*3995 + 4) = &nbsp;3778298</body></html>

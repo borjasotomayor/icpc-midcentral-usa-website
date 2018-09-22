@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Copier Reduction</title>
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Eric Shade">
+</head>
+
+<body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem D: Copier Reduction</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td><tt>copier.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td><tt>copier.in</tt></td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>What do you do if you need to copy a 560x400mm image onto
+a standard sheet of US letter-size paper (which is about 216x280mm),
+while keeping the image as large as possible?  You can rotate the
+image 90 degrees (so that it is in &quot;landscape&quot; mode), then
+reduce it to 50% of its original size so that it is 200x280mm.  Then
+it will fit on the paper without overlapping any edges.  Your job is
+to solve this problem in general.</p>
+
+<p><b>Input:</b> The input consists of one or more test cases, each of
+which is a single line containing four positive integers <i>A</i>,
+<i>B</i>, <i>C</i>, and <i>D</i>, separated by a space, representing
+an <i>A</i>x<i>B</i>mm image and a <i>C</i>x<i>D</i>mm piece of paper.
+All inputs will be less than one thousand.  Following the test cases
+is a line containing four zeros that signals the end of the input.</p>
+
+<p><b>Output:</b> For each test case, if the image fits on the sheet
+of paper without changing its size (but rotating it if necessary),
+then the output is 100%.  If the image must be reduced in order to
+fit, the output is the largest <em>integer</em> percentage of its
+original size that will fit (rotating it if necessary). Output the
+percentage exactly as shown in the examples below.  You can assume
+that no image will need to be reduced to less than 1% of its original
+size, so the answer will always be an integer percentage between 1%
+and 100%, inclusive.</p> 
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example input:</b></td>
+    <td><b>Example output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;">
+        560 400 218 280<br>
+        10 25 88 10<br>
+        8 13 5 1<br>
+        9 13 10 6<br>
+        199 333 40 2<br>
+        75 90 218 280<br>
+        999 99 1 10<br>
+        0 0 0 0<br>
+       </td>
+       <td valign="top" style="font-family: monospace;">
+        50%<br>
+        100%<br>
+        12%<br>
+        66%<br>
+        1%<br>
+        100%<br>
+        1%<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+
+<p><small><i>Last modified on October 25, 2005 at 8:08 PM.</i></small></p>
+
+</body>
+</html>

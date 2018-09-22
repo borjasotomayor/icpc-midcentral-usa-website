@@ -1,0 +1,114 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// wet.cpp
+</span><span class=comment>// Wet Cell, MCPC 2014, Problem I
+</span><span class=comment>// C++ version by Michael Goldwasser
+</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;cmath&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> MAX_X 1000
+<span class=pp>#define</span> MAX_Y 1000
+<span class=pp>#define</span> MAX_T 200000
+<span class=pp>#define</span> MAX_L 100
+<span class=pp>#define</span> MAX_W 100
+
+<span class=keyword>struct</span> Cell {
+    <span class=keyword>int</span> x,y;
+    <span class=keyword>bool</span> <span class=keyword>operator</span>&lt;(<span class=keyword>const</span> Cell&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> x &lt; other.x || (x == other.x &amp;&amp; y &lt; other.y);
+    }
+};
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    ifstream fin((argv == 1) ? &quot;wet.in&quot; : argc[1]);
+
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> X,Y,T,L,W;
+        fin &gt;&gt; X;
+        <span class=keyword>if</span> (X == -1) <span class=keyword>break</span>;
+        fin &gt;&gt; Y &gt;&gt; T &gt;&gt; L &gt;&gt; W;
+        <span class=keyword>if</span> (X &lt; 1 || X &gt; MAX_X) cerr &lt;&lt; &quot;ERROR: BAD X&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (Y &lt; 1 || Y &gt; MAX_Y) cerr &lt;&lt; &quot;ERROR: BAD Y&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (T &lt; 1 || T &gt; MAX_T) cerr &lt;&lt; &quot;ERROR: BAD T&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (L &lt; 1 || L &gt; MAX_L) cerr &lt;&lt; &quot;ERROR: BAD L&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (W &lt; 0 || W &gt; MAX_W) cerr &lt;&lt; &quot;ERROR: BAD W&quot; &lt;&lt; endl;
+
+        set&lt;Cell&gt; walls;
+        set&lt;Cell&gt; wet;
+        set&lt;Cell&gt; fringe;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; L; j++) {
+            Cell leak;
+            fin &gt;&gt; leak.x &gt;&gt; leak.y;
+            <span class=keyword>if</span> (leak.x &lt; 1 || leak.x &gt; X) cerr &lt;&lt; &quot;ERROR: BAD LEAK x&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (leak.y &lt; 1 || leak.y &gt; Y) cerr &lt;&lt; &quot;ERROR: BAD LEAK y&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (!wet.insert(leak).second)
+                cerr &lt;&lt; &quot;ERROR: DUPLICATE LEAK &quot; &lt;&lt; leak.x &lt;&lt; &quot;,&quot; &lt;&lt; leak.y &lt;&lt; endl;
+            fringe.insert(leak);
+        }
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; W; j++) {
+            <span class=keyword>int</span> x1,y1,x2,y2;
+            fin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+            <span class=keyword>if</span> (x1 &lt; 1 || x1 &gt; X) cerr &lt;&lt; &quot;ERROR: BAD WALL ENDPOINT&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (x2 &lt; 1 || x2 &gt; X) cerr &lt;&lt; &quot;ERROR: BAD WALL ENDPOINT&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (y1 &lt; 1 || y1 &gt; Y) cerr &lt;&lt; &quot;ERROR: BAD WALL ENDPOINT&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (y2 &lt; 1 || y2 &gt; Y) cerr &lt;&lt; &quot;ERROR: BAD WALL ENDPOINT&quot; &lt;&lt; endl;
+            <span class=keyword>int</span> dx = x2-x1;
+            <span class=keyword>int</span> dy = y2-y1;
+            <span class=keyword>if</span> (dx != 0 &amp;&amp; dy != 0 &amp;&amp; abs(dx) != abs(dy))
+                cerr &lt;&lt; &quot;ERROR: INVALID WALL SLOPE&quot; &lt;&lt; endl;
+            <span class=keyword>if</span> (dx != 0) dx = dx / abs(dx);
+            <span class=keyword>if</span> (dy != 0) dy = dy / abs(dy);
+            Cell wall = {x1, y1};
+            walls.insert(wall);
+            <span class=keyword>while</span> (wall.x != x2 || wall.y != y2) {
+                wall.x += dx;
+                wall.y += dy;
+                walls.insert(wall);
+            }
+        }
+
+        <span class=keyword>for</span> (set&lt;Cell&gt;::const_iterator it = fringe.begin(); it != fringe.end(); ++it) {
+            <span class=keyword>if</span> (walls.count(*it) &gt; 0)
+                cerr &lt;&lt; &quot;ERROR: LEAK ABOVE A WALL&quot; &lt;&lt; endl;
+        }
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> step=1; step &lt; T; step++) {  <span class=comment>// note we start at T=1
+</span>            set&lt;Cell&gt; newest;
+            <span class=keyword>for</span> (set&lt;Cell&gt;::const_iterator it = fringe.begin();
+                 it != fringe.end(); ++it) {
+                Cell neighbor[4] = {
+                    { it-&gt;x + 1, it-&gt;y },
+                    { it-&gt;x - 1, it-&gt;y },
+                    { it-&gt;x, it-&gt;y + 1 },
+                    { it-&gt;x, it-&gt;y - 1 },
+                };
+                <span class=keyword>for</span> (<span class=keyword>int</span> d=0; d &lt; 4; d++) {
+                    <span class=keyword>if</span> (neighbor[d].x &gt; 0 &amp;&amp; neighbor[d].x &lt;= X &amp;&amp;
+                        neighbor[d].y &gt; 0 &amp;&amp; neighbor[d].y &lt;= Y &amp;&amp;
+                        walls.count(neighbor[d]) == 0 &amp;&amp;
+                        wet.count(neighbor[d]) == 0) {
+                        wet.insert(neighbor[d]);
+                        newest.insert(neighbor[d]);
+                    }
+                }
+            }
+            fringe.swap(newest);
+            <span class=keyword>if</span> (fringe.empty()) <span class=keyword>break</span>;  <span class=comment>// no more water to spread
+</span>        }
+        cout &lt;&lt; wet.size() &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

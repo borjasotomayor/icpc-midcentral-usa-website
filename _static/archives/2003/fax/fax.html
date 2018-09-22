@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Fax Regions</title>
+  <meta name="Author" content="Andrew Harrington">
+</head>
+<body bgcolor="white" lang="EN-US" style="">
+<h1 align="center" style="text-align: center;">Problem G: Fax Regions</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>fax.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>, <tt>pas</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>fax.in</tt></td>
+    </tr>
+    <tr>
+      <td>Output file:</td>
+      <td><tt>fax.out</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<center>
+<table border="0" cellpadding="5">
+  <tbody>
+    <tr>
+      <td><img src="3-5.gif" ALT="Fax 1"></td>
+      <td><img src="8-7.gif" ALT="Fax 2"></td>
+      <td><img src="8-8.gif" ALT="Fax 3"></td>
+    </tr>
+    <tr>
+      <td>Fax 1</td>
+      <td>Fax 2</td>
+      <td>Fax 3</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p>A fax image is a rectangular array of dark and white pixels.
+Three small examples are shown above much
+magnified so individual pixels are clearly visible. Your task is
+to write a program that will count the
+connected dark components in fax images. We assume that two dark
+pixels that are directly adjacent vertically or horizontally
+are in the same component. Pixels along
+a diagonal, touching only at a corner, are not directly
+connected. The two components in Fax 1 and three
+components in Fax 2 are shown below in different shadings. In Fax
+3, all 32 dark pixels are in separate components, because
+the dark pixels only touch at corners.</p>
+<center>
+<table border="0" cellpadding="5">
+  <tbody>
+    <tr>
+      <td><img src="3-5reg.gif" ALT="Fax 1 Components"></td>
+      <td><img src="8-7reg.gif" ALT="Fax 2 Components"></td>
+    </tr>
+    <tr>
+      <td>Fax 1 Components</td>
+      <td>Fax 2 Components</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p>Fax images are encoded to save transmission bandwidth. If you
+imagine a blank row above the
+actual fax, then each pixel in the fax can be labeled as being the same
+(<tt>S</tt>) as
+the pixel above it or different (<tt>D</tt>) from the pixel above it, as
+illustrated
+below. </p>
+<center>
+<table border="0" cellpadding="5">
+  <tbody>
+    <tr>
+      <td><img src="4-5DS.gif" ALT="Fax 1 S/D"></td>
+      <td><img src="9-7DS.gif" ALT="Fax 2 S/D"></td>
+      <td><img src="9-8DS.gif" ALT="Fax 3 S/D"></td>
+    </tr>
+    <tr>
+      <td>Fax 1</td>
+      <td>Fax 2</td>
+      <td>Fax 3</td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p>If the <tt>S</tt> and <tt>D</tt> labels are
+read in row major order (from left to right across rows and then down to
+further rows), then the labels for the pixels in the three faxes are
+</p>
+<p style="margin-left: 0.75cm">Fax 1:<tt> SDDSDDSSSDDDSDD</tt><br>
+Fax 2:<tt>&nbsp;DDDDDDDSSDDDDSSSDSDSSSDSSDSSSSSSDSSSSSSSSSSSSSDSSSDSDDDS</tt><br>
+Fax&nbsp;3:<tt>&nbsp;DSDSDSDSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</tt>
+</p>
+<p>If we count the repetitions, always starting with <tt>S</tt>&#8217;s (even
+if there are 0 <tt>S</tt>&#8217;s at the beginning), then we get </p>
+<p style="margin-left: 0.75cm">
+Fax 1:<tt> 1S 2D 1S 2D 3S 3D 1S 2D</tt><br>
+Fax 2:<tt> 0S 7D 2S 4D 3S 1D 1S 1D 3S 1D 2S 1D 6S 1D 13S 1D 3S 1D 1S 3D 1S</tt><br>
+Fax 3:<tt> 0S 1D 1S 1D 1S 1D 1S 1D 1S 56D</tt>
+</p>
+<p>Since the runs of <tt>S</tt> and <tt>D</tt> always alternate, we can omit
+the <tt>S</tt> and <tt>D</tt> labels, and get the final encodings.</p>
+<p style="margin-left: 0.75cm">
+Fax 1:<tt> 1 2 1 2 3 3 1 2</tt><br>
+Fax 2:<tt> 0 7 2 4 3 1 1 1 3 1 2 1 6 1 13 1 3 1 1 3 1</tt><br>
+Fax 3:<tt> 0 1 1 1 1 1 1 1 1 56</tt>
+</p>
+<p>Starting from fax widths and encodings, your task is to calculate
+the number of
+components in the faxes. To make
+things more interesting, the faxes may be very large.</p>
+
+<p>There are from one to 24 data sets, followed by a final line
+containing only -1. A data set starts with a line containing
+three integers <i>w</i>, <i>r</i>, and <i>g</i>: the width of the
+fax in
+pixels, the total number of runs, and the number of run lengths grouped
+on one line, respectively. All three numbers are positive: <i>w</i>
+&le; 1,000,000,000, <i>r</i> &le; 1000, and <i>g</i> &le; 40. The rest of
+the dataset consists of <i>r</i> run lengths, with a new line starting
+after each group of <i>g</i> run lengths.
+ The last line
+(possibly the only line) of run lengths may contain
+fewer than <i>g</i> run lengths. The numbers on each line are
+blank separated. The first run length may be 0. All others
+run lengths are positive. No run length may be greater than
+1,000,000,000. The total number of pixels in each fax will be a
+multiple of <i>w</i>, so the pixels form a rectangle.
+Though commas are shown in the long numbers above for human
+readability, the integers in the input and output files include no commas.</p>
+
+<p>For each dataset the output contains a line with one integer:
+the number of components in the fax.
+No fax encoded in the input will have more than 1,000,000,000
+components. <b>Caution</b>: a solution that examines each
+pixel
+individually will not finish within the one-minute time limit. <br>
+</p>
+<table border="1" cellpadding="10">
+  <thead>
+      <tr>
+        <td><b>Example input:</b><td><b>Example output:</b></td>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <tt>5 8 4<br>
+            1 2 1 2<br>
+            3 3 1 2 <br>
+            7 21 8<br>
+            0 7 2 4 3 1 1 1 <br>
+            3 1 2 1 6 1 13 1<br>
+            3 1 1 3 1<br>
+            8 10 10<br>
+            0 1 1 1 1 1 1 1 1 56<br>
+            -1</tt>
+      </td>
+      <td style="vertical-align: top;">
+        <tt>2<br>
+            3<br>
+            32</tt>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 24, 2003 at 11:25 AM.</i></small></p>
+</body>
+</html>

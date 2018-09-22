@@ -1,0 +1,47 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*  Judges' Time Calculation, ACM MCPC 2010 Problem A by Michael Goldwasser */</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;calc.in&quot;);
+
+<span class=keyword>int</span> main() {
+  <span class=keyword>int</span> N;
+  fin &gt;&gt; N;
+  <span class=keyword>for</span> (<span class=keyword>int</span> trial=0; trial &lt; N; trial++) {
+    <span class=keyword>int</span> SH,SM,DH,DM;
+    fin &gt;&gt; SH &gt;&gt; SM &gt;&gt; DH &gt;&gt; DM;
+
+    <span class=keyword>int</span> duration = 60*DH + DM;
+    <span class=keyword>int</span> lasthour = SH + (SM + duration) / 60;
+
+    cout &lt;&lt; &quot;------+---------&quot; &lt;&lt; endl;
+    cout &lt;&lt; &quot; time | elapsed&quot; &lt;&lt; endl;     <span class=comment>// no space after elapsed
+</span>    cout &lt;&lt; &quot;------+---------&quot; &lt;&lt; endl;
+
+    <span class=keyword>int</span> offset = -SM;
+    <span class=keyword>for</span> (<span class=keyword>int</span> hour = SH; hour &lt;= lasthour; hour++, offset+=60) {
+      <span class=keyword>int</span> displayhour = (hour &gt; 12) ? hour - 12 : hour;
+      <span class=keyword>if</span> (displayhour &lt; 10)
+        cout &lt;&lt; &quot; &quot;;
+      cout &lt;&lt; displayhour &lt;&lt; &quot;:XX | XX&quot;;
+      <span class=keyword>if</span> (offset &lt; 0)
+        cout &lt;&lt; &quot; - &quot; &lt;&lt; -offset;
+      <span class=keyword>else</span> <span class=keyword>if</span> (offset &gt; 0)
+        cout &lt;&lt; &quot; + &quot; &lt;&lt; offset;
+      cout &lt;&lt; endl;
+    }
+  }
+}
+</pre></body>
+</html>

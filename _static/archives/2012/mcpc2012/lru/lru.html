@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Gabriel Foust">
+    <title>LRU Cache</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      .aside { border: 1px dashed black; padding: 0 1em; }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.figure
+      {
+          margin: auto;
+          border-spacing: 1em;
+      }
+      table.figure td
+      {
+          border: 1px solid black;
+          padding: 1em;
+          width: 220px;
+          vertical-align: bottom;
+          text-align: center;
+      }
+      table.figure td.caption
+      {
+          border-style: none;
+          font-style: italic;
+          padding-top: 0;
+          vertical-align: top;
+          text-align: center;
+      }
+      pre
+      {
+        margin-left: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem F: LRU Caching</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>lru.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>lru.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      When accessing large amounts of data is deemed too slow, a common
+      speed up technique is to keep a small amount of the data in a
+      more accessible location known as a <em>cache</em>. The first time a
+      particular piece of data is accessed, the slow method must be used.
+      However, the data is then stored in the cache so that the next time you
+      need it you can access it much more quickly.  For example, a database
+      system may keep data cached in memory so that it doesn't have to read
+      the hard drive.  Or a web browser might keep a cache of web pages on the
+      local machine so that it doesn't have to download them over the network.
+    </p>
+    <p>
+      In general, a cache is much too small to hold all the data you might
+      possibly need, so at some point you are going to have to remove
+      something from the cache in order to make room for new data. The
+      goal is to retain those items that are more likely to be
+      retrieved again soon. This
+      requires a sensible algorithm for selecting what to remove from the
+      cache.  One simple but effective algorithm is the Least Recently Used,
+      or LRU, algorithm.  When performing LRU caching, you always throw out
+      the data that was least recently used.
+    </p>
+    <p>
+      As an example, let's imagine a cache that can hold up to five pieces of
+      data.  Suppose we access three pieces of data&mdash;A, B, and C.  As we
+      access each one, we store it in our cache, so at this point we have
+      three pieces of data in our cache and two empty spots (Figure 1).  Now
+      suppose we access D and E.  They are added to the cache as well, filling
+      it up.  Next suppose we access A again.  A is already in the cache, so
+      the cache does not change; however, this access counts as a use, making
+      A the most recently used.  Now if we were to access F, we would have to
+      throw something out to make room for F.  At this point, B has been used
+      least recently, so we throw it out and replace it with F (Figure 2).  If
+      we were now to access B again, it would be exactly as the first time we
+      accessed it: we would retrieve it and store it in the cache, throwing
+      out the least recently used data&mdash;this time C&mdash;to make room
+      for it.
+    </p>
+    <table class="figure">
+      <tr>
+        <td><img src="cache1.png"/></td>
+        <td><img src="cache2.png"/></td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 1: Cache after A, B, C</td>
+        <td class="caption">Figure 2: Cache after A, B, C, D, E, A, F</td>
+      </tr>
+    </table>
+    <p>
+      Your task for this problem is to take a sequence of data accesses and
+      simulate an LRU cache.  When requested, you will output the contents of
+      the cache, ordered from least recently used to most recently used.
+    </p>
+    <p>
+      <b>Input:</b>&nbsp; The input will be a series of data sets, one per
+      line.  Each data set will consist of an integer <var>N</var> and
+       a string of two or more characters.  The integer <var>N</var> represents the size of the
+      cache for the data set
+      (1&nbsp;&le;&nbsp;<var>N</var>&nbsp;&le;&nbsp;26).  The string of
+      characters consists solely of uppercase letters and exclamation marks.
+      An upppercase letter represents an access to that particular piece of
+      data.  An exclamation mark represents a request to print the current
+      contents of the cache.
+    </p>
+    <p>
+      For example, the sequence <var>ABC!DEAF!B!</var> means to acces A, B, and
+      C (in that order), print the contents of the cache, access D, E, A, and
+      F (in that order), then print the contents of the cache, then
+      access B, and again print the contents of the cache.
+    </p>
+    <p>
+      The sequence will always begin with an uppercase letter and 
+      contain at least one exclamation mark.
+    </p>
+    <p>
+      The end of input will be signaled by a line containing only the number
+      zero.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each data set you should output the line
+      "Simulation <var>S</var>", where <var>S</var> is 1 for the first data
+      set, 2 for the second data set, etc.  Then for each exclamation mark in
+      the data set you should output the contents of the cache on one line as
+      a sequence of characters representing the pieces of data currently in
+      the cache.
+      The characters should be sorted in order from least recently used to
+      most recently used, with least recently occuring first.  You only output
+      the letters that are in the cache; if the cache is not full, then you
+      simply will have fewer characters to output (that is, do not
+      print any empty spaces). Note that because the sequence always begins with an
+      uppercase letter, you will never be asked to output a completely empty
+      cache.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>5 ABC!DEAF!B!
+3 WXWYZ!YZWYX!XYXY!
+5 EIEIO!
+0</td>
+          <td>Simulation 1
+ABC
+CDEAF
+DEAFB
+Simulation 2
+WYZ
+WYX
+WXY
+Simulation 3
+EIO</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

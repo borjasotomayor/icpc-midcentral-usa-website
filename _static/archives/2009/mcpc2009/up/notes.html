@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Notes for Up and Down</title></head><body>Notes on Up and Down<br><br>If
+&nbsp;the solution up.java is called from the command line with the
+up.in as parameter, both the efficient algorithm and the&nbsp;more
+obvious approach are both tried if W &lt;= 520. &nbsp;All data is
+checked for consistency.<br><br>The last two large cases are directly
+derived from smaller ones, with related answers. &nbsp;The last, like
+an earlier small one, has a number of complete blockades, separating
+regions that can only be bridged by chutes and ladders. &nbsp;The
+further separation of the regions in the last problem does not change
+the number of chute and ladders used, and in all but the last region,
+the spacings within regions are the same as before. &nbsp;The last
+region just adds a number of extra full steps, based on the difference
+in the length of the region.<br><br>Time is of the essence here.
+&nbsp;A hybrid algorithgm is also possible, making nodes of all spaces
+within S of the start of a chute or ladder. &nbsp;With the limits on
+the data, it should lead to a table of size no bigger than 522, and the
+Java solution handling tables of that size does even the slower
+Warshall's algorithm&nbsp;very quickly.</body></html>

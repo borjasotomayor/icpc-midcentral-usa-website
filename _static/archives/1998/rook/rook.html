@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Problem 3: Don't Get Rooked</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Problem 3: Don't Get Rooked</H1>
+
+<CENTER><TABLE>
+<TR ALIGN=BOTTOM><TD>Source file:</TD><TD><TT>rook.</TT>{<TT>c</TT>, <TT>cpp</TT>, <TT>pas</TT>}</TD></TR>
+<TR ALIGN=BOTTOM><TD>Input file:</TD><TD><TT>rook.in</TT></TD></TR>
+<TR ALIGN=BOTTOM><TD>Output file:</TD><TD><TT>rook.out</TT></TD></TR>
+</TABLE></CENTER>
+
+<P>In chess, the rook is a piece that can move any number of squares
+vertically or horizontally.  In this problem we will consider small
+chess boards (at most 4x4) that can also contain walls through which
+rooks cannot move.  The goal is to place as many rooks on a board as
+possible so that no two can capture each other.  A configuration of
+rooks is <B><I>legal</I></B> provided that no two rooks are on the same
+horizontal row or vertical column unless there is at least one wall
+separating them.
+
+<P>The following image shows five pictures of the same board.  The
+first picture is the empty board, the second and third pictures show legal
+configurations, and the fourth and fifth pictures show illegal configurations.
+For this board, the maximum number of rooks in a legal configuration
+is 5; the second picture shows one way to do it, but there are several
+other ways.
+
+<P><CENTER><IMG SRC="rook.gif"></CENTER>
+
+<P>Your task is to write a program that, given a description of a board, 
+calculates the maximum number of rooks that can be placed on the
+board in a legal configuration.
+
+<P>The input file contains one or more board descriptions, followed by
+a line containing the number 0 that signals the end of the file. Each
+board description begins with a line containing a positive integer <I>n</I>
+that is the size of the board; <I>n</I> will be at most 4. The next <I>n</I>
+lines each describe one row of the board, with a '<TT>.</TT>' indicating an
+open space and an uppercase '<TT>X</TT>' indicating a wall.  There are no
+spaces in the input file.
+
+<P>For each test case, output one line containing the
+maximum number of rooks that can be placed on the board
+in a legal configuration.
+
+<P><B>Example input:</B>
+
+<BLOCKQUOTE><PRE>4
+.X..
+....
+XX..
+....
+2
+XX
+.X
+3
+.X.
+X.X
+.X.
+3
+...
+.XX
+.XX
+4
+....
+....
+....
+....
+0
+</PRE></BLOCKQUOTE>
+
+<P><B>Example output:</B>
+
+<BLOCKQUOTE><PRE>5
+1
+5
+2
+4
+</PRE></BLOCKQUOTE>
+</BODY></HTML>

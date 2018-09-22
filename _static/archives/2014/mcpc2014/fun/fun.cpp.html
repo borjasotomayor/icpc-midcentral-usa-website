@@ -1,0 +1,154 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>// fun.cpp
+</span><span class=comment>// Fun House, MCPC 2014, Problem B
+</span><span class=comment>// C++ solution by James Feher
+</span>
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;cstring&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin( &quot;fun.in&quot; );
+<span class=keyword>bool</span> DEBUG = <span class=keyword>false</span>;      <span class=comment>// Make sure to set to false on submission
+</span><span class=keyword>int</span> W, L;
+<span class=keyword>char</span> room[21][21];
+
+<span class=keyword>int</span> findEntrance(<span class=keyword>int</span> &amp;inX, <span class=keyword>int</span>&amp;inY) {
+<span class=comment>// set the location of the input to the room
+</span><span class=comment>// return the direction of the beam
+</span><span class=comment>// 0 - right, 1 - left, 2 - up, 3 - down
+</span>  <span class=keyword>int</span> i, direction;
+  <span class=keyword>bool</span> found = <span class=keyword>false</span>;
+
+  <span class=comment>// check the top &amp;&amp; bottom rows
+</span>  <span class=keyword>for</span> (i=0; i&lt;W &amp;&amp; !found; i++) {
+    <span class=keyword>if</span> (room[0][i] == '*') {
+      found     = <span class=keyword>true</span>;
+      inX       = i;
+      inY       = 0;
+      direction = 3;    <span class=comment>// at top row, so go down
+</span>    }
+    <span class=keyword>if</span> (room[W-1][i] == '*') {
+      found     = <span class=keyword>true</span>;
+      inX       = i;
+      inY       = W-1;
+      direction = 2;    <span class=comment>// on bottom so go up
+</span>    }
+  }
+  <span class=comment>// check the left and right sides
+</span>  <span class=keyword>for</span> (i=0; i&lt;L &amp;&amp; !found; i++) {
+    <span class=keyword>if</span> (room[i][0] == '*') {
+      found     = <span class=keyword>true</span>;
+      inX       = 0;
+      inY       = i;
+      direction = 0;    <span class=comment>// on left so go right
+</span>    }
+    <span class=keyword>if</span> (room[i][L-1] == '*') {
+      found     = <span class=keyword>true</span>;
+      inX       = L-1;
+      inY       = i;
+      direction = 1;    <span class=comment>// on right so go left
+</span>    }
+  }
+  
+  <span class=keyword>return</span> direction;  
+} <span class=comment>// end findEntrance
+</span>
+<span class=keyword>bool</span> getNextPoint(<span class=keyword>int</span> direction, <span class=keyword>int</span> &amp;X, <span class=keyword>int</span> &amp;Y) {
+  <span class=keyword>bool</span> done = <span class=keyword>false</span>;
+  <span class=keyword>if</span> (direction == 0)           <span class=comment>// right
+</span>    X++;
+  <span class=keyword>else</span> <span class=keyword>if</span> (direction == 1)      <span class=comment>// left
+</span>    X--;
+  <span class=keyword>else</span> <span class=keyword>if</span> (direction == 2)      <span class=comment>// up
+</span>    Y--;
+  <span class=keyword>else</span> <span class=keyword>if</span> (direction == 3)      <span class=comment>// down
+</span>    Y++;
+  <span class=keyword>else</span>
+    cout &lt;&lt; &quot;ERROR: direction never less than 0 greater than 3.\n&quot;;
+
+  <span class=comment>// see if we are at a wall now and should stop
+</span>  <span class=keyword>if</span> (room[Y][X] == 'x') 
+    done = <span class=keyword>true</span>;    
+  <span class=keyword>return</span> done;
+} <span class=comment>// end getNextPoint
+</span>
+<span class=keyword>int</span> main() {   
+  <span class=keyword>int</span> i, j, X, Y, inX, inY, direction, houseNum = 1;
+  <span class=comment>// inX - input x coordinate
+</span>  <span class=comment>// inY - input y coordinate
+</span>  <span class=comment>// direction : 0 - right, 1 - left, 2 - up, 3 - down
+</span>  <span class=keyword>bool</span> done;
+
+  fin &gt;&gt; W;             <span class=comment>// Get the width of the room
+</span>
+  <span class=keyword>while</span> (W &gt; 0) {
+    fin &gt;&gt; L;
+    DEBUG &amp;&amp; cout &lt;&lt; &quot;Got Data -- W: &quot; &lt;&lt; W &lt;&lt; &quot;\tL: &quot; &lt;&lt; L &lt;&lt;  endl;
+    
+    <span class=comment>// get each row in the room array of chars
+</span>    <span class=keyword>for</span> (i=0; i&lt;L; i++)
+      fin &gt;&gt; room[i];   
+
+    <span class=keyword>if</span> (DEBUG) {
+      cout &lt;&lt; &quot;INPUT ROOM: \n&quot;;
+      <span class=keyword>for</span> (i=0; i&lt;L; i++) 
+        cout &lt;&lt; room[i] &lt;&lt; endl;
+    }
+
+    direction = findEntrance(inX, inY);
+    X = inX;
+    Y = inY;
+    done = <span class=keyword>false</span>;
+    <span class=keyword>int</span> count = 0, maxCount = 2*W*L;    
+    <span class=comment>// maxCount to short circuit misprogrammed loops and terminate anything
+</span>    <span class=comment>// that might be going longer than it needs to. Could hit both sides of 
+</span>    <span class=comment>// mirrors so it should never be greater than 2*(W-2)*(L-2)
+</span>    <span class=keyword>while</span> (!done &amp;&amp; count &lt; maxCount) {
+      count++;
+      <span class=comment>// get the next spot for the light beam to go
+</span>      done = getNextPoint(direction, X, Y);
+      DEBUG &amp;&amp; cout &lt;&lt; &quot;count: &quot; &lt;&lt; count &lt;&lt; &quot;\tdirection: &quot; &lt;&lt; direction 
+                    &lt;&lt; &quot;\tX: &quot; &lt;&lt; X &lt;&lt; &quot;\tY: &quot; &lt;&lt; Y &lt;&lt; &quot;\troom&quot; &lt;&lt; room[Y][X] &lt;&lt; endl;
+
+      <span class=keyword>if</span> (!done) {
+        <span class=keyword>if</span> (room[Y][X] == '/') {
+          <span class=comment>// right goes up 0-&gt;2, left goes down 1-&gt;3
+</span>          <span class=comment>// up goes right 2-&gt;0, down goes left 3-&gt;1
+</span>          direction = (direction + 2) % 4;
+        }
+        <span class=keyword>if</span> (room[Y][X] == '\\') {       <span class=comment>// Escape the \\
+</span>          <span class=comment>// right goes down 0-&gt;3, left goes up 1-&gt;2
+</span>          <span class=comment>// down goes right 3-&gt;0, up goes left 2-&gt;1
+</span>          <span class=keyword>if</span> (direction == 0) 
+            direction = 3;
+          <span class=keyword>else</span> <span class=keyword>if</span> (direction == 3) 
+            direction = 0;
+          <span class=keyword>else</span> <span class=keyword>if</span> (direction == 1) 
+            direction = 2;
+          <span class=keyword>else</span> <span class=keyword>if</span> (direction == 2) 
+            direction = 1;
+        }  
+      }
+    }
+    room[Y][X] = '&amp;';
+
+    cout &lt;&lt; &quot;HOUSE &quot; &lt;&lt; houseNum &lt;&lt; endl;
+    <span class=keyword>for</span> (i=0; i&lt;L; i++) 
+      cout &lt;&lt; room[i] &lt;&lt; endl;
+
+    fin &gt;&gt; W;
+    houseNum++;
+  }
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

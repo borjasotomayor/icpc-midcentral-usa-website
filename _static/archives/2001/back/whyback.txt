@@ -1,0 +1,2 @@
+This directory is used for backups of all submissions on this computer.
+This directory must exist!

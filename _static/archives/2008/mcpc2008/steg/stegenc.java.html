@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/steg/stegenc.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Constant { color: #72a5e4; font-weight: bold; }
+.Special { color: #eebaba; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="Comment">// 2008 ACM Mid-Central USA Regional Programming Contest</span>
+<span class="lnr">  2 </span><span class="Comment">// Test Generator for Problem H: &quot;Steganography&quot; [easy/moderate]</span>
+<span class="lnr">  3 </span><span class="Comment">// Eric Shade, Missouri State University</span>
+<span class="lnr">  4 </span>
+<span class="lnr">  5 </span><span class="Comment">// NOTE: This program uses Deque, so it requires Java 1.6.  However,</span>
+<span class="lnr">  6 </span><span class="Comment">// it's not a solution to the problem, it's used to generate test</span>
+<span class="lnr">  7 </span><span class="Comment">// data.  All Java *solutions* for this year's contest are compatible</span>
+<span class="lnr">  8 </span><span class="Comment">// with Java 1.5.</span>
+<span class="lnr">  9 </span>
+<span class="lnr"> 10 </span>
+<span class="lnr"> 11 </span><span class="PreProc">import</span> java.util.*;
+<span class="lnr"> 12 </span>
+<span class="lnr"> 13 </span><span class="Type">class</span> stegenc {
+<span class="lnr"> 14 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> WIDTH;    </span><span class="Comment">// max line width, not including newline</span>
+<span class="lnr"> 15 </span>
+<span class="lnr"> 16 </span>    <span class="Type">static</span><span class=""> Deque&lt;Integer&gt; bits;</span>
+<span class="lnr"> 17 </span>    <span class="Type">static</span><span class=""> Deque&lt;String&gt; words;</span>
+<span class="lnr"> 18 </span>    <span class="Type">static</span><span class=""> ArrayList&lt;String&gt; line = </span><span class="Statement">new</span><span class=""> ArrayList&lt;String&gt;</span>()<span class="">;</span>
+<span class="lnr"> 19 </span>    <span class="Type">static</span><span class=""> ArrayList&lt;Integer&gt; spaces = </span><span class="Statement">new</span><span class=""> ArrayList&lt;Integer&gt;</span>()<span class="">;</span>
+<span class="lnr"> 20 </span>
+<span class="lnr"> 21 </span>    <span class="Type">static</span><span class=""> Random rand = </span><span class="Statement">new</span><span class=""> Random</span>()<span class="">;</span>
+<span class="lnr"> 22 </span>
+<span class="lnr"> 23 </span>    <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class="">String</span>[]<span class=""> args</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 24 </span>        <span class="Statement">if</span><span class=""> </span>(<span class="">args.length != </span><span class="Constant">2</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 25 </span>            System.err.println(<span class="Constant">&quot;Syntax: java stegenc width </span><span class="Special">\&quot;</span><span class="Constant">message</span><span class="Special">\&quot;</span><span class="Constant">.&quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 26 </span>            System.err.println(<span class="Constant">&quot;Reads text from standard input and writes to standard output.&quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 27 </span>            System.exit(<span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 28 </span>        }
+<span class="lnr"> 29 </span>
+<span class="lnr"> 30 </span>        WIDTH = Integer.parseInt(<span class="">args</span>[<span class="Constant">0</span><span class="javaParen1">]</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 31 </span>        getBits(<span class="">args</span>[<span class="Constant">1</span><span class="javaParen1">]</span><span class="">.toUpperCase</span><span class="javaParen1">()</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 32 </span>
+<span class="lnr"> 33 </span>        Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class="">System.in</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 34 </span>        words = <span class="Statement">new</span><span class=""> ArrayDeque&lt;String&gt;</span>()<span class="">;</span>
+<span class="lnr"> 35 </span>
+<span class="lnr"> 36 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">in.hasNext</span>()<span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 37 </span>            String w = in.next()<span class="">;</span>
+<span class="lnr"> 38 </span>            <span class="Statement">if</span><span class=""> </span>(<span class="">w.length</span>()<span class=""> &gt; </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> words.offerLast</span><span class="javaParen">(</span><span class="">w</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 39 </span>        }
+<span class="lnr"> 40 </span>
+<span class="lnr"> 41 </span>        in.close()<span class="">;</span>
+<span class="lnr"> 42 </span>
+<span class="lnr"> 43 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">! bits.isEmpty</span>()<span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 44 </span>            <span class="Comment">// create a line, then print it out</span>
+<span class="lnr"> 45 </span>            line.clear()<span class="">; spaces.clear</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr"> 46 </span>            String w = nextWord()<span class="">;</span>
+<span class="lnr"> 47 </span>            <span class="Type">int</span><span class=""> n = w.length</span>()<span class="">;</span>
+<span class="lnr"> 48 </span>            line.add(<span class="">w</span><span class="javaParen">)</span><span class="">; spaces.add</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 49 </span>            <span class="Statement">while</span><span class=""> </span>(<span class="">! bits.isEmpty</span>()<span class=""> &amp;&amp; n &lt; WIDTH</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 50 </span>                <span class="Type">int</span><span class=""> b = bits.pollFirst</span>()<span class="">;</span>
+<span class="lnr"> 51 </span>                w = nextWord()<span class="">;</span>
+<span class="lnr"> 52 </span>                <span class="Statement">if</span><span class=""> </span>(<span class="">n + w.length</span>()<span class=""> + b + </span><span class="Constant">1</span><span class=""> &lt;= WIDTH</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 53 </span>                    spaces.add(<span class="">b + </span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 54 </span>                    line.add(<span class="">w</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 55 </span>                    n += w.length()<span class=""> + b + </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr"> 56 </span>                } <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr"> 57 </span>                    bits.offerFirst(<span class="">b</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 58 </span>                    words.offerFirst(<span class="">w</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 59 </span>                    <span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 60 </span>                }
+<span class="lnr"> 61 </span>            }
+<span class="lnr"> 62 </span>            justifyLine(<span class="">WIDTH - n</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 63 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; line.size</span>()<span class="">; i++</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 64 </span>                <span class="Type">int</span><span class=""> s = spaces.get</span>(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 65 </span>                <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; s; j++</span><span class="javaParen">)</span><span class=""> System.out.print</span><span class="javaParen">(</span><span class="Constant">&quot; &quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 66 </span>                System.out.print(<span class="">line.get</span>(<span class="">i</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 67 </span>            }
+<span class="lnr"> 68 </span>            System.out.println()<span class="">;</span>
+<span class="lnr"> 69 </span>        }
+<span class="lnr"> 70 </span>
+<span class="lnr"> 71 </span>        System.out.println(<span class="Constant">&quot;*&quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 72 </span>    }
+<span class="lnr"> 73 </span>
+<span class="lnr"> 74 </span>
+<span class="lnr"> 75 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> justifyLine</span>(<span class="Type">int</span><span class=""> s</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 76 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">s &gt; </span><span class="Constant">1</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 77 </span>            <span class="Comment">// add two spaces to zero bits</span>
+<span class="lnr"> 78 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">1</span><span class="">; i &lt; spaces.size</span>()<span class=""> &amp;&amp; s &gt; </span><span class="Constant">1</span><span class="">; i++</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 79 </span>                <span class="Statement">if</span><span class=""> </span>((<span class="">spaces.get</span>(<span class="">i</span><span class="javaParen2">)</span><span class=""> &amp; </span><span class="Constant">1</span><span class="javaParen1">)</span><span class=""> != </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 80 </span>                    spaces.set(<span class="">i, spaces.get</span>(<span class="">i</span><span class="javaParen1">)</span><span class=""> + </span><span class="Constant">2</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 81 </span>                    s -= <span class="Constant">2</span><span class="">;</span>
+<span class="lnr"> 82 </span>                }
+<span class="lnr"> 83 </span>            }
+<span class="lnr"> 84 </span>            <span class="Comment">// add two spaces to one bits</span>
+<span class="lnr"> 85 </span>            <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">1</span><span class="">; i &lt; spaces.size</span>()<span class=""> &amp;&amp; s &gt; </span><span class="Constant">1</span><span class="">; i++</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 86 </span>                <span class="Statement">if</span><span class=""> </span>((<span class="">spaces.get</span>(<span class="">i</span><span class="javaParen2">)</span><span class=""> &amp; </span><span class="Constant">1</span><span class="javaParen1">)</span><span class=""> == </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 87 </span>                    spaces.set(<span class="">i, spaces.get</span>(<span class="">i</span><span class="javaParen1">)</span><span class=""> + </span><span class="Constant">2</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 88 </span>                    s -= <span class="Constant">2</span><span class="">;</span>
+<span class="lnr"> 89 </span>                }
+<span class="lnr"> 90 </span>            }
+<span class="lnr"> 91 </span>        }
+<span class="lnr"> 92 </span>
+<span class="lnr"> 93 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">s == </span><span class="Constant">1</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 94 </span>            <span class="Comment">// this will fail if all words have length one!!</span>
+<span class="lnr"> 95 </span>            <span class="Type">int</span><span class=""> i = rand.nextInt</span>(<span class="">line.size</span>()<span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 96 </span>            String w = line.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 97 </span>            <span class="Statement">if</span><span class=""> </span>(<span class="">w.length</span>()<span class=""> == </span><span class="Constant">1</span><span class="javaParen">)</span><span class=""> </span><span class="Statement">continue</span><span class="">;</span>
+<span class="lnr"> 98 </span>            <span class="Type">int</span><span class=""> k = rand.nextInt</span>(<span class="">w.length</span>()<span class=""> - </span><span class="Constant">1</span><span class="javaParen">)</span><span class=""> + </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr"> 99 </span>            line.set(<span class="">i, w.substring</span>(<span class="Constant">0</span><span class="">, k</span><span class="javaParen1">)</span><span class=""> + </span><span class="Constant">&quot;_&quot;</span><span class=""> + w.substring</span><span class="javaParen1">(</span><span class="">k</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">100 </span>            s = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr">101 </span>        }
+<span class="lnr">102 </span>    }
+<span class="lnr">103 </span>
+<span class="lnr">104 </span>
+<span class="lnr">105 </span>    <span class="Type">static</span><span class=""> String nextWord</span>()<span class=""> {</span>
+<span class="lnr">106 </span>        <span class="Statement">if</span><span class=""> </span>(<span class="">words.isEmpty</span>()<span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">107 </span>            System.err.println(<span class="Constant">&quot;Not enough words to encode the message!&quot;</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">108 </span>            System.exit(<span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">109 </span>        }
+<span class="lnr">110 </span>
+<span class="lnr">111 </span>        <span class="Statement">return</span><span class=""> words.pollFirst</span>()<span class="">;</span>
+<span class="lnr">112 </span>    }
+<span class="lnr">113 </span>
+<span class="lnr">114 </span>
+<span class="lnr">115 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> getBits</span>(<span class="">String msg</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">116 </span>        bits = <span class="Statement">new</span><span class=""> ArrayDeque&lt;Integer&gt;</span>()<span class="">;</span>
+<span class="lnr">117 </span>
+<span class="lnr">118 </span>        <span class="Statement">for</span><span class=""> </span>(<span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; msg.length</span>()<span class="">; i++</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">119 </span>            <span class="Type">int</span><span class=""> code = charCode</span>(<span class="">msg.charAt</span>(<span class="">i</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">120 </span>
+<span class="lnr">121 </span>            <span class="Statement">if</span><span class=""> </span>(<span class="">code &lt; </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">122 </span>                System.err.printf(<span class="Constant">&quot;Invalid character '%c'.</span><span class="Special">\n</span><span class="Constant">&quot;</span><span class="">, msg.charAt</span>(<span class="">i</span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">123 </span>                System.exit(<span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">124 </span>            }
+<span class="lnr">125 </span>
+<span class="lnr">126 </span>            bits.offerLast(<span class="">code &gt;&gt; </span><span class="Constant">4</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">127 </span>            bits.offerLast((<span class="">code &gt;&gt; </span><span class="Constant">3</span><span class="javaParen1">)</span><span class=""> &amp; </span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">128 </span>            bits.offerLast((<span class="">code &gt;&gt; </span><span class="Constant">2</span><span class="javaParen1">)</span><span class=""> &amp; </span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">129 </span>            bits.offerLast((<span class="">code &gt;&gt; </span><span class="Constant">1</span><span class="javaParen1">)</span><span class=""> &amp; </span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">130 </span>            bits.offerLast(<span class="">code &amp; </span><span class="Constant">1</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">131 </span>        }
+<span class="lnr">132 </span>
+<span class="lnr">133 </span>        <span class="Statement">while</span><span class=""> </span>(<span class="">bits.peekLast</span>()<span class=""> == </span><span class="Constant">0</span><span class="javaParen">)</span><span class=""> bits.pollLast</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">134 </span>    }
+<span class="lnr">135 </span>
+<span class="lnr">136 </span>
+<span class="lnr">137 </span>    <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> charCode</span>(<span class="Type">char</span><span class=""> c</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">138 </span>        <span class="Statement">switch</span><span class=""> </span>(<span class="">c</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">139 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">' '</span><span class=""> : </span><span class="Statement">return</span><span class="">  </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">140 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">'</span><span class="Special">\'</span><span class="Constant">'</span><span class="">: </span><span class="Statement">return</span><span class=""> </span><span class="Constant">27</span><span class="">;</span>
+<span class="lnr">141 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">','</span><span class=""> : </span><span class="Statement">return</span><span class=""> </span><span class="Constant">28</span><span class="">;</span>
+<span class="lnr">142 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">'-'</span><span class=""> : </span><span class="Statement">return</span><span class=""> </span><span class="Constant">29</span><span class="">;</span>
+<span class="lnr">143 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">'.'</span><span class=""> : </span><span class="Statement">return</span><span class=""> </span><span class="Constant">30</span><span class="">;</span>
+<span class="lnr">144 </span>        <span class="Statement">case</span><span class=""> </span><span class="Constant">'?'</span><span class=""> : </span><span class="Statement">return</span><span class=""> </span><span class="Constant">31</span><span class="">;</span>
+<span class="lnr">145 </span>        }
+<span class="lnr">146 </span>
+<span class="lnr">147 </span>        <span class="Statement">return</span><span class=""> </span><span class="Constant">'A'</span><span class=""> &lt;= c &amp;&amp; c &lt;= </span><span class="Constant">'Z'</span><span class=""> ? c - </span><span class="Constant">'A'</span><span class=""> + </span><span class="Constant">1</span><span class=""> : -</span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">148 </span>    }
+<span class="lnr">149 </span>}
+</pre>
+</body>
+</html>

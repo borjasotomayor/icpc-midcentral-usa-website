@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Error Messages</title>
+</head>
+
+<body>
+<table width="100%">
+  <tbody>
+    <tr valign="top">
+      <td align="left"><font size="+2"><b>Error Messages</b></font>
+      </td>
+      <td align="right"><font size="-1"><i>Last modified Sep 30 2005</i></font>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If a submission is not correct it will be returned with the
+<em>first</em> applicable error message from the following list. A
+20-minute time penalty will be assessed for each incorrect
+submission. The error messages are described below.
+
+<ol>
+  <li>Submission Error
+  </li>
+  <li>Run-time Error
+  </li>
+  <li>Time Limit Exceeded
+  </li>
+  <li>Wrong Answer
+  </li>
+  <li>Presentation Error
+  </li>
+</ol>
+
+<p><b>Submission Error. </b>
+This indicates a violation of the basic contest rules. Teams should
+never get a <i>Submission Error</i>, but in the heat of competition
+they sometimes make silly mistakes. Submission errors include (but
+are not limited to)
+</p>
+
+<ul>
+  <li>compilation errors (warnings are OK)
+  </li>
+  <li>submitting the wrong problem
+  </li>
+  <li>submitting the executable instead of the source code
+  </li>
+  <li>submitting a program consisting of more than one source file
+  </li>
+  <li>using the wrong source or input file name
+  </li>
+  <li>including a drive and/or path with a file name
+  </li>
+  <li>prompting and waiting for keyboard input (see also <i>Time Limit
+Exceeded</i>).</li>
+</ul>
+
+<p><b>Run-time Error.</b>
+The program crashed when run. Examples of run-time errors include (but
+are not limited to)
+</p>
+
+<ul>
+  <li>stack overflows
+  </li>
+  <li>I/O errors
+  </li>
+  <li>heap overflows
+  </li>
+  <li>invalid memory references (<i>e.g.</i>, dereferencing a null
+pointer)
+  </li>
+  <li>bizarre behavior (garbage on screen, beeping, keyboard lockup,
+...).
+  </li>
+</ul>
+
+<p><b>Time Limit Exceeded.</b>
+The program ran (without crashing) for more than one minute. It may or
+may not have produced any output. This error may indicate that the
+program simply runs too slowly or that it was silently waiting for
+keyboard input, but it usually means that it got stuck in an infinite
+loop.
+</p>
+
+<p><b>Wrong Answer.</b>
+The program ran to completion in one minute or less but produced one
+or more incorrect answers. A program that produces unsorted output
+when the problem calls for sorted output will receive this error.
+</p>
+
+<p><b>Presentation Error.</b>
+The program ran to completion in one minute or less, produced answers
+that appear to contain essentially the same information as the correct
+answers, but formatted the output incorrectly in one or more cases.
+Examples of incorrect formatting include (but are not limited to)
+</p>
+
+<ul>
+  <li>misspelled words or omitted non-essential words
+  </li>
+  <li>wrong case (<i>e.g.</i>, uppercase instead of lowercase)
+  </li>
+  <li>too few or too many spaces
+  </li>
+  <li>wrong number of significant digits in numeric output
+  </li>
+  <li>incorrect or missing punctuation
+  </li>
+  <li>extra blank lines.
+  </li>
+</ul>
+
+<p><b>Note:</b> Receiving a <i>Presentation Error</i> guarantees that
+there are one or more formatting errors, and indicates that the judges
+did not see any wrong answers based on a brief visual inspection.
+However, it is not a <em>guarantee</em> that the program produced no
+incorrect answers.
+
+</body>
+</html>

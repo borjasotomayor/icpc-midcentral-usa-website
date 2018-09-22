@@ -1,0 +1,165 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  markers.cpp
+  The Mark of a Wizard, MCPC 2012 Problem E
+  C++ version by Michael Goldwasser
+*/</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;set&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> MAX_TRIALS 16
+<span class=pp>#define</span> MAX_EDGES 35
+<span class=pp>#define</span> MAX_SITES 17
+<span class=pp>#define</span> MAX_DEGREE 6
+<span class=pp>#define</span> MAX_PATH 7
+<span class=keyword>void</span> validate(<span class=keyword>int</span>);     <span class=comment>// used only for judging
+</span>
+ifstream fin(&quot;markers.in&quot;);
+
+<span class=keyword>int</span> degree[MAX_SITES];
+<span class=keyword>int</span> adj[MAX_SITES][MAX_DEGREE];    <span class=comment>// adj[v][j] is the index of the jth neighbor of v
+</span><span class=keyword>int</span> wgt[MAX_SITES][MAX_DEGREE];    <span class=comment>// wgt[v][j] is the distance of edge connecting v to its jth neighbor
+</span><span class=keyword>int</span> topo[MAX_SITES];
+<span class=keyword>int</span> sp[MAX_SITES];
+<span class=keyword>int</span> n;
+
+<span class=keyword>int</span> toInt(<span class=keyword>char</span> c) {
+    <span class=keyword>int</span> k = (c - 'A');
+    <span class=keyword>int</span> answer = (k &gt;= 0 &amp;&amp; k &lt;= 25 ? k : 26 + (c-'a'));
+    <span class=keyword>if</span> (answer &lt; 0 || answer &gt;= n)
+    cerr &lt;&lt; &quot;PROBLEM with neighbor label &quot; &lt;&lt; c &lt;&lt; endl;
+    <span class=keyword>return</span> answer;
+}
+
+<span class=keyword>void</span> computeTopo() {
+    <span class=keyword>int</span> indeg[n];
+    <span class=keyword>int</span> k(0);
+    vector&lt;<span class=keyword>int</span>&gt; ready;
+    <span class=keyword>for</span> (<span class=keyword>int</span> v=0; v&lt;n; v++) {
+    indeg[v] = 0;
+    }
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> v=0; v&lt;n; v++)
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;degree[v]; j++)
+        indeg[adj[v][j]]++;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> v=0; v&lt;n; v++) {
+    <span class=keyword>if</span> (indeg[v] == 0)
+        ready.push_back(v);
+    }
+    <span class=keyword>while</span> (!ready.empty()) {
+    <span class=keyword>int</span> u = ready[ready.size()-1];
+    ready.pop_back();
+    topo[k++] = u;
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;degree[u]; j++) {
+        <span class=keyword>if</span> (--indeg[adj[u][j]] == 0)
+        ready.push_back(adj[u][j]);
+    }
+    }
+    validate(k);   <span class=comment>// for judging use only
+</span>}
+
+<span class=keyword>bool</span> isSolution(<span class=keyword>const</span> set&lt;<span class=keyword>int</span>&gt;&amp; marked) {
+    set&lt;<span class=keyword>int</span>&gt; good;
+    good.insert(n-1);
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=n-2; k &gt;= 0; k--) {
+    <span class=keyword>int</span> u = topo[k];
+    <span class=keyword>int</span> countgood(0);
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;degree[u]; j++) {
+        <span class=keyword>if</span> (good.count(adj[u][j]) == 1 &amp;&amp; sp[u] == wgt[u][j] + sp[adj[u][j]])
+        countgood++;
+    }
+    <span class=keyword>if</span> (countgood &gt;= 1 &amp;&amp; (marked.count(u) == 1 || countgood == degree[u]))
+        good.insert(u);
+    }
+    <span class=keyword>return</span> good.count(0) == 1;
+}
+
+<span class=keyword>int</span> solve(set&lt;<span class=keyword>int</span>&gt;&amp; marked, <span class=keyword>int</span> next) {
+    <span class=keyword>if</span> (isSolution(marked))
+    <span class=keyword>return</span> marked.size();
+    <span class=keyword>int</span> best = MAX_PATH;                <span class=comment>// this must exist
+</span>    <span class=keyword>if</span> (marked.size() &lt; MAX_PATH - 1)
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=next; j&lt;n; j++) {
+        marked.insert(j);
+        best = min(best, solve(marked, j+1));
+        marked.erase(j);
+    }
+    <span class=keyword>return</span> best;
+}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>int</span> trial(0);
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+    fin &gt;&gt; n;
+    <span class=keyword>if</span> (n==0) <span class=keyword>break</span>;
+    <span class=keyword>if</span> (++trial &gt; MAX_TRIALS)
+        cerr &lt;&lt; &quot;PROBLEM with too many data sets&quot; &lt;&lt; endl;
+
+    <span class=comment>// read input
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i&lt;n; i++) {
+        <span class=keyword>char</span> c;
+        fin &gt;&gt; c;
+        <span class=keyword>int</span> v = toInt(c);
+        fin &gt;&gt; degree[v];
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; degree[v]; j++) {
+        fin &gt;&gt; c;
+        adj[v][j] = toInt(c);
+        fin &gt;&gt; wgt[v][j];
+        }
+    }
+
+    <span class=comment>// Step 1) compute topo order of DAG
+</span>    computeTopo();
+
+    <span class=comment>// Step 2) compute shortest path lengths from all vertices to sink
+</span>    sp[n-1] = 0;   <span class=comment>// the sink
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> k=n-2; k&gt;=0; k--) {
+        <span class=keyword>int</span> u = topo[k];
+        sp[u] = wgt[u][0] + sp[adj[u][0]];
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=1; j&lt;degree[u]; j++)
+        sp[u] = min(sp[u], wgt[u][j] + sp[adj[u][j]]);
+    }
+    cout &lt;&lt; sp[0];  <span class=comment>// print shortest path distance (but no newline)
+</span>
+    <span class=comment>// Step 3) try to find solution with at most MAX_PATH - 1 markers
+</span>    <span class=comment>// (otherwise, certainly exists solution with MAX_PATH markers)
+</span>    set&lt;<span class=keyword>int</span>&gt; marked;
+    cout &lt;&lt; &quot; &quot; &lt;&lt; solve(marked, 0) &lt;&lt; endl;
+    }
+}
+
+
+
+<span class=comment>// used only for judges
+</span><span class=keyword>void</span> validate(<span class=keyword>int</span> k) {
+    <span class=keyword>if</span> (n &gt; MAX_SITES)
+    cerr &lt;&lt; &quot;PROBLEM with too many vertices&quot; &lt;&lt; endl;
+    <span class=keyword>if</span> (k != n)
+    cerr &lt;&lt; &quot;PROBLEM computing topo&quot; &lt;&lt; endl;
+    <span class=keyword>if</span> (topo[n-1] != n-1)
+    cerr &lt;&lt; &quot;PROBLEM as sink is not unique&quot; &lt;&lt; endl;
+    <span class=keyword>int</span> e(0);
+    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;n; j++) {
+    e += degree[j];
+    <span class=keyword>if</span> (degree[j] &gt; MAX_DEGREE)
+        cerr &lt;&lt; &quot;PROBLEM with degree of vertex &quot; &lt;&lt; j &lt;&lt; endl;
+    }
+    <span class=keyword>if</span> (e &gt; MAX_EDGES)
+    cerr &lt;&lt; &quot;PROBLEM with too many total edges&quot; &lt;&lt; endl;
+
+}
+</pre></body>
+</html>

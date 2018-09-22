@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Voting</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Author" content="Andy Harrington">
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier, monospace;
+}
+</style></head><body style="background-color: white;">
+
+<h1 style="text-align: center;" align="center">Problem C: Voting</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td style="font-family: monospace;">voting.{c, cpp, java}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td style="font-family: monospace;">voting.in</td>
+       </tr>
+  </tbody>
+</table>
+</center><br>
+<span class="corners-top"><span></span></span>A committee clerk is
+good at recording votes, but not so good at counting and figuring the
+outcome correctly.&nbsp; As a roll call vote
+proceeds, the clerk records votes as a sequence of letters, with one
+letter for every member of the committee:<br>
+<div style="margin-left: 40px;">Y means a yes vote<br>
+N means a no vote<br>
+P means present, but choosing not to vote<br>
+A indicates a member who was absent from the meeting<br>
+</div>
+<p>
+Your job is to take this recorded list of votes and determine the
+outcome.
+</p>
+<p>
+Rules:&nbsp;&nbsp; <br>
+There must be a quorum.&nbsp; If at least half of the members were
+absent, respond "need quorum".&nbsp; Otherwise votes are
+counted.&nbsp;&nbsp; If there are more yes than no votes, respond
+"yes".&nbsp;&nbsp; If there are more no than yes votes, respond
+"no".&nbsp;&nbsp; If there are the same number of yes and no votes,
+respond "tie". <br>
+<p><b>Input:</b>  The input contains of a series of votes, one per
+line, followed by a single line with the <tt>#</tt>
+character.
+Each vote consists entirely of the uppercase letters discussed
+above.&nbsp; Each vote will contain at least two letters and no more
+than 70 letters.
+</p><p><b>Output:</b> For each vote, the output is one line with the correct choice "need quorum", "yes", "no" or "tie".<br>
+</p><table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;" valign="top">
+YNNAPYYNY<br>
+YAYAYAYA<br>
+
+PYPPNNYA<br>
+
+
+YNNAA<br>
+NYAAA<br>      
+#</td>
+       <td style="font-family: monospace;" valign="top">yes<br>
+need quorum<br>
+
+
+tie<br>
+
+no<br>
+need quorum<br>
+
+
+      <br>
+      
+       </td>
+    </tr>
+</tbody>
+</table>
+</body></html>

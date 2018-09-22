@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/firefly/firefly.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Constant { color: #72a5e4; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr"> 1 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr"> 2 </span><span class="PreProc">import</span> java.util.Scanner;
+<span class="lnr"> 3 </span>
+<span class="lnr"> 4 </span><span class="Type">class</span> firefly {
+<span class="lnr"> 5 </span>
+<span class="lnr"> 6 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class=""> String</span>[]<span class=""> args </span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr"> 7 </span>    String inFile = args.length &gt; <span class="Constant">0</span><span class=""> ? args</span>[<span class="Constant">0</span><span class="javaParen">]</span><span class=""> : </span><span class="Constant">&quot;firefly.in&quot;</span><span class="">;</span>
+<span class="lnr"> 8 </span>    Scanner in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class=""> </span><span class="Statement">new</span><span class=""> File</span>(<span class=""> inFile </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 9 </span>    <span class="Type">double</span><span class=""> s = in.nextInt</span>()<span class="">; </span><span class="Comment">// my speed</span>
+<span class="lnr">10 </span>    <span class="Type">double</span><span class=""> x = in.nextInt</span>()<span class="">; </span><span class="Comment">// my x</span>
+<span class="lnr">11 </span>    <span class="Type">double</span><span class=""> y = in.nextInt</span>()<span class="">; </span><span class="Comment">// my y</span>
+<span class="lnr">12 </span>    <span class="Type">int</span><span class=""> n = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">13 </span>
+<span class="lnr">14 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> s &gt; </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">15 </span>      n++;
+<span class="lnr">16 </span>      <span class="Type">int</span><span class=""> fx = in.nextInt</span>()<span class="">; </span><span class="Comment">// firefly x</span>
+<span class="lnr">17 </span>      <span class="Type">int</span><span class=""> fy = in.nextInt</span>()<span class="">; </span><span class="Comment">// firefly y</span>
+<span class="lnr">18 </span>      <span class="Type">boolean</span><span class=""> caught = </span><span class="Constant">false</span><span class="">;</span>
+<span class="lnr">19 </span>      <span class="Statement">while</span><span class=""> </span>(<span class=""> fx &gt;= </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">20 </span>        <span class="Type">double</span><span class=""> d = Math.sqrt</span>(<span class=""> </span>(<span class="">fx-x</span><span class="javaParen1">)</span><span class="">*</span><span class="javaParen1">(</span><span class="">fx-x</span><span class="javaParen1">)</span><span class=""> + </span><span class="javaParen1">(</span><span class="">fy-y</span><span class="javaParen1">)</span><span class="">*</span><span class="javaParen1">(</span><span class="">fy-y</span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">21 </span>        <span class="Statement">if</span><span class=""> </span>(<span class=""> d - s &lt;= </span><span class="Constant">1</span><span class=""> &amp;&amp; !caught </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">22 </span>          System.out.format(<span class=""> </span><span class="Constant">&quot;Firefly %d caught at (%d,%d)%n&quot;</span><span class="">, n, fx, fy </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">23 </span>          caught = <span class="Constant">true</span><span class="">;</span>
+<span class="lnr">24 </span>          <span class="Comment">/* sanity check */</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> d - s &gt; </span><span class="Constant">0.999</span><span class=""> </span><span class="javaParen">)</span><span class=""> System.err.format</span><span class="javaParen">(</span><span class=""> </span><span class="Constant">&quot;Borderline! D=%f%n&quot;</span><span class="">, d - s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">25 </span>        }
+<span class="lnr">26 </span>        <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> !caught </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">27 </span>          x = x + s/d * (<span class="">fx-x</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">28 </span>          y = y + s/d * (<span class="">fy-y</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">29 </span>        }
+<span class="lnr">30 </span>        fx = in.nextInt()<span class="">;</span>
+<span class="lnr">31 </span>        fy = in.nextInt()<span class="">;</span>
+<span class="lnr">32 </span>      }
+<span class="lnr">33 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> !caught </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">34 </span>        System.out.format(<span class=""> </span><span class="Constant">&quot;Firefly %d not caught%n&quot;</span><span class="">, n </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">35 </span>      }
+<span class="lnr">36 </span>      s = in.nextDouble()<span class="">;</span>
+<span class="lnr">37 </span>      x = in.nextInt()<span class="">;</span>
+<span class="lnr">38 </span>      y = in.nextInt()<span class="">;</span>
+<span class="lnr">39 </span>    }
+<span class="lnr">40 </span>  }
+<span class="lnr">41 </span>
+<span class="lnr">42 </span>}
+</pre>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>judges_notes_maze_maker</title>
+</head>
+<body>
+<div align="center"><big><b>The Maze Maker</b><br>
+<small>Judges Notes</small><br>
+</big></div>
+
+<p>
+The first six cases are those given in the problem
+description. Following that are those same cases with all
+symmetries. Then additional tests are given with all symmetries.
+</p>
+
+<table cellpadding="2" cellspacing="2" align="center" border="1" style="max-width: 600px;>
+  <tbody>
+  <tr>
+    <td colspan="2" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 01" src="maze01.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 02" src="maze02.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 03" src="maze03.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 04" src="maze04.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 05" src="maze05.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 06" src="maze06.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 07" src="maze07.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 08" src="maze08.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 09" src="maze09.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 10" src="maze10.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 11" src="maze11.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 12" src="maze12.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 13" src="maze13.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 14" src="maze14.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 15" src="maze15.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 16" src="maze16.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 17" src="maze17.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 18" src="maze18.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 19" src="maze19.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 20" src="maze20.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 21" src="maze21.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 22" src="maze22.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 23" src="maze23.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 24" src="maze24.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 25" src="maze25.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 26" src="maze26.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 27" src="maze27.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 28" src="maze28.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 29" src="maze29.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 30" src="maze30.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 31" src="maze31.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 32" src="maze32.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 33" src="maze33.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 34" src="maze34.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 35" src="maze35.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 36" src="maze36.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 37" src="maze37.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 38" src="maze38.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 39" src="maze39.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 40" src="maze40.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 41" src="maze41.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 42" src="maze42.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 43" src="maze43.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 44" src="maze44.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 45" src="maze45.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 46" src="maze46.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 47" src="maze47.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 48" src="maze48.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 49" src="maze49.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 50" src="maze50.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 51" src="maze51.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 52" src="maze52.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 53" src="maze53.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 54" src="maze54.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 55" src="maze55.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 56" src="maze56.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 57" src="maze57.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 58" src="maze58.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 59" src="maze59.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 60" src="maze60.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 61" src="maze61.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 62" src="maze62.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 63" src="maze63.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 64" src="maze64.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 65" src="maze65.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 66" src="maze66.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 67" src="maze67.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 68" src="maze68.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 69" src="maze69.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 70" src="maze70.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 71" src="maze71.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 72" src="maze72.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 73" src="maze73.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 74" src="maze74.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 75" src="maze75.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 76" src="maze76.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 77" src="maze77.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 78" src="maze78.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 79" src="maze79.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 80" src="maze80.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 81" src="maze81.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 82" src="maze82.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 83" src="maze83.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 84" src="maze84.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">UNREACHABLE CELL</td>
+    <td valign="top"><img alt="maze 85" src="maze85.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 86" src="maze86.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 87" src="maze87.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 88" src="maze88.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 89" src="maze89.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 90" src="maze90.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 91" src="maze91.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 92" src="maze92.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 93" src="maze93.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 94" src="maze94.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 95" src="maze95.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 96" src="maze96.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 97" src="maze97.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 98" src="maze98.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 99" src="maze99.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 100" src="maze100.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">NO SOLUTION</td>
+    <td valign="top"><img alt="maze 101" src="maze101.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 102" src="maze102.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 103" src="maze103.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 104" src="maze104.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 105" src="maze105.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 106" src="maze106.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 107" src="maze107.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 108" src="maze108.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MAZE OK</td>
+    <td valign="top"><img alt="maze 109" src="maze109.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 110" src="maze110.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 111" src="maze111.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 112" src="maze112.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 113" src="maze113.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 114" src="maze114.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 115" src="maze115.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 116" src="maze116.png" style="max-width: 100%"></td>
+  </tr>
+  <tr>
+    <td valign="top">MULTIPLE PATHS</td>
+    <td valign="top"><img alt="maze 117" src="maze117.png" style="max-width: 100%"></td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<br>
+</body>
+</html>

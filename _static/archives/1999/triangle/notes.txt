@@ -1,0 +1,6 @@
+Author's comments:  
+
+The areas of all triangles are easily calculated exactly with only 16 bit
+integers.  The judge's solution checks that there is only one triangle with
+the maximum area in each data set.
+

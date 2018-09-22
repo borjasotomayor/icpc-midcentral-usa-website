@@ -1,0 +1,466 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/maze/guimaze.java.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Statement { color: #7e75b5; font-weight: bold; }
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Type { color: #a9ee8a; font-weight: bold; }
+.Constant { color: #72a5e4; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="Comment">/* guimaze.java Solution by Ron Pacheco &lt;ron@pacheco.net&gt; </span>
+<span class="lnr">  2 </span><span class="Comment">   2008 ACM Mid-Central Regional Contest</span>
+<span class="lnr">  3 </span><span class="Comment">   Problem G: Line &amp; Circle Maze */</span>
+<span class="lnr">  4 </span>
+<span class="lnr">  5 </span><span class="Comment">/* See maze.java for a complete description of the algorithm implemented by</span>
+<span class="lnr">  6 </span><span class="Comment">   this program. This is simply a visualization tool. */</span>
+<span class="lnr">  7 </span>
+<span class="lnr">  8 </span><span class="PreProc">import</span> javax.swing.*;
+<span class="lnr">  9 </span><span class="PreProc">import</span> java.awt.*;
+<span class="lnr"> 10 </span><span class="PreProc">import</span> java.awt.event.*;
+<span class="lnr"> 11 </span><span class="PreProc">import</span> java.awt.geom.*;
+<span class="lnr"> 12 </span><span class="PreProc">import</span> java.util.*;
+<span class="lnr"> 13 </span><span class="PreProc">import</span> java.io.*;
+<span class="lnr"> 14 </span>
+<span class="lnr"> 15 </span><span class="Type">class</span> guimaze {
+<span class="lnr"> 16 </span>
+<span class="lnr"> 17 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> JFrame guiFrame;</span>
+<span class="lnr"> 18 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> MazeVisualizer maze;</span>
+<span class="lnr"> 19 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> JLabel statusLabel;</span>
+<span class="lnr"> 20 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> Scanner in;</span>
+<span class="lnr"> 21 </span>
+<span class="lnr"> 22 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">char</span><span class=""> ch;</span>
+<span class="lnr"> 23 </span>  <span class="Type">static</span><span class=""> TreeMap&lt;Point,HashSet&lt;Object&gt;&gt; points;</span>
+<span class="lnr"> 24 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> caseNumber = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 25 </span>  <span class="Type">static</span><span class=""> ArrayList&lt;Object&gt; shapes;</span>
+<span class="lnr"> 26 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">int</span><span class=""> N;</span>
+<span class="lnr"> 27 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">double</span><span class=""> graph</span>[][]<span class="">;</span>
+<span class="lnr"> 28 </span>
+<span class="lnr"> 29 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> main</span>(<span class=""> String</span>[]<span class=""> args </span><span class="javaParen">)</span><span class=""> </span><span class="Type">throws</span><span class=""> Exception {</span>
+<span class="lnr"> 30 </span>    in = <span class="Statement">new</span><span class=""> Scanner</span>(<span class=""> </span><span class="Statement">new</span><span class=""> File</span>(<span class=""> args.length &gt; </span><span class="Constant">0</span><span class=""> ? args</span>[<span class="Constant">0</span><span class="javaParen2">]</span><span class=""> : </span><span class="Constant">&quot;maze.in&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 31 </span>    ch = in.next()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 32 </span>    javax.swing.SwingUtilities.invokeLater(<span class=""> </span><span class="Statement">new</span><span class=""> Runnable</span>()<span class=""> { </span><span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> run</span><span class="javaParen1">()</span><span class=""> { gui</span><span class="javaParen1">()</span><span class="">; } } </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 33 </span>  }
+<span class="lnr"> 34 </span>
+<span class="lnr"> 35 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> gui</span>()<span class=""> {</span>
+<span class="lnr"> 36 </span>    guiFrame = <span class="Statement">new</span><span class=""> JFrame</span>(<span class=""> </span><span class="Constant">&quot;Line &amp; Circle Maze&quot;</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 37 </span>    guiFrame.setDefaultCloseOperation(<span class=""> JFrame.EXIT_ON_CLOSE </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 38 </span>    guiFrame.getContentPane()<span class="">.setLayout</span><span class="javaParen">(</span><span class=""> </span><span class="Statement">new</span><span class=""> BorderLayout</span>()<span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 39 </span>    JPanel buttonPanel = <span class="Statement">new</span><span class=""> JPanel</span>()<span class="">;</span>
+<span class="lnr"> 40 </span>    buttonPanel.setLayout(<span class=""> </span><span class="Statement">new</span><span class=""> FlowLayout</span>()<span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 41 </span>    maze = <span class="Statement">new</span><span class=""> MazeVisualizer</span>(<span class=""> </span><span class="Constant">720</span><span class="">, </span><span class="Constant">720</span><span class="">, -</span><span class="Constant">10</span><span class="">, -</span><span class="Constant">10</span><span class="">, </span><span class="Constant">110</span><span class="">, </span><span class="Constant">110</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 42 </span>    <span class="Comment">//maze = new MazeVisualizer( 400, 400, -10, -10, 110, 110 );</span>
+<span class="lnr"> 43 </span>    JPanel statusPanel = <span class="Statement">new</span><span class=""> JPanel</span>()<span class="">;</span>
+<span class="lnr"> 44 </span>    statusLabel = (<span class="">JLabel</span><span class="javaParen">)</span><span class="">statusPanel.add</span><span class="javaParen">(</span><span class=""> </span><span class="Statement">new</span><span class=""> JLabel</span>(<span class=""> </span><span class="Constant">&quot;Ready&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 45 </span>    ((<span class="">JButton</span><span class="javaParen1">)</span><span class="">buttonPanel.add</span><span class="javaParen1">(</span><span class=""> </span><span class="Statement">new</span><span class=""> JButton</span>(<span class=""> </span><span class="Constant">&quot;Next Data Set&quot;</span><span class=""> </span><span class="javaParen2">)</span><span class=""> </span><span class="javaParen1">)</span><span class="javaParen">)</span><span class="">.addActionListener</span><span class="javaParen">(</span><span class=""> </span><span class="Statement">new</span><span class=""> ButtonListener</span><span class="javaParen1">()</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 46 </span>    guiFrame.getContentPane()<span class="">.add</span><span class="javaParen">(</span><span class=""> BorderLayout.NORTH, buttonPanel </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 47 </span>    guiFrame.getContentPane()<span class="">.add</span><span class="javaParen">(</span><span class=""> BorderLayout.CENTER, maze </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 48 </span>    guiFrame.getContentPane()<span class="">.add</span><span class="javaParen">(</span><span class=""> BorderLayout.SOUTH, statusPanel </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 49 </span>    guiFrame.pack()<span class="">;</span>
+<span class="lnr"> 50 </span>    guiFrame.setVisible(<span class=""> </span><span class="Constant">true</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 51 </span>  }
+<span class="lnr"> 52 </span>
+<span class="lnr"> 53 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">class</span><span class=""> ButtonListener </span><span class="Type">implements</span><span class=""> ActionListener {</span>
+<span class="lnr"> 54 </span>
+<span class="lnr"> 55 </span>    <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> actionPerformed</span>(<span class=""> ActionEvent actionEvent </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 56 </span>
+<span class="lnr"> 57 </span>      String buttonName = ((<span class="">JButton</span><span class="javaParen1">)</span><span class="">actionEvent.getSource</span><span class="javaParen1">()</span><span class="javaParen">)</span><span class="">.getText</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr"> 58 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> buttonName.equals</span>(<span class=""> </span><span class="Constant">&quot;Next Data Set&quot;</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 59 </span>        <span class="Statement">if</span><span class=""> </span>(<span class=""> ch == </span><span class="Constant">'*'</span><span class=""> </span><span class="javaParen">)</span><span class=""> { guiFrame.dispose</span><span class="javaParen">()</span><span class="">; </span><span class="Statement">return</span><span class="">; }</span>
+<span class="lnr"> 60 </span>        shapes = <span class="Statement">new</span><span class=""> ArrayList&lt;Object&gt;</span>()<span class="">;</span>
+<span class="lnr"> 61 </span>        <span class="Statement">while</span><span class=""> </span>(<span class=""> ch == </span><span class="Constant">'L'</span><span class=""> || ch == </span><span class="Constant">'C'</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 62 </span>          shapes.add(<span class=""> ch == </span><span class="Constant">'L'</span>
+<span class="lnr"> 63 </span>            ? <span class="Statement">new</span><span class=""> Line</span>(<span class=""> in.nextInt</span>()<span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class=""> </span><span class="javaParen1">)</span>
+<span class="lnr"> 64 </span>            : <span class="Statement">new</span><span class=""> Circle</span>(<span class=""> in.nextInt</span>()<span class="">, in.nextInt</span><span class="javaParen2">()</span><span class="">, in.nextInt</span><span class="javaParen2">()</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span>)<span class="">;</span>
+<span class="lnr"> 65 </span>          in.nextLine()<span class="">;</span>
+<span class="lnr"> 66 </span>          ch = in.next()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 67 </span>        }
+<span class="lnr"> 68 </span>        in.nextLine()<span class="">;</span>
+<span class="lnr"> 69 </span>        ch = in.next()<span class="">.charAt</span><span class="javaParen">(</span><span class="Constant">0</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 70 </span>        maze.clearShapes()<span class="">;</span>
+<span class="lnr"> 71 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; shapes.size</span>()<span class="">; i++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 72 </span>          Object s = shapes.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 73 </span>          <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span>
+<span class="lnr"> 74 </span>            maze.addLine(<span class=""> </span>((<span class="">Line</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.x1, </span><span class="javaParen1">(</span><span class="javaParen2">(</span><span class="">Line</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.y1, </span><span class="javaParen1">(</span><span class="javaParen2">(</span><span class="">Line</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.x2, </span><span class="javaParen1">(</span><span class="javaParen2">(</span><span class="">Line</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.y2 </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 75 </span>          <span class="Statement">else</span>
+<span class="lnr"> 76 </span>            maze.addCircle(<span class=""> </span>((<span class="">Circle</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.x, </span><span class="javaParen1">(</span><span class="javaParen2">(</span><span class="">Circle</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.y, </span><span class="javaParen1">(</span><span class="javaParen2">(</span><span class="">Circle</span><span class="javaParen2">)</span><span class="">s</span><span class="javaParen1">)</span><span class="">.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 77 </span>        }
+<span class="lnr"> 78 </span>
+<span class="lnr"> 79 </span>        points = <span class="Statement">new</span><span class=""> TreeMap&lt;Point,HashSet&lt;Object&gt;&gt;</span>(<span class=""> </span><span class="Statement">new</span><span class=""> PointComparator</span>()<span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 80 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; shapes.size</span>()<span class="">; i++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 81 </span>          Object s = shapes.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 82 </span>          <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 83 </span>            addPoint(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> </span>(<span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.x1, </span><span class="javaParen2">(</span><span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.y1 </span><span class="javaParen1">)</span><span class="">, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 84 </span>            addPoint(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> </span>(<span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.x2, </span><span class="javaParen2">(</span><span class="javaParen">(</span><span class="">Line</span><span class="javaParen">)</span><span class="">s</span><span class="javaParen2">)</span><span class="">.y2 </span><span class="javaParen1">)</span><span class="">, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 85 </span>          }
+<span class="lnr"> 86 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = i + </span><span class="Constant">1</span><span class="">; j &lt; shapes.size</span>()<span class="">; j++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 87 </span>            Object t = shapes.get(<span class="">j</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 88 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line &amp;&amp; t </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 89 </span>              Point p = MyMath.xLineLine(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Line</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 90 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> p != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 91 </span>                addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 92 </span>                addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 93 </span>              }
+<span class="lnr"> 94 </span>            }
+<span class="lnr"> 95 </span>            <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Circle &amp;&amp; t </span><span class="Statement">instanceof</span><span class=""> Circle </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 96 </span>              ArrayList&lt;Point&gt; intersections = MyMath.xCircleCircle(<span class=""> </span>(<span class="">Circle</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr"> 97 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> intersections != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr"> 98 </span>                Iterator k = intersections.iterator()<span class="">;</span>
+<span class="lnr"> 99 </span>                <span class="Statement">while</span><span class=""> </span>(<span class=""> k.hasNext</span>()<span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">100 </span>                  Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">k.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">101 </span>                  addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">102 </span>                  addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">103 </span>                }
+<span class="lnr">104 </span>              }
+<span class="lnr">105 </span>            }
+<span class="lnr">106 </span>            <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">107 </span>              ArrayList&lt;Point&gt; intersections;
+<span class="lnr">108 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span>
+<span class="lnr">109 </span>                intersections = MyMath.xLineCircle(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">s, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">110 </span>              <span class="Statement">else</span>
+<span class="lnr">111 </span>                intersections = MyMath.xLineCircle(<span class=""> </span>(<span class="">Line</span><span class="javaParen1">)</span><span class="">t, </span><span class="javaParen1">(</span><span class="">Circle</span><span class="javaParen1">)</span><span class="">s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">112 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> intersections != </span><span class="Constant">null</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">113 </span>                Iterator k = intersections.iterator()<span class="">;</span>
+<span class="lnr">114 </span>                <span class="Statement">while</span><span class=""> </span>(<span class=""> k.hasNext</span>()<span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">115 </span>                  Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">k.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">116 </span>                  addPoint(<span class=""> p, s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">117 </span>                  addPoint(<span class=""> p, t </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">118 </span>                }
+<span class="lnr">119 </span>              }
+<span class="lnr">120 </span>            }
+<span class="lnr">121 </span>          }
+<span class="lnr">122 </span>        }
+<span class="lnr">123 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i = points.keySet</span>()<span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">124 </span>          Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">i.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">125 </span>          maze.addPoint(<span class=""> p.x, p.y </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">126 </span>        }
+<span class="lnr">127 </span>        N = points.size()<span class="">;</span>
+<span class="lnr">128 </span>        graph = <span class="Statement">new</span><span class=""> </span><span class="Type">double</span>[<span class="">N</span><span class="javaParen">][</span><span class="">N</span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr">129 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">130 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">131 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> i == j </span><span class="javaParen">)</span>
+<span class="lnr">132 </span>              graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">133 </span>            <span class="Statement">else</span>
+<span class="lnr">134 </span>              graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = MyMath.INFINITY;</span>
+<span class="lnr">135 </span>        Point pointsById[]<span class=""> = </span><span class="Statement">new</span><span class=""> Point</span><span class="javaParen">[</span><span class=""> N </span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr">136 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i1 = points.keySet</span>()<span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i1.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">137 </span>          Point p = (<span class="">Point</span><span class="javaParen">)</span><span class="">i1.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">138 </span>          pointsById[<span class=""> p.n </span><span class="javaParen">]</span><span class=""> = p;</span>
+<span class="lnr">139 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i2 = points.get</span>(<span class="">p</span><span class="javaParen1">)</span><span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i2.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">140 </span>            Object s = i2.next()<span class="">;</span>
+<span class="lnr">141 </span>            <span class="Statement">for</span><span class=""> </span>(<span class=""> Iterator i3 = points.keySet</span>()<span class="">.iterator</span><span class="javaParen1">()</span><span class="">; i3.hasNext</span><span class="javaParen1">()</span><span class="">; </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">142 </span>              Point q = (<span class="">Point</span><span class="javaParen">)</span><span class="">i3.next</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">143 </span>              <span class="Statement">if</span><span class=""> </span>(<span class=""> p.n != q.n &amp;&amp; points.get</span>(<span class="">q</span><span class="javaParen1">)</span><span class="">.contains</span><span class="javaParen1">(</span><span class=""> s </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">144 </span>                <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line </span><span class="javaParen">)</span>
+<span class="lnr">145 </span>                  graph[<span class="">p.n</span><span class="javaParen">][</span><span class="">q.n</span><span class="javaParen">]</span><span class=""> = graph</span><span class="javaParen">[</span><span class="">q.n</span><span class="javaParen">][</span><span class="">p.n</span><span class="javaParen">]</span><span class=""> = MyMath.linearDistance</span><span class="javaParen">(</span><span class=""> p, q </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">146 </span>                <span class="Statement">else</span>
+<span class="lnr">147 </span>                  graph[<span class="">p.n</span><span class="javaParen">][</span><span class="">q.n</span><span class="javaParen">]</span><span class=""> = graph</span><span class="javaParen">[</span><span class="">q.n</span><span class="javaParen">][</span><span class="">p.n</span><span class="javaParen">]</span><span class=""> = MyMath.arcLength</span><span class="javaParen">(</span><span class=""> </span>(<span class="">Circle</span><span class="javaParen1">)</span><span class="">s, p, q </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">148 </span>              }
+<span class="lnr">149 </span>            }
+<span class="lnr">150 </span>          }
+<span class="lnr">151 </span>        }
+<span class="lnr">152 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> k = </span><span class="Constant">0</span><span class="">; k &lt; N; k++ </span><span class="javaParen">)</span>
+<span class="lnr">153 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">154 </span>            <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">155 </span>              graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class=""> = Math.min</span><span class="javaParen">(</span><span class=""> graph</span>[<span class="">i</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class="">, graph</span><span class="javaParen1">[</span><span class="">i</span><span class="javaParen1">][</span><span class="">k</span><span class="javaParen1">]</span><span class=""> + graph</span><span class="javaParen1">[</span><span class="">k</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">156 </span>
+<span class="lnr">157 </span>        <span class="Type">double</span><span class=""> m = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">158 </span>        <span class="Type">int</span><span class=""> a = </span><span class="Constant">0</span><span class="">, b = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">159 </span>        <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; N; i++ </span><span class="javaParen">)</span>
+<span class="lnr">160 </span>          <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> j = </span><span class="Constant">0</span><span class="">; j &lt; N; j++ </span><span class="javaParen">)</span>
+<span class="lnr">161 </span>            <span class="Statement">if</span><span class=""> </span>(<span class=""> !MyMath.isInfinite</span>(<span class=""> graph</span>[<span class="">i</span><span class="javaParen2">][</span><span class="">j</span><span class="javaParen2">]</span><span class=""> </span><span class="javaParen1">)</span><span class=""> &amp;&amp; graph</span><span class="javaParen1">[</span><span class="">i</span><span class="javaParen1">][</span><span class="">j</span><span class="javaParen1">]</span><span class=""> &gt; m </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">162 </span>              a = i;
+<span class="lnr">163 </span>              b = j;
+<span class="lnr">164 </span>              m = graph[<span class="">i</span><span class="javaParen">][</span><span class="">j</span><span class="javaParen">]</span><span class="">;</span>
+<span class="lnr">165 </span>            }
+<span class="lnr">166 </span>        statusLabel.setText(<span class=""> String.format</span>(<span class=""> </span><span class="Constant">&quot;Case #%d: %f&quot;</span><span class="">, ++caseNumber, m </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">167 </span>        maze.addFarPoints(<span class=""> pointsById</span>[<span class="">a</span><span class="javaParen1">]</span><span class="">.x, pointsById</span><span class="javaParen1">[</span><span class="">a</span><span class="javaParen1">]</span><span class="">.y, pointsById</span><span class="javaParen1">[</span><span class="">b</span><span class="javaParen1">]</span><span class="">.x, pointsById</span><span class="javaParen1">[</span><span class="">b</span><span class="javaParen1">]</span><span class="">.y </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">168 </span>
+<span class="lnr">169 </span>      }
+<span class="lnr">170 </span>    }
+<span class="lnr">171 </span>  }
+<span class="lnr">172 </span>
+<span class="lnr">173 </span>  <span class="Type">static</span><span class=""> </span><span class="Type">void</span><span class=""> addPoint</span>(<span class=""> Point p, Object s </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">174 </span>    HashSet&lt;Object&gt; on;
+<span class="lnr">175 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> points.containsKey</span>(<span class=""> p </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">176 </span>      on = points.get(<span class=""> p </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">177 </span>    <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">178 </span>      p = <span class="Statement">new</span><span class=""> Point</span>(<span class=""> points.size</span>()<span class="">, p </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">179 </span>      on = <span class="Statement">new</span><span class=""> HashSet&lt;Object&gt;</span>()<span class="">;</span>
+<span class="lnr">180 </span>    }
+<span class="lnr">181 </span>    on.add(<span class=""> s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">182 </span>    points.put(<span class=""> p, on </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">183 </span>  }
+<span class="lnr">184 </span>
+<span class="lnr">185 </span>}
+<span class="lnr">186 </span>
+<span class="lnr">187 </span><span class="Type">class</span> MazeVisualizer <span class="Type">extends</span><span class=""> Component </span><span class="Type">implements</span><span class=""> ComponentListener {</span>
+<span class="lnr">188 </span>
+<span class="lnr">189 </span>  <span class="Type">private</span><span class=""> Dimension displaySize;</span>
+<span class="lnr">190 </span>  <span class="Type">private</span><span class=""> Point2D.Double userLowerLeft, userUpperRight;</span>
+<span class="lnr">191 </span>  ArrayList&lt;Shape&gt; shapes;
+<span class="lnr">192 </span>  ArrayList&lt;Point2D.Double&gt; points;
+<span class="lnr">193 </span>  Point2D.Double farP1, farP2;
+<span class="lnr">194 </span>  <span class="Type">boolean</span><span class=""> showFarPoints = </span><span class="Constant">false</span><span class="">;</span>
+<span class="lnr">195 </span>
+<span class="lnr">196 </span>  <span class="Type">public</span><span class=""> MazeVisualizer</span>(<span class=""> </span><span class="Type">int</span><span class=""> dWidth, </span><span class="Type">int</span><span class=""> dHeight, </span><span class="Type">double</span><span class=""> xMin, </span><span class="Type">double</span><span class=""> yMin, </span><span class="Type">double</span><span class=""> xMax, </span><span class="Type">double</span><span class=""> yMax </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">197 </span>    displaySize = <span class="Statement">new</span><span class=""> Dimension</span>(<span class=""> dWidth, dHeight </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">198 </span>    userLowerLeft = <span class="Statement">new</span><span class=""> Point2D.Double</span>(<span class=""> xMin, yMin </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">199 </span>    userUpperRight = <span class="Statement">new</span><span class=""> Point2D.Double</span>(<span class=""> xMax, yMax </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">200 </span>    shapes = <span class="Statement">new</span><span class=""> ArrayList&lt;Shape&gt;</span>(<span class=""> </span><span class="Constant">25</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">201 </span>    points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point2D.Double&gt;</span>(<span class=""> </span><span class="Constant">500</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">202 </span>    addComponentListener(<span class=""> </span><span class="Type">this</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">203 </span>  }
+<span class="lnr">204 </span>
+<span class="lnr">205 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> addShape</span>(<span class=""> Shape s </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">206 </span>    shapes.add(<span class=""> s </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">207 </span>    repaint()<span class="">;</span>
+<span class="lnr">208 </span>  }
+<span class="lnr">209 </span>
+<span class="lnr">210 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> addLine</span>(<span class=""> </span><span class="Type">double</span><span class=""> x1, </span><span class="Type">double</span><span class=""> y1, </span><span class="Type">double</span><span class=""> x2, </span><span class="Type">double</span><span class=""> y2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">211 </span>    addShape(<span class=""> </span><span class="Statement">new</span><span class=""> Line2D.Double</span>(<span class=""> x1, y1, x2, y2 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">212 </span>  }
+<span class="lnr">213 </span>
+<span class="lnr">214 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> addCircle</span>(<span class=""> </span><span class="Type">double</span><span class=""> x, </span><span class="Type">double</span><span class=""> y, </span><span class="Type">double</span><span class=""> r </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">215 </span>    addShape(<span class=""> </span><span class="Statement">new</span><span class=""> Ellipse2D.Double</span>(<span class=""> x - r, y - r, </span><span class="Constant">2</span><span class=""> * r, </span><span class="Constant">2</span><span class=""> * r </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">216 </span>  }
+<span class="lnr">217 </span>
+<span class="lnr">218 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> addPoint</span>(<span class=""> </span><span class="Type">double</span><span class=""> x, </span><span class="Type">double</span><span class=""> y </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">219 </span>    points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point2D.Double</span>(<span class=""> x, y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">220 </span>    repaint()<span class="">;</span>
+<span class="lnr">221 </span>  }
+<span class="lnr">222 </span>
+<span class="lnr">223 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> addFarPoints</span>(<span class=""> </span><span class="Type">double</span><span class=""> x1, </span><span class="Type">double</span><span class=""> y1, </span><span class="Type">double</span><span class=""> x2, </span><span class="Type">double</span><span class=""> y2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">224 </span>    farP1 = <span class="Statement">new</span><span class=""> Point2D.Double</span>(<span class=""> x1, y1 </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">225 </span>    farP2 = <span class="Statement">new</span><span class=""> Point2D.Double</span>(<span class=""> x2, y2 </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">226 </span>    showFarPoints = <span class="Constant">true</span><span class="">;</span>
+<span class="lnr">227 </span>    repaint()<span class="">;</span>
+<span class="lnr">228 </span>  }
+<span class="lnr">229 </span>
+<span class="lnr">230 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> clearShapes</span>()<span class=""> {</span>
+<span class="lnr">231 </span>    shapes = <span class="Statement">new</span><span class=""> ArrayList&lt;Shape&gt;</span>(<span class=""> </span><span class="Constant">25</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">232 </span>    points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point2D.Double&gt;</span>(<span class=""> </span><span class="Constant">500</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">233 </span>    showFarPoints = <span class="Constant">false</span><span class="">;</span>
+<span class="lnr">234 </span>    repaint()<span class="">;</span>
+<span class="lnr">235 </span>  }
+<span class="lnr">236 </span>
+<span class="lnr">237 </span>  <span class="Type">public</span><span class=""> Dimension getPreferredSize</span>()<span class=""> {</span>
+<span class="lnr">238 </span>    <span class="Statement">return</span><span class=""> displaySize;</span>
+<span class="lnr">239 </span>  }
+<span class="lnr">240 </span>
+<span class="lnr">241 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">void</span><span class=""> setUserCoordinates</span>(<span class=""> Graphics2D g2d </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">242 </span>    <span class="Type">double</span><span class=""> mx = getWidth</span>()<span class=""> / </span><span class="javaParen">(</span><span class=""> userUpperRight.getX</span>()<span class=""> - userLowerLeft.getX</span><span class="javaParen1">()</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">243 </span>    <span class="Type">double</span><span class=""> my = getHeight</span>()<span class=""> / </span><span class="javaParen">(</span><span class=""> userLowerLeft.getY</span>()<span class=""> - userUpperRight.getY</span><span class="javaParen1">()</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">244 </span>    g2d.transform(<span class=""> </span><span class="Statement">new</span><span class=""> AffineTransform</span>(<span class=""> mx, </span><span class="Constant">0</span><span class="">, </span><span class="Constant">0</span><span class="">, my, -mx * userLowerLeft.getX</span>()<span class="">, -my * userUpperRight.getY</span><span class="javaParen2">()</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">245 </span>  }
+<span class="lnr">246 </span>
+<span class="lnr">247 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">float</span><span class=""> pixelSize</span>()<span class=""> {</span>
+<span class="lnr">248 </span>    <span class="Statement">return</span><span class=""> </span>(<span class="Type">float</span><span class="javaParen">)</span><span class=""> </span><span class="javaParen">(</span><span class=""> userUpperRight.getX</span>()<span class=""> - userLowerLeft.getX</span><span class="javaParen1">()</span><span class=""> </span><span class="javaParen">)</span><span class=""> / getWidth</span><span class="javaParen">()</span><span class="">;</span>
+<span class="lnr">249 </span>  }
+<span class="lnr">250 </span>
+<span class="lnr">251 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">void</span><span class=""> drawAxes</span>(<span class=""> Graphics2D g2d, </span><span class="Type">double</span><span class=""> min, </span><span class="Type">double</span><span class=""> max, </span><span class="Type">double</span><span class=""> arrowRotDeg, </span><span class="Type">double</span><span class=""> arrowLen, Stroke stroke, Color color </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">252 </span>    g2d.setStroke(<span class=""> stroke </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">253 </span>    g2d.setColor(<span class=""> color </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">254 </span>    g2d.draw(<span class=""> </span><span class="Statement">new</span><span class=""> Line2D.Double</span>(<span class=""> min, </span><span class="Constant">0</span><span class="">, max, </span><span class="Constant">0</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">255 </span>    g2d.draw(<span class=""> </span><span class="Statement">new</span><span class=""> Line2D.Double</span>(<span class=""> </span><span class="Constant">0</span><span class="">, min, </span><span class="Constant">0</span><span class="">, max </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">256 </span>  }
+<span class="lnr">257 </span>
+<span class="lnr">258 </span>  <span class="Type">private</span><span class=""> </span><span class="Type">void</span><span class=""> drawGrid</span>(<span class=""> Graphics2D g2d, </span><span class="Type">double</span><span class=""> min, </span><span class="Type">double</span><span class=""> max, </span><span class="Type">double</span><span class=""> step, Stroke stroke, Color color  </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">259 </span>    g2d.setStroke(<span class=""> stroke </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">260 </span>    g2d.setColor(<span class=""> color </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">261 </span>    <span class="Type">double</span><span class=""> p = min;</span>
+<span class="lnr">262 </span>    <span class="Statement">while</span><span class=""> </span>(<span class=""> p &lt;= max </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">263 </span>      g2d.draw(<span class=""> </span><span class="Statement">new</span><span class=""> Line2D.Double</span>(<span class=""> min, p, max, p </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">264 </span>      g2d.draw(<span class=""> </span><span class="Statement">new</span><span class=""> Line2D.Double</span>(<span class=""> p, min, p, max </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">265 </span>      p += step;
+<span class="lnr">266 </span>    }
+<span class="lnr">267 </span>  }
+<span class="lnr">268 </span>
+<span class="lnr">269 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> paint</span>(<span class=""> Graphics g </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">270 </span>    Graphics2D g2d = (<span class="">Graphics2D</span><span class="javaParen">)</span><span class="">g;</span>
+<span class="lnr">271 </span>    setUserCoordinates(<span class=""> g2d </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">272 </span>    drawGrid(<span class=""> g2d, </span><span class="Constant">0</span><span class="">, </span><span class="Constant">100</span><span class="">, </span><span class="Constant">10</span><span class="">, </span><span class="Statement">new</span><span class=""> BasicStroke</span>(<span class=""> pixelSize</span>()<span class=""> </span><span class="javaParen1">)</span><span class="">, Color.LIGHT_GRAY </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">273 </span>    drawAxes(<span class=""> g2d, -</span><span class="Constant">5</span><span class="">, </span><span class="Constant">105</span><span class="">, </span><span class="Constant">30</span><span class="">, </span><span class="Constant">3</span><span class="">, </span><span class="Statement">new</span><span class=""> BasicStroke</span>(<span class=""> </span><span class="Constant">3</span><span class=""> * pixelSize</span>()<span class="">, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND </span><span class="javaParen1">)</span><span class="">, Color.GRAY </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">274 </span>    g2d.setStroke(<span class=""> </span><span class="Statement">new</span><span class=""> BasicStroke</span>(<span class=""> </span><span class="Constant">3</span><span class=""> * pixelSize</span>()<span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">275 </span>    <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; shapes.size</span>()<span class="">; i++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">276 </span>      Shape s = shapes.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">277 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Line2D </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">278 </span>        g2d.setColor(<span class=""> Color.BLUE </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">279 </span>      }
+<span class="lnr">280 </span>      <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> s </span><span class="Statement">instanceof</span><span class=""> Ellipse2D </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">281 </span>        g2d.setColor(<span class=""> Color.MAGENTA </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">282 </span>      }
+<span class="lnr">283 </span>      <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">284 </span>        g2d.setColor(<span class=""> Color.RED </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">285 </span>      }
+<span class="lnr">286 </span>      g2d.draw(<span class=""> shapes.get</span>(<span class="">i</span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">287 </span>    }
+<span class="lnr">288 </span>    g2d.setStroke(<span class=""> </span><span class="Statement">new</span><span class=""> BasicStroke</span>(<span class=""> pixelSize</span>()<span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">289 </span>    g2d.setColor(<span class=""> Color.CYAN </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">290 </span>    <span class="Statement">for</span><span class=""> </span>(<span class=""> </span><span class="Type">int</span><span class=""> i = </span><span class="Constant">0</span><span class="">; i &lt; points.size</span>()<span class="">; i++ </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">291 </span>      Point2D.Double p = points.get(<span class="">i</span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">292 </span>      g2d.fill(<span class=""> </span><span class="Statement">new</span><span class=""> Ellipse2D.Double</span>(<span class=""> p.getX</span>()<span class=""> - </span><span class="Constant">0.75</span><span class="">, p.getY</span><span class="javaParen2">()</span><span class=""> - </span><span class="Constant">0.75</span><span class="">, </span><span class="Constant">1.5</span><span class="">, </span><span class="Constant">1.5</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">293 </span>    }
+<span class="lnr">294 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> showFarPoints </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">295 </span>      g2d.setStroke(<span class=""> </span><span class="Statement">new</span><span class=""> BasicStroke</span>(<span class=""> pixelSize</span>()<span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">296 </span>      g2d.setColor(<span class=""> Color.RED </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">297 </span>      g2d.fill(<span class=""> </span><span class="Statement">new</span><span class=""> Ellipse2D.Double</span>(<span class=""> farP1.getX</span>()<span class=""> - </span><span class="Constant">1.5</span><span class="">, farP1.getY</span><span class="javaParen2">()</span><span class=""> - </span><span class="Constant">1.5</span><span class="">, </span><span class="Constant">3</span><span class="">, </span><span class="Constant">3</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">298 </span>      g2d.fill(<span class=""> </span><span class="Statement">new</span><span class=""> Ellipse2D.Double</span>(<span class=""> farP2.getX</span>()<span class=""> - </span><span class="Constant">1.5</span><span class="">, farP2.getY</span><span class="javaParen2">()</span><span class=""> - </span><span class="Constant">1.5</span><span class="">, </span><span class="Constant">3</span><span class="">, </span><span class="Constant">3</span><span class=""> </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">299 </span>    }
+<span class="lnr">300 </span>  }
+<span class="lnr">301 </span>
+<span class="lnr">302 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> componentResized</span>(<span class=""> ComponentEvent e </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">303 </span>    <span class="Type">int</span><span class=""> width = getWidth</span>()<span class="">;</span>
+<span class="lnr">304 </span>    <span class="Type">int</span><span class=""> height = getHeight</span>()<span class="">;</span>
+<span class="lnr">305 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> width != height </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">306 </span>      <span class="Type">int</span><span class=""> setTo = width &lt; height ? width : height;</span>
+<span class="lnr">307 </span>      setSize(<span class=""> setTo, setTo </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">308 </span>    }
+<span class="lnr">309 </span>  }
+<span class="lnr">310 </span>
+<span class="lnr">311 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> componentMoved</span>(<span class="">ComponentEvent e</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">312 </span>  }
+<span class="lnr">313 </span>
+<span class="lnr">314 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> componentShown</span>(<span class="">ComponentEvent e</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">315 </span>  }
+<span class="lnr">316 </span>
+<span class="lnr">317 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">void</span><span class=""> componentHidden</span>(<span class="">ComponentEvent e</span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">318 </span>  }
+<span class="lnr">319 </span>
+<span class="lnr">320 </span>}
+<span class="lnr">321 </span>
+<span class="lnr">322 </span><span class="Type">class</span> Edge {
+<span class="lnr">323 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">double</span><span class=""> x1, y1, x2, y2, w;</span>
+<span class="lnr">324 </span>  <span class="Type">public</span><span class=""> Edge</span>(<span class=""> </span><span class="Type">double</span><span class=""> x1, </span><span class="Type">double</span><span class=""> y1, </span><span class="Type">double</span><span class=""> x2, </span><span class="Type">double</span><span class=""> y2, </span><span class="Type">double</span><span class=""> w </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">325 </span>    <span class="Type">this</span><span class="">.x1 = x1; </span><span class="Type">this</span><span class="">.y1 = y1; </span><span class="Type">this</span><span class="">.x2 = x2; </span><span class="Type">this</span><span class="">.y2 = y2; </span><span class="Type">this</span><span class="">.w = w;</span>
+<span class="lnr">326 </span>  }
+<span class="lnr">327 </span>}
+<span class="lnr">328 </span>
+<span class="lnr">329 </span><span class="Type">class</span> Line {
+<span class="lnr">330 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> x1, y1, x2, y2;</span>
+<span class="lnr">331 </span>  <span class="Type">public</span><span class=""> Line</span>(<span class=""> </span><span class="Type">int</span><span class=""> x1, </span><span class="Type">int</span><span class=""> y1, </span><span class="Type">int</span><span class=""> x2, </span><span class="Type">int</span><span class=""> y2 </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x1 = x1; </span><span class="Type">this</span><span class="">.y1 = y1; </span><span class="Type">this</span><span class="">.x2 = x2; </span><span class="Type">this</span><span class="">.y2 = y2; }</span>
+<span class="lnr">332 </span>}
+<span class="lnr">333 </span>
+<span class="lnr">334 </span><span class="Type">class</span> Circle {
+<span class="lnr">335 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> x, y, r;</span>
+<span class="lnr">336 </span>  <span class="Type">public</span><span class=""> Circle</span>(<span class=""> </span><span class="Type">int</span><span class=""> x, </span><span class="Type">int</span><span class=""> y, </span><span class="Type">int</span><span class=""> r </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x = x; </span><span class="Type">this</span><span class="">.y = y; </span><span class="Type">this</span><span class="">.r = r; }</span>
+<span class="lnr">337 </span>}
+<span class="lnr">338 </span>
+<span class="lnr">339 </span><span class="Type">class</span> Point {
+<span class="lnr">340 </span>  <span class="Type">int</span><span class=""> n;</span>
+<span class="lnr">341 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">double</span><span class=""> x, y;</span>
+<span class="lnr">342 </span>  <span class="Type">public</span><span class=""> Point</span>(<span class=""> </span><span class="Type">double</span><span class=""> x, </span><span class="Type">double</span><span class=""> y </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.x = x; </span><span class="Type">this</span><span class="">.y = y; }</span>
+<span class="lnr">343 </span>  <span class="Type">public</span><span class=""> Point</span>(<span class=""> </span><span class="Type">int</span><span class=""> n, Point p </span><span class="javaParen">)</span><span class=""> { </span><span class="Type">this</span><span class="">.n = n; </span><span class="Type">this</span><span class="">.x = p.x; </span><span class="Type">this</span><span class="">.y = p.y; }</span>
+<span class="lnr">344 </span>}
+<span class="lnr">345 </span>
+<span class="lnr">346 </span><span class="Type">class</span> PointComparator <span class="Type">implements</span><span class=""> Comparator&lt;Point&gt; {</span>
+<span class="lnr">347 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">int</span><span class=""> compare</span>(<span class=""> Point a, Point b </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">348 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.ltDouble</span>(<span class=""> a.x, b.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">349 </span>      <span class="Statement">return</span><span class=""> -</span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">350 </span>    <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.gtDouble</span>(<span class=""> a.x, b.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">351 </span>      <span class="Statement">return</span><span class=""> </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">352 </span>    <span class="Statement">else</span><span class=""> {</span>
+<span class="lnr">353 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.ltDouble</span>(<span class=""> a.y, b.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">354 </span>        <span class="Statement">return</span><span class=""> -</span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">355 </span>      <span class="Statement">else</span><span class=""> </span><span class="Statement">if</span><span class=""> </span>(<span class=""> MyMath.gtDouble</span>(<span class=""> a.y, b.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">356 </span>        <span class="Statement">return</span><span class=""> </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr">357 </span>      <span class="Statement">else</span>
+<span class="lnr">358 </span>        <span class="Statement">return</span><span class=""> </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr">359 </span>    }
+<span class="lnr">360 </span>  }
+<span class="lnr">361 </span>}
+<span class="lnr">362 </span>
+<span class="lnr">363 </span><span class="Type">class</span> MyMath {
+<span class="lnr">364 </span>
+<span class="lnr">365 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">final</span><span class=""> </span><span class="Type">double</span><span class=""> EPSILON = </span><span class="Constant">1E-8</span><span class="">;</span>
+<span class="lnr">366 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">final</span><span class=""> </span><span class="Type">double</span><span class=""> INFINITY = </span><span class="Constant">1E+8</span><span class="">;</span>
+<span class="lnr">367 </span>
+<span class="lnr">368 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> eqDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> a &gt;= b - EPSILON &amp;&amp; a &lt;= b - EPSILON; }</span>
+<span class="lnr">369 </span>
+<span class="lnr">370 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> ltDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> b - a &gt; EPSILON; }</span>
+<span class="lnr">371 </span>
+<span class="lnr">372 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> gtDouble</span>(<span class=""> </span><span class="Type">double</span><span class=""> a, </span><span class="Type">double</span><span class=""> b </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> a - b &gt; EPSILON; }</span>
+<span class="lnr">373 </span>
+<span class="lnr">374 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">boolean</span><span class=""> isInfinite</span>(<span class=""> </span><span class="Type">double</span><span class=""> a </span><span class="javaParen">)</span><span class=""> { </span><span class="Statement">return</span><span class=""> !ltDouble</span><span class="javaParen">(</span><span class=""> a, INFINITY </span><span class="javaParen">)</span><span class="">; }</span>
+<span class="lnr">375 </span>
+<span class="lnr">376 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> Point xLineLine</span>(<span class=""> Line l1, Line l2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">377 </span>    <span class="Type">int</span><span class=""> x1 = l1.x1, y1 = l1.y1, x2 = l1.x2, y2 = l1.y2, x3 = l2.x1, y3 = l2.y1, x4 = l2.x2, y4 = l2.y2;</span>
+<span class="lnr">378 </span>    <span class="Type">int</span><span class=""> d = </span>(<span class=""> y4 - y3 </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> x2 - x1 </span><span class="javaParen">)</span><span class=""> - </span><span class="javaParen">(</span><span class=""> x4 - x3 </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> y2 - y1 </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">379 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> d == </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">380 </span>    <span class="Type">double</span><span class=""> a = </span>(<span class=""> </span>(<span class=""> x4 - x3 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> y1 - y3 </span><span class="javaParen1">)</span><span class=""> - </span><span class="javaParen1">(</span><span class=""> y4 - y3 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> x1 - x3 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class="Type">double</span><span class="javaParen">)</span><span class="">d;</span>
+<span class="lnr">381 </span>    <span class="Type">double</span><span class=""> b = </span>(<span class=""> </span>(<span class=""> x2 - x1 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> y1 - y3 </span><span class="javaParen1">)</span><span class=""> - </span><span class="javaParen1">(</span><span class=""> y2 - y1 </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> x1 - x3 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class="Type">double</span><span class="javaParen">)</span><span class="">d;</span>
+<span class="lnr">382 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> a &lt; </span><span class="Constant">0</span><span class=""> || a &gt; </span><span class="Constant">1</span><span class=""> || b &lt; </span><span class="Constant">0</span><span class=""> || b &gt; </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">383 </span>    <span class="Statement">return</span><span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x1 + a * </span>(<span class=""> x2 - x1 </span><span class="javaParen1">)</span><span class="">, y1 + a * </span><span class="javaParen1">(</span><span class=""> y2 - y1 </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">384 </span>  }
+<span class="lnr">385 </span>
+<span class="lnr">386 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> ArrayList&lt;Point&gt; xLineCircle</span>(<span class=""> Line l, Circle c </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">387 </span>    <span class="Type">int</span><span class=""> dx = l.x2 - l.x1;</span>
+<span class="lnr">388 </span>    <span class="Type">int</span><span class=""> dy = l.y2 - l.y1;</span>
+<span class="lnr">389 </span>    <span class="Type">int</span><span class=""> A = dx * dx + dy * dy;</span>
+<span class="lnr">390 </span>    <span class="Type">int</span><span class=""> B = </span><span class="Constant">2</span><span class=""> * </span>(<span class=""> dx * </span>(<span class=""> l.x1 - c.x </span><span class="javaParen1">)</span><span class=""> + dy * </span><span class="javaParen1">(</span><span class=""> l.y1 - c.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">391 </span>    <span class="Type">int</span><span class=""> C = </span>(<span class=""> l.x1 - c.x </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> l.x1 - c.x </span><span class="javaParen">)</span><span class=""> + </span><span class="javaParen">(</span><span class=""> l.y1 - c.y </span><span class="javaParen">)</span><span class=""> * </span><span class="javaParen">(</span><span class=""> l.y1 - c.y </span><span class="javaParen">)</span><span class=""> - c.r * c.r;</span>
+<span class="lnr">392 </span>    <span class="Type">int</span><span class=""> D = B * B - </span><span class="Constant">4</span><span class=""> * A * C;</span>
+<span class="lnr">393 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> D == </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr">394 </span>      System.err.format(<span class=""> </span><span class="Constant">&quot;&gt;&gt;Tangent? L %d %d %d %d, C %d %d %d%n&quot;</span><span class="">, l.x1, l.y1, l.x2, l.y2, c.x, c.y, c.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">395 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> D &lt; </span><span class="Constant">0</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">396 </span>    ArrayList&lt;Point&gt; points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point&gt;</span>(<span class=""> </span><span class="Constant">2</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">397 </span>    <span class="Type">double</span><span class=""> t = </span>(<span class=""> -B + Math.sqrt</span>(<span class=""> D </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * A </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">398 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> t &gt;= </span><span class="Constant">0</span><span class=""> &amp;&amp; t &lt;= </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">399 </span>      points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> l.x1 + t * dx, l.y1 + t * dy </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">400 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> t &lt; </span><span class="Constant">0.001</span><span class=""> || t &gt; </span><span class="Constant">0.999</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr">401 </span>        System.err.format(<span class=""> </span><span class="Constant">&quot;&gt;&gt;Degenerate? L %d %d %d %d, C %d %d %d%n&quot;</span><span class="">, l.x1, l.y1, l.x2, l.y2, c.x, c.y, c.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">402 </span>    }
+<span class="lnr">403 </span>    t = (<span class=""> -B - Math.sqrt</span>(<span class=""> D </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * A </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">404 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> t &gt;= </span><span class="Constant">0</span><span class=""> &amp;&amp; t &lt;= </span><span class="Constant">1</span><span class=""> </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">405 </span>      points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> l.x1 + t * dx, l.y1 + t * dy </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">406 </span>      <span class="Statement">if</span><span class=""> </span>(<span class=""> t &lt; </span><span class="Constant">0.001</span><span class=""> || t &gt; </span><span class="Constant">0.999</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span>
+<span class="lnr">407 </span>        System.err.format(<span class=""> </span><span class="Constant">&quot;&gt;&gt;Degenerate? L %d %d %d %d, C %d %d %d%n&quot;</span><span class="">, l.x1, l.y1, l.x2, l.y2, c.x, c.y, c.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">408 </span>    }
+<span class="lnr">409 </span>    <span class="Statement">return</span><span class=""> points;</span>
+<span class="lnr">410 </span>  }
+<span class="lnr">411 </span>
+<span class="lnr">412 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> ArrayList&lt;Point&gt; xCircleCircle</span>(<span class=""> Circle c1, Circle c2 </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">413 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> c1.x == c2.x &amp;&amp; c1.y == c2.y &amp;&amp; c1.r == c2.r </span><span class="javaParen">)</span>
+<span class="lnr">414 </span>      System.err.format(<span class=""> </span><span class="Constant">&quot;&gt;&gt;Degenerate? C %d %d %d, C %d %d %d%n&quot;</span><span class="">, c1.x, c1.y, c1.r, c2.x, c2.y, c2.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">415 </span>    <span class="Type">int</span><span class=""> dx = c2.x - c1.x;</span>
+<span class="lnr">416 </span>    <span class="Type">int</span><span class=""> dy = c2.y - c1.y;</span>
+<span class="lnr">417 </span>    <span class="Type">double</span><span class=""> d = Math.sqrt</span>(<span class=""> dx * dx + dy * dy </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">418 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> d &gt; c1.r + c2.r || d &lt; Math.abs</span>(<span class=""> c1.r - c2.r </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class=""> </span><span class="Statement">return</span><span class=""> </span><span class="Constant">null</span><span class="">;</span>
+<span class="lnr">419 </span>    <span class="Type">double</span><span class=""> a = </span>(<span class=""> c1.r * c1.r  - c2.r * c2.r  + d * d </span><span class="javaParen">)</span><span class=""> / </span><span class="javaParen">(</span><span class=""> </span><span class="Constant">2</span><span class=""> * d </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">420 </span>    <span class="Type">double</span><span class=""> x = c1.x + dx * a / d;</span>
+<span class="lnr">421 </span>    <span class="Type">double</span><span class=""> y = c1.y + dy * a / d;</span>
+<span class="lnr">422 </span>    <span class="Type">double</span><span class=""> h = Math.sqrt</span>(<span class=""> c1.r * c1.r - a * a </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">423 </span>    <span class="Type">double</span><span class=""> rx = -dy * h / d;</span>
+<span class="lnr">424 </span>    <span class="Type">double</span><span class=""> ry = dx * h / d;</span>
+<span class="lnr">425 </span>    ArrayList&lt;Point&gt; points = <span class="Statement">new</span><span class=""> ArrayList&lt;Point&gt;</span>(<span class=""> </span><span class="Constant">2</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">426 </span>    <span class="Statement">if</span><span class=""> </span>(<span class=""> Math.abs</span>(<span class=""> rx </span><span class="javaParen1">)</span><span class=""> &lt; </span><span class="Constant">0.001</span><span class=""> &amp;&amp; Math.abs</span><span class="javaParen1">(</span><span class=""> ry </span><span class="javaParen1">)</span><span class=""> &lt; </span><span class="Constant">0.001</span><span class=""> </span><span class="javaParen">)</span>
+<span class="lnr">427 </span>      System.err.format(<span class=""> </span><span class="Constant">&quot;&gt;&gt;Degenerate? C %d %d %d, C %d %d %d%n&quot;</span><span class="">, c1.x, c1.y, c1.r, c2.x, c2.y, c2.r </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">428 </span>    points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x + rx, y + ry </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">429 </span>    points.add(<span class=""> </span><span class="Statement">new</span><span class=""> Point</span>(<span class=""> x - rx, y - ry </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">430 </span>    <span class="Statement">return</span><span class=""> points;</span>
+<span class="lnr">431 </span>  }
+<span class="lnr">432 </span>
+<span class="lnr">433 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">double</span><span class=""> linearDistance</span>(<span class=""> Point p, Point q </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">434 </span>    <span class="Statement">return</span><span class=""> Math.sqrt</span>(<span class=""> </span>(<span class=""> p.x - q.x </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> p.x - q.x </span><span class="javaParen1">)</span><span class=""> + </span><span class="javaParen1">(</span><span class=""> p.y - q.y </span><span class="javaParen1">)</span><span class=""> * </span><span class="javaParen1">(</span><span class=""> p.y - q.y </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">435 </span>  }
+<span class="lnr">436 </span>
+<span class="lnr">437 </span>  <span class="Type">public</span><span class=""> </span><span class="Type">static</span><span class=""> </span><span class="Type">double</span><span class=""> arcLength</span>(<span class=""> Circle c, Point p, Point q </span><span class="javaParen">)</span><span class=""> {</span>
+<span class="lnr">438 </span>    <span class="Type">double</span><span class=""> theta = Math.abs</span>(<span class=""> Math.atan2</span>(<span class=""> p.y - c.y, p.x - c.x </span><span class="javaParen1">)</span><span class=""> - Math.atan2</span><span class="javaParen1">(</span><span class=""> q.y - c.y, q.x - c.x </span><span class="javaParen1">)</span><span class=""> </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">439 </span>    <span class="Statement">return</span><span class=""> c.r * Math.min</span>(<span class=""> theta, </span><span class="Constant">2</span><span class=""> * Math.PI - theta </span><span class="javaParen">)</span><span class="">;</span>
+<span class="lnr">440 </span>  }
+<span class="lnr">441 </span>
+<span class="lnr">442 </span>}
+</pre>
+</body>
+</html>

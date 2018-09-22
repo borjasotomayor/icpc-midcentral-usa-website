@@ -1,0 +1,55 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Mirror, Mirror on the Wall, MCPC 2010 Problem E by Michael Goldwasser */</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+fstream fin(&quot;mirror.in&quot;);
+
+<span class=keyword>int</span> main() {
+  map&lt;<span class=keyword>char</span>, <span class=keyword>char</span>&gt; sym;
+  sym['b'] = 'd';
+  sym['d'] = 'b';
+  sym['p'] = 'q';
+  sym['q'] = 'p';
+  sym['i'] = 'i';
+  sym['o'] = 'o';
+  sym['v'] = 'v';
+  sym['w'] = 'w';
+  sym['x'] = 'x';
+
+  string original;
+  fin &gt;&gt; original;
+  <span class=keyword>while</span> (original != &quot;#&quot;) {
+
+    string mirror;
+    <span class=keyword>bool</span> good = <span class=keyword>true</span>;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=original.size()-1; good &amp;&amp; k &gt;= 0; k--) {
+      map&lt;<span class=keyword>char</span>,<span class=keyword>char</span>&gt;::iterator locate = sym.find(original[k]);
+      <span class=keyword>if</span> (locate != sym.end())
+        mirror += sym[original[k]];
+      <span class=keyword>else</span>
+        good = <span class=keyword>false</span>;
+    }
+
+    <span class=keyword>if</span> (good)
+      cout &lt;&lt; mirror &lt;&lt; endl;
+    <span class=keyword>else</span>
+      cout &lt;&lt; &quot;INVALID&quot; &lt;&lt; endl;
+
+    fin &gt;&gt; original;
+  }
+}
+
+</pre></body>
+</html>

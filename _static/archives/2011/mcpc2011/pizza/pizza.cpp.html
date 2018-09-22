@@ -1,0 +1,77 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/* Pizza Pricing, MCPC 2011 Problem C, C++ solution by Michael Goldwasser */</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;map&gt;        <span class=comment>// only for debugging
+</span><span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=keyword>void</span> judgeCheck(map&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; menu, <span class=keyword>int</span> N);
+
+<span class=keyword>int</span> main() {
+    ifstream fin(&quot;pizza.in&quot;);
+    <span class=keyword>int</span> menu(1);
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        map&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; pizzas; <span class=comment>// only for debugging
+</span>
+        <span class=keyword>int</span> N;
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+        <span class=keyword>if</span> (N &lt; 0 || N &gt; 10) cerr &lt;&lt; &quot;ERROR: invalid N&quot; &lt;&lt; endl;
+
+        <span class=keyword>int</span> bestD, bestP;             <span class=comment>// initialize to first choice
+</span>        fin &gt;&gt; bestD &gt;&gt; bestP;
+        pizzas[bestD] = bestP;        <span class=comment>// for judge's check only
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> k=1; k &lt; N; k++) {   <span class=comment>// consider all other choices
+</span>            <span class=keyword>int</span> D,P;
+            fin &gt;&gt; D &gt;&gt; P;
+
+            <span class=keyword>if</span> (P * bestD * bestD &lt;  bestP * D * D) {  <span class=comment>// Note: avoids divisions
+</span>                bestD = D;
+                bestP = P;
+            }
+            pizzas[D] = P;            <span class=comment>// for judge's check only
+</span>        }
+
+        cout &lt;&lt; &quot;Menu &quot; &lt;&lt; menu++ &lt;&lt; &quot;: &quot; &lt;&lt; bestD &lt;&lt; endl;
+
+        judgeCheck(pizzas,N);
+    }
+}
+
+
+
+<span class=keyword>void</span> judgeCheck(map&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; menu, <span class=keyword>int</span> N) {
+    <span class=keyword>double</span> epsilon = -1;
+    <span class=keyword>if</span> (menu.size() != N)
+        cerr &lt;&lt; &quot;ERROR: duplicate pizza diameter&quot; &lt;&lt; endl;
+    <span class=keyword>for</span> (map&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt;::iterator it = menu.begin(); it != menu.end(); ++it) {
+        <span class=keyword>int</span> D = it-&gt;first;
+        <span class=keyword>int</span> P = it-&gt;second;
+        <span class=keyword>if</span> (D &lt; 1 || D &gt; 36) cerr &lt;&lt; &quot;ERROR: invalid D&quot; &lt;&lt; endl;
+        <span class=keyword>if</span> (P &lt; 1 || P &gt; 100) cerr &lt;&lt; &quot;ERROR: invalid P&quot; &lt;&lt; endl;
+        map&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt;::iterator rest = it;
+        ++rest;
+        <span class=keyword>while</span> (rest != menu.end()) {
+            <span class=keyword>int</span> rD = rest-&gt;first;
+            <span class=keyword>int</span> rP = rest-&gt;second;
+            <span class=keyword>if</span> (P * rD * rD == rP * D * D)
+                cerr &lt;&lt; &quot;ERROR: duplicate price/sqin&quot; &lt;&lt; endl;
+            <span class=keyword>double</span> e = 1.0*P/(D*D) - 1.0*rP/(rD*rD);
+            <span class=keyword>if</span> (e &lt; 0) e == -e;  <span class=comment>// take absolute value
+</span>            <span class=keyword>if</span> (epsilon == -1 || epsilon &gt; e)
+                epsilon = e;
+            ++rest;
+        }
+    }
+    cerr &lt;&lt; &quot;Smallest epsilon was &quot; &lt;&lt; epsilon &lt;&lt; endl;
+}
+</pre></body>
+</html>

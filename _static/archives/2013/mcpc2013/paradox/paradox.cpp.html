@@ -1,0 +1,210 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  paradox.cpp
+  Probability Paradox, MCPC 2013, Problem D
+  C++ solution by Michael Goldwasser
+*/</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=keyword>const</span> <span class=keyword>int</span> MAXLEN = 9;
+<span class=keyword>int</span> DEBUG = 0;
+<span class=keyword>long</span> <span class=keyword>long</span> MAXVAL;
+
+<span class=comment>// support for working with fractions
+</span><span class=keyword>long</span> <span class=keyword>long</span> gcd(<span class=keyword>long</span> <span class=keyword>long</span> a, <span class=keyword>long</span> <span class=keyword>long</span> b) {
+    <span class=keyword>if</span> (DEBUG &gt; 0) MAXVAL = max(MAXVAL, max(a,b));
+    <span class=keyword>return</span> (b ? gcd(b, a % b) : a);
+}
+<span class=keyword>class</span> Fraction {
+<span class=keyword>public</span>:
+    <span class=keyword>long</span> <span class=keyword>long</span> n,d;    <span class=comment>// numerator and denominator left public for convenience
+</span>
+    Fraction(<span class=keyword>long</span> <span class=keyword>long</span> num=0, <span class=keyword>long</span> <span class=keyword>long</span> denom=1) : n(num), d(denom) {
+        <span class=keyword>long</span> <span class=keyword>long</span> temp = gcd(n,d);              <span class=comment>// need gcd definition from elsewhere
+</span>        <span class=keyword>if</span> ((temp &lt; 0) != (denom &lt; 0))
+            temp = -temp;                  <span class=comment>// reverse sign
+</span>        n /= temp;
+        d /= temp;
+    }
+
+    <span class=keyword>bool</span> <span class=keyword>operator</span>&lt;(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> (n*other.d &lt; other.n*d);
+    }
+    <span class=keyword>bool</span> <span class=keyword>operator</span>==(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> (n == other.n &amp;&amp; d == other.d);        <span class=comment>// since already reduced
+</span>    }
+    <span class=keyword>bool</span> <span class=keyword>operator</span>!=(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> (n != other.n || d != other.d);
+    }
+    Fraction <span class=keyword>operator</span>+(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> Fraction(n*other.d + d*other.n, d*other.d);
+    }
+    Fraction <span class=keyword>operator</span>-(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> Fraction(n*other.d - d*other.n, d*other.d);
+    }
+    Fraction <span class=keyword>operator</span>*(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> Fraction(n*other.n, d*other.d);
+    }
+    Fraction <span class=keyword>operator</span>/(<span class=keyword>const</span> Fraction&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>return</span> Fraction(n*other.d, d*other.n);
+    }
+};
+ostream&amp; <span class=keyword>operator</span>&lt;&lt;(ostream&amp; out, Fraction&amp; f) {
+    out &lt;&lt; f.n;
+    <span class=keyword>if</span> (f.d &gt; 1)
+        out &lt;&lt; &quot;/&quot; &lt;&lt; f.d;
+    <span class=keyword>return</span> out;
+}
+
+
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_M = 2*MAXLEN + 1;
+Fraction coef[MAX_M][1 + MAX_M];  <span class=comment>// prob(A|S) = coef[S][M] + sum(coef[S][T] * prob(A|T))
+</span>
+<span class=keyword>void</span> dumpEquations(map&lt;string,<span class=keyword>int</span>&gt; &amp;index);   <span class=comment>// used only for debugging; defined at bottom
+</span>
+<span class=comment>// find the key in the index having the greatest overlap with a suffix of newest
+</span><span class=keyword>int</span> transition(map&lt;string,<span class=keyword>int</span>&gt; &amp;index, string newest) {
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; newest.size(); k++) {
+        map&lt;string,<span class=keyword>int</span>&gt;::iterator it = index.find(newest.substr(k));
+        <span class=keyword>if</span> (it != index.end())
+            <span class=keyword>return</span> it-&gt;second;   <span class=comment>// found it
+</span>    }
+    <span class=keyword>return</span> 0;  <span class=comment>// index of empty string
+</span>}
+
+Fraction solve(string A, string B) {
+    <span class=comment>// The following is for judging validity only
+</span>    MAXVAL = 0;
+    <span class=keyword>if</span> (DEBUG &gt; 1) cout &lt;&lt; &quot;Solving &quot; &lt;&lt; A &lt;&lt; &quot; vs &quot; &lt;&lt; B &lt;&lt; endl;
+
+    map&lt;string,<span class=keyword>int</span>&gt; index;    <span class=comment>// map from relevant string to unique index (with empty string as 0)
+</span>    index[&quot;&quot;] = 0;
+    <span class=keyword>int</span> n = A.size();
+    string players[] = {A,B};
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt;= n; k++)
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j&lt;2; j++) {
+            string sub = players[j].substr(0,k);
+            <span class=keyword>if</span> (index.find(sub) == index.end()) {
+                <span class=keyword>int</span> i = index.size();
+                index[sub] = i;
+            }
+        }
+
+    <span class=keyword>int</span> M = index.size();      <span class=comment>// number of states
+</span>
+    <span class=comment>// reset coef to zeros
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; M; j++)
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; M+1; k++)
+            coef[j][k] = 0;
+    coef[index[A]][M] = 1;        <span class=comment>// A has won;  prob(A|A) = 1
+</span>    coef[index[B]][M] = 0;        <span class=comment>// A has lost; prob(A|B) = 0
+</span>
+    <span class=keyword>for</span> (map&lt;string,<span class=keyword>int</span>&gt;::iterator it = index.begin(); it != index.end(); ++it) {
+        string sub = it-&gt;first;
+        <span class=keyword>int</span> i = it-&gt;second;
+        <span class=keyword>if</span> (sub.size() &lt; n) {       <span class=comment>// not either player's complete string
+</span>            coef[index[sub]][transition(index, sub+&quot;H&quot;)] = Fraction(1,2);
+            coef[index[sub]][transition(index, sub+&quot;T&quot;)] = Fraction(1,2);
+        }
+    }
+    dumpEquations(index);  <span class=comment>// for debugging only
+</span>
+    <span class=comment>// row reduce to eliminate variables
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> r=M-1; r &gt;= 0; r--) {
+        <span class=comment>// eliminate variable prob(A|r) from all equations by subtracting off multiple of row r
+</span>
+        <span class=comment>// first eliminate use of variable r in its own row
+</span>        <span class=comment>// if prob(A|r)  =  t * prob(A|r) + stuff, then prob(A|r) = stuff / (1-t).
+</span>        <span class=keyword>if</span> (coef[r][r] != 0) {
+            Fraction denom = (Fraction(1) - coef[r][r]);
+            <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; M+1; k++)
+                coef[r][k] = coef[r][k] / denom;
+            coef[r][r] = 0;
+        }
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> a=0; a &lt; M; a++) {
+            Fraction factor = coef[a][r];
+            <span class=keyword>if</span> (factor != 0) {
+                <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;M+1; k++) {
+                    <span class=keyword>if</span> (coef[r][k] != 0)
+                        coef[a][k] = coef[a][k] + factor * coef[r][k];
+                }
+                coef[a][r] = 0;
+            }
+        }
+        <span class=keyword>if</span> (DEBUG &gt; 1) cout &lt;&lt; &quot;After clearing col &quot; &lt;&lt; r &lt;&lt; endl;
+        dumpEquations(index);  <span class=comment>// for debugging only
+</span>    }
+
+    <span class=keyword>return</span> coef[0][M];  <span class=comment>// constant value of empty string probability
+</span>}
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    DEBUG = (argv - 1);
+    ifstream fin;
+    fin.open((argv &gt; 1) ? argc[1] : &quot;paradox.in&quot;);  <span class=comment>// allow command line argument to override input file name
+</span>    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        string playerA,playerB;
+        fin &gt;&gt; playerA;
+        <span class=keyword>if</span> (playerA == &quot;$&quot;) <span class=keyword>break</span>;
+        fin &gt;&gt; playerB;
+        <span class=keyword>if</span> (playerA.size() != playerB.size() || playerA.size() &gt; MAXLEN)
+            cerr &lt;&lt; &quot;INVALID INPUT: &quot; &lt;&lt; playerA &lt;&lt; &quot; &quot; &lt;&lt; playerB &lt;&lt; endl;
+        Fraction answer = solve(playerA, playerB);
+        cout &lt;&lt; answer.n &lt;&lt; &quot;/&quot; &lt;&lt; answer.d;
+        <span class=keyword>if</span> (DEBUG &gt; 0) cout &lt;&lt; &quot;\t\t(max value &quot; &lt;&lt; MAXVAL &lt;&lt; &quot;)&quot;;
+        cout &lt;&lt; endl;
+
+
+    }
+}
+
+
+<span class=comment>// used only for debugging
+</span><span class=keyword>void</span> dumpEquations(map&lt;string,<span class=keyword>int</span>&gt; &amp;index) {
+    <span class=keyword>if</span> (DEBUG &gt; 1) {
+        <span class=keyword>int</span> M = index.size();
+        vector&lt;string&gt; states(M);
+        <span class=keyword>for</span> (map&lt;string,<span class=keyword>int</span>&gt;::iterator it = index.begin(); it != index.end(); ++it) {
+            <span class=keyword>if</span> (it-&gt;first == &quot;&quot;)
+                states[it-&gt;second] = &quot;''&quot;;
+            <span class=keyword>else</span>
+                states[it-&gt;second] = it-&gt;first;
+        }
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; M; j++) {
+            cout &lt;&lt; states[j] &lt;&lt; &quot; = &quot;;
+            <span class=keyword>int</span> terms=0;
+            <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; M; k++) {
+                <span class=keyword>if</span> (coef[j][k] != 0) {
+                    <span class=keyword>if</span> (++terms &gt; 1)
+                        cout &lt;&lt; &quot; + &quot;;
+                    cout &lt;&lt; &quot;(&quot; &lt;&lt; coef[j][k] &lt;&lt; &quot;)*&quot; &lt;&lt; states[k];
+                }
+            }
+            <span class=keyword>if</span> (coef[j][M] != 0) {
+                <span class=keyword>if</span> (++terms &gt; 1)
+                    cout &lt;&lt; &quot; + &quot;;
+                cout &lt;&lt; coef[j][M];
+                terms++;
+            }
+            <span class=keyword>if</span> (terms == 0)
+                cout &lt;&lt; 0;
+            cout &lt;&lt; endl;
+        }
+    }
+}
+</pre></body>
+</html>

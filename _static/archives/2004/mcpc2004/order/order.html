@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Symmetric Order</title>
+
+  <meta name="Author" content="John Cigas">
+</head>
+  <body style="background-color: white;" lang="EN-US">
+
+<h1 align="center" style="text-align: center;">Problem C: Symmetric Order</h1>
+
+<center>
+<table>
+       <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td><tt>order.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+        </tr>
+       <tr>
+          <td>Input file:</td>
+          <td><tt>order.in</tt></td>
+        </tr>
+       <tr>
+          <td>Output file:</td>
+          <td><tt>order.out</tt></td>
+        </tr>
+
+  </tbody>
+</table>
+    </center>
+
+<p>In your job at Albatross Circus Management (yes, it's run by a bunch of
+  clowns), you have just finished writing a program whose output is a list
+ of names in nondescending order by length (so that each name is at least
+as long as the one preceding it). However, your boss does not like the way
+the output looks, and instead wants the output to appear more symmetric, with
+the shorter strings at the top and bottom and the longer strings in the middle.
+His rule is that each pair of names belongs on opposite ends of the list,
+and the first name in the pair is always in the top part of the list. In
+the first example set below, Bo and Pat are the first pair, Jean and Kevin
+the second pair, etc. </p>
+
+<p><span style="font-weight: bold;">Input:</span> The input consists of one
+ or more sets of strings, followed by a final  line containing only the value
+ 0. Each set starts with a line containing an  integer, <i>n</i>, which is
+ the number of strings in the set, followed by  <i>n</i> strings, one per
+line, sorted in nondescending order by length. None of the strings contain
+spaces. There is at least one and no more than 15 strings per set.&nbsp;
+Each string is at most 25 characters long.&nbsp; </p>
+
+<p><span style="font-weight: bold;">Output:</span> For each input set print
+ "<span style="font-family: monospace;">SET</span> <span
+ style="font-style: italic;">n</span>"  on a line, where <span
+ style="font-style: italic;">n</span> starts at 1, followed by the output
+ set as shown in the  sample output. </p>
+
+<table border="1" cellpadding="10">
+      <thead>  <tr>
+       <td><b>Example input:</b></td>
+        <td><b>Example output:</b></td>
+      </tr>
+      </thead>  <tbody>
+      <tr>
+       <td style="font-family: monospace;">    7<br>
+    Bo<br>
+    Pat<br>
+    Jean<br>
+    Kevin<br>
+    Claude<br>
+    William<br>
+    Marybeth<br>
+    6<br>
+    Jim<br>
+    Ben<br>
+    Zoe<br>
+    Joey<br>
+    Frederick<br>
+    Annabelle<br>
+    5<br>
+    John<br>
+    Bill<br>
+    Fran<br>
+    Stan<br>
+    Cece<br>
+    0<br>
+          </td>
+       <td valign="top" style="font-family: monospace;"> SET 1<br>
+    Bo<br>
+    Jean<br>
+    Claude<br>
+    Marybeth<br>
+    William<br>
+    Kevin<br>
+    Pat<br>
+    SET 2<br>
+    Jim<br>
+    Zoe<br>
+    Frederick<br>
+    Annabelle<br>
+    Joey<br>
+    Ben<br>
+    SET 3<br>
+    John<br>
+    Fran<br>
+    Cece<br>
+    Stan<br>
+    Bill   </td>
+      </tr>
+
+  </tbody>
+</table>
+
+<p><small><i>Last modified on October 31, 2004 at 3:20 PM.</i></small></p>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  welcome-enumerate.cpp
+  Welcome Party, MCPC 2013, Problem A
+  Alternate C++ solution by Michael Goldwasser
+
+  This is a less efficient, but correct, solution for solving the
+  underlying vertex cover. It enumerates over every possible choice of
+  subsets of last-name initials (there are 2^18 of them), adding to it
+  the implied first-name groups that must be formed for those not in a
+  last-name group.
+*/</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;welcome.in&quot;);
+
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_FIRST = 26;
+<span class=keyword>const</span> <span class=keyword>int</span> MAX_LAST = 18;           <span class=comment>// we assume this is the smaller of the two limits
+</span><span class=keyword>bool</span> graph[MAX_FIRST][MAX_LAST];
+
+<span class=keyword>void</span> reset() {
+    <span class=keyword>for</span> (<span class=keyword>int</span> a=0; a &lt; MAX_FIRST; a++)
+        <span class=keyword>for</span> (<span class=keyword>int</span> b=0; b &lt; MAX_LAST; b++)
+            graph[a][b] = <span class=keyword>false</span>;
+}       
+
+<span class=comment>// utilities for bitcodes
+</span><span class=keyword>bool</span> testBit(<span class=keyword>long</span> bitcode, <span class=keyword>int</span> k) { <span class=keyword>return</span> ( (1L &lt;&lt; k) &amp; bitcode ); }
+<span class=keyword>void</span> setBit(<span class=keyword>long</span> &amp;bitcode, <span class=keyword>int</span> k) { bitcode |= (1L &lt;&lt; k); }
+<span class=keyword>int</span> numOnes(<span class=keyword>long</span> bitcode) {
+    <span class=keyword>int</span> count=0;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; MAX_FIRST; k++)
+        <span class=keyword>if</span> (testBit(bitcode, k)) count++;
+    <span class=keyword>return</span> count;
+}
+
+<span class=keyword>int</span> solve() {
+    <span class=keyword>long</span> opposite[MAX_LAST];
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; MAX_LAST; k++) {
+        opposite[k] = 0;
+        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; MAX_FIRST; j++)
+            <span class=keyword>if</span> (graph[j][k])
+                setBit(opposite[k], j);
+    }
+
+    <span class=keyword>int</span> best=MAX_FIRST;   <span class=comment>// that many groups will surely suffice
+</span>    <span class=keyword>for</span> (<span class=keyword>long</span> code=0; code &lt; (1L &lt;&lt; MAX_LAST); code++) {
+        <span class=keyword>long</span> mask = 0;
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; MAX_LAST; k++)
+            <span class=keyword>if</span> (!testBit(code, k))
+                mask |= opposite[k];
+        <span class=keyword>int</span> temp = numOnes(code) + numOnes(mask);
+        <span class=keyword>if</span> (temp &lt; best)
+            best = temp;
+    }
+    <span class=keyword>return</span> best;
+}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> N;
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N == 0) <span class=keyword>break</span>;
+
+        reset();
+        <span class=keyword>for</span> (<span class=keyword>int</span> t=0; t&lt;N; t++) {
+            string first,last;
+            fin &gt;&gt; first &gt;&gt; last;
+            <span class=keyword>int</span> j = first[0] - 'A';
+            <span class=keyword>int</span> k = last[0] - 'A';
+            <span class=keyword>if</span> (j &lt; 0 || j &gt;= MAX_FIRST || k &lt; 0 || k &gt;= MAX_LAST)
+                cerr &lt;&lt; &quot;ILLEGAL NAME: &quot; &lt;&lt; first &lt;&lt; &quot; &quot; &lt;&lt; last &lt;&lt; endl;
+            <span class=keyword>else</span>                
+                graph[j][k]= <span class=keyword>true</span>;
+        }
+        cout &lt;&lt; solve() &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

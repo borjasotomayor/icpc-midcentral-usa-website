@@ -1,0 +1,4 @@
+Notes:
+
+Data sets #23 & 29, are the two where the number of paths requires a 64 bit
+integer and where a pure backtracking solution will exceed the time limit.

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>~/gold/mcpc2008/bridges/bridges.cpp.html</title>
+<meta name="Generator" content="Vim/7.2">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.Comment { color: #dabea2; }
+.PreProc { color: #14f07c; }
+.Constant { color: #72a5e4; font-weight: bold; }
+.Statement { color: #7e75b5; font-weight: bold; }
+.Type { color: #a9ee8a; font-weight: bold; }
+pre { font-family: monospace; color: #ffffff; background-color: #000000; }
+body { font-family: monospace; color: #ffffff; background-color: #000000; }
+.lnr { color: #fbf204; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="lnr">  1 </span><span class="Comment">// 2008 ACM Mid-Central USA Regional Programming Contest</span>
+<span class="lnr">  2 </span><span class="Comment">// Solution to Problem D: &quot;The Bridges of San Mochti&quot; [easy/moderate]</span>
+<span class="lnr">  3 </span><span class="Comment">// Eric Shade, Missouri State University</span>
+<span class="lnr">  4 </span>
+<span class="lnr">  5 </span><span class="PreProc">#include </span><span class="Constant">&lt;iostream&gt;</span>
+<span class="lnr">  6 </span><span class="PreProc">#include </span><span class="Constant">&lt;fstream&gt;</span>
+<span class="lnr">  7 </span><span class="PreProc">#include </span><span class="Constant">&lt;algorithm&gt;</span>
+<span class="lnr">  8 </span><span class="Statement">using</span> <span class="Type">namespace</span><span class=""> std;</span>
+<span class="lnr">  9 </span>
+<span class="lnr"> 10 </span><span class="Type">const</span> <span class="Type">int</span><span class=""> MAX_BRIDGES = </span><span class="Constant">20</span><span class=""> + </span><span class="Constant">1</span><span class="">;</span>
+<span class="lnr"> 11 </span><span class="Type">const</span> <span class="Type">int</span><span class=""> MAX_CROSSING_TIME = </span><span class="Constant">100</span><span class="">;</span>
+<span class="lnr"> 12 </span>
+<span class="lnr"> 13 </span><span class="Type">int</span> crossTime[MAX_BRIDGES]; <span class="Comment">// crossing time in seconds for bridge b</span>
+<span class="lnr"> 14 </span><span class="Type">int</span> capacity[MAX_BRIDGES];  <span class="Comment">// max number of people who can cross bridge b</span>
+<span class="lnr"> 15 </span><span class="Type">int</span> waiting[MAX_BRIDGES];   <span class="Comment">// number of people waiting to cross bridge b</span>
+<span class="lnr"> 16 </span><span class="Type">int</span> unit[MAX_BRIDGES];      <span class="Comment">// people in unit currently crossing bridge b</span>
+<span class="lnr"> 17 </span><span class="Type">int</span> timeLeft[MAX_BRIDGES];  <span class="Comment">// remaining time for unit crossing bridge b</span>
+<span class="lnr"> 18 </span>
+<span class="lnr"> 19 </span><span class="Type">int</span> bridges, people;
+<span class="lnr"> 20 </span>
+<span class="lnr"> 21 </span>
+<span class="lnr"> 22 </span><span class="Type">void</span> dumpState(<span class="Type">int</span><span class=""> delta = </span><span class="Constant">0</span><span class="">, </span><span class="Type">int</span><span class=""> total = </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr"> 23 </span>    <span class="Statement">for</span><span class=""> (</span><span class="Type">int</span><span class=""> b = </span><span class="Constant">0</span><span class="">; b &lt; bridges; b++) {</span>
+<span class="lnr"> 24 </span>        cerr &lt;&lt; waiting[b];
+<span class="lnr"> 25 </span>        <span class="Statement">if</span><span class=""> (unit[b] &gt; </span><span class="Constant">0</span><span class="">)</span>
+<span class="lnr"> 26 </span>            cerr &lt;&lt; <span class="Constant">&quot; /&quot;</span><span class=""> &lt;&lt; unit[b] &lt;&lt; </span><span class="Constant">&quot;:&quot;</span><span class=""> &lt;&lt; timeLeft[b] &lt;&lt; </span><span class="Constant">&quot;/ &quot;</span><span class="">;</span>
+<span class="lnr"> 27 </span>        <span class="Statement">else</span>
+<span class="lnr"> 28 </span>            cerr &lt;&lt; <span class="Constant">&quot; &quot;</span><span class="">;</span>
+<span class="lnr"> 29 </span>    }
+<span class="lnr"> 30 </span>    cerr &lt;&lt; waiting[bridges];
+<span class="lnr"> 31 </span>    <span class="Statement">if</span><span class=""> (delta &gt; </span><span class="Constant">0</span><span class="">) cerr &lt;&lt; </span><span class="Constant">&quot; [+&quot;</span><span class=""> &lt;&lt; delta &lt;&lt; </span><span class="Constant">&quot; = &quot;</span><span class=""> &lt;&lt; total &lt;&lt; </span><span class="Constant">&quot;]&quot;</span><span class="">;</span>
+<span class="lnr"> 32 </span>    cerr &lt;&lt; endl;
+<span class="lnr"> 33 </span>}
+<span class="lnr"> 34 </span>
+<span class="lnr"> 35 </span>
+<span class="lnr"> 36 </span><span class="Type">int</span> main() {
+<span class="lnr"> 37 </span>    ifstream in(<span class="Constant">&quot;bridges.in&quot;</span><span class="">);</span>
+<span class="lnr"> 38 </span>
+<span class="lnr"> 39 </span>    <span class="Statement">for</span><span class=""> (</span><span class="Type">int</span><span class=""> config = </span><span class="Constant">1</span><span class="">; ; config++) {</span>
+<span class="lnr"> 40 </span>        in &gt;&gt; bridges &gt;&gt; people;
+<span class="lnr"> 41 </span>
+<span class="lnr"> 42 </span>        <span class="Statement">if</span><span class=""> (bridges == </span><span class="Constant">0</span><span class="">) </span><span class="Statement">break</span><span class="">;</span>
+<span class="lnr"> 43 </span>
+<span class="lnr"> 44 </span>        bridges = -bridges;
+<span class="lnr"> 45 </span>
+<span class="lnr"> 46 </span>        cerr &lt;&lt; <span class="Constant">&quot;CONFIGURATION &quot;</span><span class=""> &lt;&lt; config &lt;&lt; endl;</span>
+<span class="lnr"> 47 </span>
+<span class="lnr"> 48 </span>        <span class="Statement">for</span><span class=""> (</span><span class="Type">int</span><span class=""> b = </span><span class="Constant">0</span><span class="">; b &lt; bridges; b++) {</span>
+<span class="lnr"> 49 </span>            in &gt;&gt; capacity[b] &gt;&gt; crossTime[b];
+<span class="lnr"> 50 </span>            waiting[b] = unit[b] = timeLeft[b] = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 51 </span>        }
+<span class="lnr"> 52 </span>
+<span class="lnr"> 53 </span>        <span class="Type">int</span><span class=""> seconds = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 54 </span>        <span class="Type">int</span><span class=""> crossing = </span><span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 55 </span>
+<span class="lnr"> 56 </span>        <span class="Comment">// everyone is initially waiting to cross the first bridge</span>
+<span class="lnr"> 57 </span>        waiting[<span class="Constant">0</span><span class="">] = people;</span>
+<span class="lnr"> 58 </span>
+<span class="lnr"> 59 </span>        <span class="Comment">// the bridges are numbered 0..(bridges-1), so waiting[bridges]</span>
+<span class="lnr"> 60 </span>        <span class="Comment">// is really the number of people who have *crossed* the last bridge</span>
+<span class="lnr"> 61 </span>        waiting[bridges] = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 62 </span>
+<span class="lnr"> 63 </span>        dumpState();
+<span class="lnr"> 64 </span>
+<span class="lnr"> 65 </span>        <span class="Statement">while</span><span class=""> (waiting[bridges] &lt; people) {</span>
+<span class="lnr"> 66 </span>            <span class="Type">int</span><span class=""> minTimeLeft = MAX_CROSSING_TIME;</span>
+<span class="lnr"> 67 </span>
+<span class="lnr"> 68 </span>            <span class="Comment">// put units on bridges, calculate minimum crossing time left</span>
+<span class="lnr"> 69 </span>            <span class="Statement">for</span><span class=""> (</span><span class="Type">int</span><span class=""> b = </span><span class="Constant">0</span><span class="">; b &lt; bridges; b++) {</span>
+<span class="lnr"> 70 </span>                <span class="Statement">if</span><span class=""> (waiting[b] &gt; </span><span class="Constant">0</span><span class=""> &amp;&amp; unit[b] == </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr"> 71 </span>                    unit[b] = min(waiting[b], capacity[b]);
+<span class="lnr"> 72 </span>                    waiting[b] -= unit[b];
+<span class="lnr"> 73 </span>                    timeLeft[b] = crossTime[b];
+<span class="lnr"> 74 </span>                }
+<span class="lnr"> 75 </span>                <span class="Statement">if</span><span class=""> (timeLeft[b] &gt; </span><span class="Constant">0</span><span class="">)</span>
+<span class="lnr"> 76 </span>                    minTimeLeft = min(timeLeft[b], minTimeLeft);
+<span class="lnr"> 77 </span>            }
+<span class="lnr"> 78 </span>
+<span class="lnr"> 79 </span>            seconds += minTimeLeft;
+<span class="lnr"> 80 </span>
+<span class="lnr"> 81 </span>            <span class="Comment">// decrease crossing times by minTimeLeft, completing</span>
+<span class="lnr"> 82 </span>            <span class="Comment">// crossings when time drops to zero</span>
+<span class="lnr"> 83 </span>            <span class="Statement">for</span><span class=""> (</span><span class="Type">int</span><span class=""> b = </span><span class="Constant">0</span><span class="">; b &lt; bridges; b++) {</span>
+<span class="lnr"> 84 </span>                <span class="Statement">if</span><span class=""> (timeLeft[b] &gt; </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr"> 85 </span>                    timeLeft[b] -= minTimeLeft;
+<span class="lnr"> 86 </span>                    <span class="Statement">if</span><span class=""> (timeLeft[b] == </span><span class="Constant">0</span><span class="">) {</span>
+<span class="lnr"> 87 </span>                        waiting[b+<span class="Constant">1</span><span class="">] += unit[b];</span>
+<span class="lnr"> 88 </span>                        unit[b] = <span class="Constant">0</span><span class="">;</span>
+<span class="lnr"> 89 </span>                    }
+<span class="lnr"> 90 </span>                }
+<span class="lnr"> 91 </span>            }
+<span class="lnr"> 92 </span>
+<span class="lnr"> 93 </span>            dumpState(minTimeLeft, seconds);
+<span class="lnr"> 94 </span>        }
+<span class="lnr"> 95 </span>
+<span class="lnr"> 96 </span>        cout &lt;&lt; seconds &lt;&lt; endl;
+<span class="lnr"> 97 </span>    }
+<span class="lnr"> 98 </span>
+<span class="lnr"> 99 </span>    in.close();
+<span class="lnr">100 </span>}
+</pre>
+</body>
+</html>

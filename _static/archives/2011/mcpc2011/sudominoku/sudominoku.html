@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Michael Goldwasser">
+    <title>Su-domino-ku</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.figure
+      {
+          margin: auto;
+          border-spacing: 1em;
+      }
+      table.figure td
+      {
+          border: 1px solid black;
+          padding: 1em;
+          width: 220px;
+          text-align: center;
+      }
+      table.figure td.caption
+      {
+          border-style: none;
+          font-style: italic;
+          padding-top: 0;
+          vertical-align: top;
+          text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem D: Su-domino-ku</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>sudominoku.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>sudominoku.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+    As if there were not already enough sudoku-like puzzles, the July
+    2009 issue of Games Magazine describes the following variant that
+    combines facets of both sudoku and dominos.
+    The puzzle is a form of a standard sudoku, in which there is a
+    nine-by-nine grid that must be filled in using only digits 1
+    through 9.  In a successful solution:
+    <ul>
+      <li>
+	  Each row must contain each of the digits 1 through 9.
+      </li>
+      <li>
+	  Each column must contain each of the digits 1 through 9.
+      </li>
+      <li>
+	  Each of the indicated three-by-three squares must contain
+	  each of the digits 1 through 9.
+      </li>
+    </ul>
+    </p>
+
+    <p>
+    For a su-domino-ku, nine arbitrary cells are initialized with the
+    numbers <nobr>1 to 9</nobr>.  This leaves 72 remaining cells.  Those must be
+    filled by making use of the following set of 36 domino tiles.  The
+    tile set includes one domino for each possible pair of unique
+    numbers from <nobr>1 to 9</nobr> (e.g., 1+2, 1+3, 1+4, 1+5, 1+6, 1+7, 1+8, 1+9,
+    2+3, 2+4, 2+5, ...).  Note well that there are not separate 1+2 and
+    2+1 tiles in the set; the single such domino
+    can be rotated to provide either orientation. Also, note that
+    dominos may cross the boundary of the three-by-three squares (as
+    does the 2+9 domino in our coming example).
+    </p>
+
+    <p>
+    To help you out, we will begin each
+    puzzle by identifying the location of some of the dominos.
+    For example, Figure&nbsp;1 shows a sample puzzle in its initial
+    state.  Figure&nbsp;2 shows the unique way to complete that puzzle.
+    </p>
+    
+    <table class="figure">
+      <tr>
+        <td>
+          <img width="350" src="example1.png"/>
+        </td>
+        <td>
+          <img width="350" src="example1-soln.png"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 1: Sample puzzle</td>
+        <td class="caption"">Figure 2: Solution</td>
+      </tr>
+    </table>
+
+
+    <p>
+      <b>Input:</b>&nbsp; Each puzzle description begins with a line containing
+      an integer <var>N</var>, for
+      10&nbsp;&le;&nbsp;<var>N</var>&nbsp;&le;&nbsp;35, representing the
+      number of dominos that are initially placed in the starting
+      configuration. Following that are <var>N</var> lines, each
+      describing a single domino as
+    <nobr><var>U</var> <var>LU</var> <var>V</var>
+      <var>LV</var></nobr>. Value <var>U</var> is one of the numbers
+      on the domino, and <var>LU</var> is a two-character string
+      representing the location of value <var>U</var> on the board
+      based on the grid system diagrammed in Figure&nbsp;1.  The
+      variables <var>V</var> and <var>LV</var> representing the
+      respective value and location of the other half of the domino.    
+      For example, our first sample input beings with a domino
+      described as <nobr><tt>6 B2 1 B3</tt></nobr>.  This corresponds
+      to the domino with values 6+1 being placed on the board such that
+      value&nbsp;<tt>6</tt> is in row&nbsp;<tt>B</tt>, column&nbsp;<tt>2</tt>
+      and value&nbsp;<tt>1</tt> in row&nbsp;<tt>B</tt>, column&nbsp;<tt>3</tt>.
+      The two locations for a given domino will always be neighboring.
+    </p>
+
+    <p>
+    After the specification of the <tt>N</tt> dominos will be a final
+    line that describes the initial locations of the isolated
+    numbers, ordered from <nobr>1 to 9</nobr>, using the same row-column
+    conventions for describing locations on the board.  All initial
+    numbers and dominos will be at unique locations.
+    </p>
+    </p>
+    The input file ends with a line containing <nobr>0</nobr>.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each puzzle, output an initial line
+      identifying the puzzle number, as shown below. Following that,
+      output the 9x9 sudoku board that can be formed with the
+      set of dominos. There will be a unique solution for each puzzle.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10
+6 B2 1 B3
+2 C4 9 C3
+6 D3 8 E3
+7 E1 4 F1
+8 B7 4 B8
+3 F5 2 F6
+7 F7 6 F8
+5 G4 9 G5 
+7 I8 8 I9
+7 C9 2 B9
+C5 A3 D9 I4 A9 E5 A2 C6 I1
+11
+5 I9 2 H9
+6 A5 7 A6
+4 B8 6 C8
+3 B5 8 B4
+3 C3 2 D3
+9 D2 8 E2
+3 G2 5 H2
+1 A2 8 A1
+1 H8 3 I8
+8 I3 7 I4
+4 I6 9 I7
+I5 E6 D1 F2 B3 G9 H7 C9 E5
+0
+</td>
+          <td>Puzzle 1
+872643195
+361975842
+549218637
+126754983
+738169254
+495832761
+284597316
+657381429
+913426578
+Puzzle 2
+814267593
+965831247
+273945168
+392176854
+586492371
+741358629
+137529486
+459683712
+628714935</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

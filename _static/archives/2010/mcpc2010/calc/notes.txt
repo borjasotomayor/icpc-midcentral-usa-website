@@ -1,0 +1,7 @@
+Given the formatting component of this problem, one issue that may
+arise is deciding what error is "wrong answer" and what is
+"presentation error."
+
+We suggest that it is a wrong answer if they have an incorrect
+sequence of rows, or incorrect times within a row, but otherwise a
+presentation error.

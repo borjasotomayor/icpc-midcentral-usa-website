@@ -1,0 +1,7 @@
+Colors.exe is a 32-bit DOS-extended executable created with
+DJGPP.  It requires DPMI services, which are available by
+default in Windows 9x/NT.  The program cwsdpmi.exe provides
+DPMI services for pure DOS environments like MS-DOS 6.22, and
+will be loaded automatically by colors.exe if needed. To ensure
+that the program will run in all environments, keep colors.exe
+and cwsdpmi.exe together in the same directory.

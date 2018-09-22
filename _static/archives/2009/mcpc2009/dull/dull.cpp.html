@@ -1,0 +1,132 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*  DuLL MCPC 2009 Problem C, by Gabriel Foust
+*/</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin;
+<span class=keyword>int</span> numDlls;
+<span class=keyword>int</span> numPrograms;
+<span class=keyword>int</span> numTransitions;
+<span class=keyword>int</span> dllSizes[20];
+<span class=keyword>int</span> dllReferences[20];
+<span class=keyword>int</span> programSizes[9];
+string programDlls[9];
+
+<span class=keyword>bool</span> GetNextInputSet()
+{
+    numDlls= 0;
+    fin &gt;&gt; numDlls;
+    <span class=keyword>if</span> (numDlls &lt;= 0)
+        <span class=keyword>return</span> <span class=keyword>false</span>;
+
+    fin &gt;&gt; numPrograms &gt;&gt; numTransitions;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; numDlls; i++)
+        fin &gt;&gt; dllSizes[i];
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; numPrograms; i++)
+    {
+        fin &gt;&gt; programSizes[i];
+        fin &gt;&gt; programDlls[i];
+                <span class=keyword>for</span> (<span class=keyword>int</span> j = 0; j &lt; programDlls[i].length(); j++) {<span class=comment>//judge check
+</span>                    <span class=keyword>char</span> ch = programDlls[i][j];
+                    <span class=keyword>if</span> (ch &lt; 'A' || ch - 'A' &gt;= numDlls)
+                       cerr &lt;&lt; &quot;letter out of range&quot; &lt;&lt; endl;
+                }
+    }
+
+    <span class=keyword>return</span> <span class=keyword>true</span>;
+}
+
+<span class=keyword>int</span> AddReferences( <span class=keyword>int</span> prog )
+{
+    string dlls= programDlls[prog - 1];
+
+    <span class=keyword>int</span> adjustment= 0;
+
+    <span class=keyword>for</span> (size_t i= 0; i &lt; dlls.length(); i++)
+    {
+        <span class=keyword>int</span> d= dlls[i] - 'A';
+        <span class=keyword>if</span> (dllReferences[d] == 0)
+            adjustment+= dllSizes[d];
+        dllReferences[d]++;
+    }
+
+    <span class=keyword>return</span> adjustment;
+}
+
+<span class=keyword>int</span> RemoveReferences( <span class=keyword>int</span> prog )
+{
+    string dlls= programDlls[prog - 1];
+
+    <span class=keyword>int</span> adjustment= 0;
+
+    <span class=keyword>for</span> (size_t i= 0; i &lt; dlls.length(); i++)
+    {
+        <span class=keyword>int</span> d= dlls[i] - 'A';
+        dllReferences[d]--;
+        <span class=keyword>if</span> (dllReferences[d] == 0)
+            adjustment+= dllSizes[d];
+    }
+
+    <span class=keyword>return</span> adjustment;
+}
+
+<span class=keyword>int</span> MaxMemory()
+{
+    <span class=keyword>for</span> (<span class=keyword>int</span> d= 0; d &lt; numDlls; d++)
+        dllReferences[d]= 0;
+
+    <span class=keyword>int</span> memory= 0;
+    <span class=keyword>int</span> maxMemory= 0;
+
+    <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; numTransitions; i++)
+    {
+        <span class=keyword>int</span> t;
+        fin &gt;&gt; t;
+
+        <span class=keyword>if</span> (t &gt; 0)
+        {
+            memory+= programSizes[t - 1];
+            memory+= AddReferences( t );
+        }
+        <span class=keyword>else</span>
+        {
+            memory-= programSizes[-t - 1];
+            memory-= RemoveReferences( -t );
+        }
+
+        cerr &lt;&lt; memory &lt;&lt; endl;
+        <span class=keyword>if</span> (memory &gt; maxMemory)
+            maxMemory= memory;
+    }
+
+    <span class=keyword>return</span> maxMemory;
+}
+
+<span class=keyword>int</span> main()
+{
+    <span class=keyword>int</span> count= 1;
+    fin.open( &quot;dull.in&quot; );
+    <span class=keyword>while</span> (GetNextInputSet())
+    {
+        cerr &lt;&lt; &quot;Test #&quot; &lt;&lt; count++ &lt;&lt; endl;
+        cout &lt;&lt; MaxMemory() &lt;&lt; endl;
+    }
+    fin.close();
+
+    <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

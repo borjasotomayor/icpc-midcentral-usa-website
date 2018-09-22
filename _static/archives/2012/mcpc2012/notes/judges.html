@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Notes to Judges</title></head>
+<body>
+
+<table width="100%">
+  <tbody>
+    <tr valign="top">
+      <td align="left"><font size="+3"><b>Notes to Judges</b></font>
+      </td>
+      <td align="right"><font size="-1"><i>Last modified Tue Oct 30 12:55:41 2012</i></font>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Read the <a href="errors.html">Error Messages</a>,  <a href="teams.html">Notes to Teams</a>, and  <a href="sites.html">Notes to
+Sites</a> right now. </p>
+
+<p>Really, read those first. OK, now pass Go and collect $200.</p>
+
+<p>Clarifications and corrections will be posted on the web at the top of
+ the standings pages, so <i>be sure to check the standings regularly, even
+ if you have no scores to enter.</i> </p>
+
+<p>The judges distribution contains one subdirectory of mcpc2012 for each problem, which
+  includes the description in HTML, the source code file, the input data
+  file and a file capturing the output of the program. The CD contains
+a subdirectory called <tt>NOTES</tt> that includes the HTML source for these
+notes.&nbsp;The CD&nbsp;contains a subdirectory called <tt>JUDGE</tt> that includes
+the version of the judging utilities used in the last several contests.
+If you do not already have a tried-and-true method for judging, you might
+want to take a look at them. Instructions are provided in <a href="util.html">Using the Judging Utilities</a>. &nbsp;All
+the judges' solutions are copied into the directory mcpc2012/solDir.
+If you are using the judging utilities, all these solutions may be
+copied onto removable media and then tested with the judging utilities.
+Running the judges'
+solutions is good to see that they do not run too slowly with the
+judges' input on your computer. &nbsp; </p>
+
+<p>The judge's input and output files in the individual problem directories
+  and the judging utilities are for a Windows environment. The <tt>unix</tt>
+  subdirectory contains all the input and output files with unix newline
+'<tt>\n</tt>'  rather than the two character Windows versions. This distinction
+is important  for grading by exact output file matching. </p>
+
+<p>All the textual information on the judges' CD can be viewed
+through a Web browser by accessing <tt>browse.html</tt> in the
+<tt>mcpc2012</tt> directory installed by the judging utilities (or on
+the judges' CD itself).  </p>
+
+<p>Regardless of what judging method you use, remember the following (the
+ included utilities take care of these details for you): </p>
+
+<ul>
+
+<li>Remove a team's diskette/flashdrive/zipdrive or write-protect it before judging to
+ensure that nothing is written to it.</li>
+
+<li>Always copy a fresh set of correct input and output files before
+judging a run, because teams' programs have been known to trash
+files.</li>
+
+<li>If a program is correct, the team's output file will match the
+correct output file <em>exactly</em>, i.e., they must be byte-for-byte
+identical. If the match is not exact, you will have to do a visual
+inspection to tell whether the problem is a wrong answer or a
+presentation error.</li>
+
+</ul>
+
+<p> Each submitted run must be judged by at least two judges. This helps
+guard  against procedural mistakes and ensures some dialog between judges.
+This is especially critical when choosing between <i>Wrong Answer</i> and
+<i>Presentation Error</i>, where there can be room for differences of opinion.
+Presentation errors are ancillary or non-essential mistakes. Sometimes it's
+easy to categorize presentation errors, sometimes not. For example, consider
+a program that is supposed to print 3.1415. If it prints 4.23, that is obviously
+a wrong answer. If it prints 3.14159, then it is a presentation error for
+printing too many digits. But what about if it prints 3? This could be from
+not printing enough digits, or it could be because the programmer used integers
+instead of real numbers, or it could be an incorrect algorithm. These are
+kinds of issues that require discussion. Unresolved or heavily debated issues
+should always be presented to the Head Judge, who is the final arbiter. </p>
+
+<p>As in recent contests, </p>
+
+<ul>
+      <li>problem solutions are unique and must be formatted exactly, so
+output  can be judged using a file comparison utility,</li>
+      <li>all problems are judged with one test file (which of course will
+ include multiple test cases), and</li>
+      <li>all input files give explict counts or have sentinels that signal the end of the input,
+ so it is not necessary for teams to detect end-of-file. (End-of-file handling
+ differs between languages and sometimes between different compilers for the
+ same language. It can cause problems for teams using tools that they're not
+ used to.)</li>
+
+</ul>
+
+<p>We have some <a href="probnotes.html">notes about the problem set</a>,
+including who wrote them and their relative difficulty.</p>
+
+<p>We need fresh ideas.  Please submit a problem!  See <a href="http://mcpc.cigas.net/call_for_probs.html">http://mcpc.cigas.net/call_for_probs.html</a>.<span class="postbody">&nbsp;</span><span class="postbody"></span></p><p><span class="postbody"></span><span class="postbody"></span> <span class="postbody">Michael Goldwasser </span>will be your regional contact during the contest. If you have
+ any questions or corrections you can send him email at goldwamh AT slu DOT edu.</span>. </p>
+
+</body></html>

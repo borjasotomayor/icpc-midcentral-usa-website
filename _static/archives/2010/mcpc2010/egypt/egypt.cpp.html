@@ -1,0 +1,74 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;string&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=keyword>const</span> <span class=keyword>long</span> <span class=keyword>long</span> MAX = 1000000;
+
+<span class=keyword>long</span> <span class=keyword>long</span> gcf( <span class=keyword>long</span> <span class=keyword>long</span> a, <span class=keyword>long</span> <span class=keyword>long</span> b )
+{
+  <span class=keyword>long</span> <span class=keyword>long</span> r;
+  <span class=keyword>while</span> (r= a % b)
+    {
+      a= b;
+      b= r;
+    }
+
+  <span class=keyword>return</span> b;
+}
+
+<span class=keyword>int</span> main()
+{
+  ifstream fin( &quot;egypt.in&quot; );
+
+  <span class=keyword>long</span> <span class=keyword>long</span> m, n;
+  <span class=keyword>while</span> (fin &gt;&gt; m &gt;&gt; n &amp;&amp; m != 0)
+    {
+      <span class=keyword>bool</span> first= <span class=keyword>true</span>;
+      <span class=keyword>while</span> (m &gt; 0)
+        {
+          <span class=keyword>long</span> <span class=keyword>long</span> denom= (n + m - 1) / m - 1;
+
+          <span class=keyword>long</span> <span class=keyword>long</span> m2, n2;
+          <span class=keyword>do</span>
+            {
+              ++denom;
+              <span class=keyword>long</span> <span class=keyword>long</span> f= gcf( n, denom );
+
+              m2= (m * denom - n) / f;
+              n2= n * denom / f;
+
+              <span class=keyword>if</span> (m2 &gt; 0)
+                {
+                  f= gcf( n2, m2 );
+                  m2/= f;
+                  n2/= f;
+                }
+            }
+          <span class=keyword>while</span> (n2 &gt; MAX);
+
+          m= m2;
+          n= n2;
+
+          <span class=keyword>if</span> (first)
+            first= <span class=keyword>false</span>;
+          <span class=keyword>else</span>
+            cout &lt;&lt; ' ';
+          cout &lt;&lt; denom;
+        }
+      cout &lt;&lt; endl;
+    }
+
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

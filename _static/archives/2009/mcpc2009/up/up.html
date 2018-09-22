@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Up and Down</title>
+
+<meta name="Author" content="Eric Shade">
+<meta name="author" content="Andy Harrington"></head>
+<body style="background-color: white;">
+<h1 style="text-align: center;" align="center">Problem A: Up and Down</h1>
+<center>
+<table>
+<tbody>
+<tr>
+<td>Source file:</td>
+<td><tt>up.</tt>{<tt>c</tt>, <tt>cpp</tt>,
+<tt>java</tt>}</td>
+</tr>
+<tr>
+<td>Input file:</td>
+<td><tt>up.in</tt></td>
+</tr>
+</tbody>
+</table>
+</center>
+<br>
+<center>
+<table style="text-align: center; width: 406px; height: 204px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td><img style="width: 318px; height: 274px;" alt="one try" src="oneTry.png"><br></td>
+<td>
+<p><img style="width: 318px; height: 274px;" alt="best choices" src="best.png"><br></p>
+</td>
+</tr>
+<tr>
+<td>Figure 1</td>
+<td>Figure 2</td>
+</tr>
+</tbody>
+</table>
+</center>
+
+<p>This problem is based on a children's game, Chutes and Ladders,
+where players take turns jumping a number of steps along a path.
+&nbsp;If
+they land on the base of a ladder, they rise&nbsp;to the top of the
+ladder in the same turn. &nbsp;If they land at the top of a chute,
+they&nbsp;slide down to the bottom in the same turn. &nbsp;The idea is
+to get to the final step on the path. &nbsp;In the children's game the
+number of steps to move in a turn is determined randomly, so the game
+requires no decisions. &nbsp;In the version here, Up and Down, players
+get to choose
+the number of steps to jump forward in each turn. &nbsp;Both figures
+above show
+spaces numbered from 0 to 28, with several chutes and ladders.
+&nbsp;They show two different possible sequences of moves, assuming
+jumps of 1, 2 or 3 are allowed. &nbsp;Each jump is illustrated
+starting at a gray dot and ending at an arrowhead,
+jumping&nbsp;1-3 places ahead, sometimes ending there, and sometimes
+shifting up a ladder or down a chute. &nbsp;The players in Figures 1
+and 2 finish in 5 and 4 turns respectively. &nbsp;Figure 2 demonstrates
+the minimum number of&nbsp;turns&nbsp;for this path configuration and a
+maximum jump of 3. &nbsp;&nbsp;</p><p>It gets harder a figure out the best path if
+there are&nbsp;more chutes and ladders and many more spaces along the
+path! &nbsp;Be careful of your algorithm, given the large limit on the number of spaces specified below.</p>
+<p><b>Input:</b> The input will
+consist of one to twenty data
+sets, followed by a line containing only 0.  </p>
+<p>The first line of a dataset contains blank separated
+integers&nbsp;<span style="font-style: italic;">w s p</span>,
+where&nbsp;<span style="font-style: italic;">w</span>
+is the number of the winning space, 3&nbsp;
+&#8804;&nbsp;<span style="font-style: italic;">w&nbsp;</span>
+&#8804; 1,000,000,000,&nbsp;<span style="font-style: italic;">s</span> is the maximum number of spaces to&nbsp;jump in each&nbsp;turn, 2
+&#8804;&nbsp;<span style="font-style: italic;">s&nbsp;</span>&#8804; 6, and&nbsp;<span style="font-style: italic;">p</span> is the total number of chutes and ladders, 1 &#8804;&nbsp;<span style="font-style: italic;">p </span>&#8804; 40.</p><p>The remaining lines of the data set consist of pairs of integers <span style="font-style: italic;">b<sub>i</sub> e<sub>i</sub></span>, for <span style="font-style: italic;">i</span> = 1, 2, ... <span style="font-style: italic;">p</span>. &nbsp;Each  <span style="font-style: italic;">b<sub>i</sub> e<sub>i</sub></span> pair is the beginning space and ending space for a chute or ladder, so a turn with a jump to  <span style="font-style: italic;">b<sub>i</sub> </span>actually ends at<span style="font-style: italic;"> e<sub>i</sub></span>. &nbsp;All the integers&nbsp;are&nbsp;positive and less than <span style="font-style: italic;">w</span>, and none of these 2<span style="font-style: italic;">p</span> numbers appears more than once. &nbsp; Following the rules of the game, it is possible to eventually reach space <span style="font-style: italic;">w</span>, starting &nbsp;from space 0, for each&nbsp;dataset. &nbsp;The numbers  <span style="font-style: italic;">b<sub>i</sub> </span>are in increasing order. Numbers in these lines are&nbsp;separated by either a single blank or a newline. &nbsp;</p><p><b>Output:</b>&nbsp;There is one line of output for
+each data set,&nbsp;containing only the minimum number of turns it takes to start at space 0 and&nbsp;end at space <span style="font-style: italic;">w</span>, with the jump in each turn chosen as a positive integer no larger than <span style="font-style: italic;">s</span>.</p><p>The first sample input data set corresponds to the configuration in the Figures. </p>
+<table border="1" cellpadding="10">
+<thead><tr>
+<td><b>Example input:</b></td>
+<td><b>Example output:</b></td>
+</tr>
+</thead> <tbody>
+<tr>
+<td style="font-family: monospace;">28 3 5<br>2 18 5 13 12 6<br>17 25 20 15<br>50 6 1<br>9&nbsp;45<br>0<br>
+</td>
+<td style="font-family: monospace;" valign="top">4<br>3<br>
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<p><small><i>Last modified on October 16, 2009 at 4:07 PM.</i></small></p>
+</body></html>

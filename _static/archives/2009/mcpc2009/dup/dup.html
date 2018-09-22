@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+<title>Duplicate Removal</title><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="Author" content="John Cigas">
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier, monospace;
+}
+</style></head>
+<body style="background-color: white;" lang="EN-US">
+
+<h1 style="text-align: center;" align="center">Problem E: Duplicate Removal</h1>
+
+<center>
+<table>
+    <tbody>
+        <tr>
+         <td>Source file:</td>
+         <td style="font-family: monospace;">dup.{c, cpp, java}</td>
+       </tr>
+       <tr>
+         <td>Input file:</td>
+         <td style="font-family: monospace;">dup.in</td>
+       </tr>
+  </tbody>
+</table>
+</center>
+
+<p>
+The company <em>Al's Chocolate Mangos</em> has a web site where visitors can 
+guess how many chocolate covered mangos are in a virtual jar. Visitors type in 
+a guess between 1 and 99 and then click on a "Submit" button. Unfortunately, 
+the response time from the server is often long, and visitors get impatient and 
+click "Submit" several times in a row. This generates many duplicate requests.</p>
+<p>
+Your task is to write a program to assist the staff at <em>ACM</em> in filtering out 
+these duplicate requests. </p>
+
+<p><b>Input:</b> The input consists of a series of lines, one for each web 
+session. The first integer on a line is <em>N</em>, 0 &lt;<em> N</em> &#8804; 25, which is the number 
+of guesses on this line. These guesses are all between 1 and 99, inclusive. The 
+value <em>N </em>= 0 indicates the end of all the input.</p>
+
+<p><b>Output:</b> For each input data set, output a single line with the guesses 
+in the original order, but with consecutive duplicates removed. Conclude each 
+output line with the dollar sign character '<span class="style1">$</span>'. Note 
+that there is a single space between the last integer and the dollar sign.</p>
+
+<table border="1" cellpadding="10">
+<thead>     
+<tr>
+    <td><b>Example Input:</b></td>
+    <td><b>Example Output:</b></td>
+</tr>
+</thead>   
+<tbody>
+    <tr>
+        <td style="font-family: monospace;" valign="top">
+5 1 22 22 22 3<br>
+4 98 76 20 76<br>
+6 19 19 35 86 86 86<br>
+1 7<br>
+0</td>
+       <td style="font-family: monospace;" valign="top">
+1 22 3 $<br>
+98 76 20 76 $<br>
+19 35 86 $<br>
+7 $<br>
+       </td>
+    </tr>
+</tbody>
+</table>
+<p><small><i>Last modified on October 15, 2009 at 1:07 AM.</i></small></p>
+</body></html>

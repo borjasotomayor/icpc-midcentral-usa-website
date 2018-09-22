@@ -1,0 +1,20 @@
+To use these to compile and run all judges programs under Windows:
+
+Copy all these .cmd files to the main mcpc20xx directory.  
+Only run them from that directory.
+
+*  sol2flop.cmd [directory] -- copies all judges' solutions to
+directory or a: if directory is not included.  Then you can use 
+the solutons to test correct execution with the grading utilities.
+If you are copying to a flashdrive on f:, enter sol2flop f: 
+
+
+*  solCompile.cmd  -- compiles all judges' solutions automatically into
+individual problem directories.  This is needed before the following:
+
+*  solOut.cmd [fileSuffix]--  runs all solutions, allowing you to see if any
+take long on your system.  If the fileSuffix is omitted, output goes to the
+screen.  If the fileSuffix is specified, output goes to a file in the problem
+directory named by concatenating the problem name and the suffix.  You must
+compile first with solCompile.
+

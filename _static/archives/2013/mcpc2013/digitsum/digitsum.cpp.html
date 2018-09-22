@@ -1,0 +1,85 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  digitsum.cpp
+  Digit Sum, MCPC 2013, Problem F
+  C++ solution by Michael Goldwasser
+*/</span>
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;algorithm&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;digitsum.in&quot;);
+<span class=keyword>const</span> <span class=keyword>int</span> MAX = 14;
+<span class=keyword>const</span> <span class=keyword>int</span> HALFMAX = (MAX+1)/2;  <span class=comment>// length of longest operand
+</span>
+<span class=keyword>int</span> original[MAX];
+<span class=keyword>int</span> terms[2][HALFMAX];
+
+<span class=keyword>int</span> computeSum() {
+    <span class=keyword>int</span> sum = 0;
+    <span class=keyword>int</span> base = 1;
+    <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; HALFMAX; k++) {
+        sum += base * (terms[0][k] + terms[1][k]);
+        base *= 10;
+    }
+    <span class=keyword>return</span> sum;
+}
+
+
+<span class=keyword>int</span> main(<span class=keyword>int</span> argv, <span class=keyword>char</span>** argc) {
+    <span class=keyword>bool</span> DEBUG = (argv &gt; 1);
+
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        <span class=keyword>int</span> N;
+        fin &gt;&gt; N;
+        <span class=keyword>if</span> (N==0) <span class=keyword>break</span>;
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k&lt;N; k++)
+            fin &gt;&gt; original[k];
+        sort(original, original+N);  <span class=comment>// alphabetic order is numeric order
+</span>
+        <span class=comment>// initialize terms array
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt;HALFMAX; k++)
+            terms[0][k] = terms[1][k] = 0;
+
+        <span class=keyword>int</span> nonzero=0;
+        <span class=keyword>while</span> (original[nonzero] == 0)
+            nonzero++;
+
+        <span class=keyword>int</span> j = N;  <span class=comment>// remaining numbers to place
+</span>
+        terms[j%2][(j-1)/2] = original[nonzero];
+        j--;
+        terms[j%2][(j-1)/2] = original[nonzero+1];
+        j--;
+
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; N; k++)
+            <span class=keyword>if</span> (k &lt; nonzero || k &gt; nonzero+1) {
+                terms[j%2][(j-1)/2] = original[k];
+                j--;
+            }
+
+        <span class=keyword>if</span> (DEBUG)
+            <span class=keyword>for</span> (<span class=keyword>int</span> a=0; a&lt;2; a++) {
+                <span class=keyword>int</span> b = HALFMAX-1;
+                <span class=keyword>while</span> (terms[a][b] == 0) b--;
+                <span class=keyword>while</span> (b &gt;= 0) {
+                    cout &lt;&lt; terms[a][b--];
+                }
+                cout &lt;&lt; (a == 0 ? &quot; + &quot; : &quot; = &quot;);
+            }
+
+        cout &lt;&lt; computeSum() &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

@@ -1,0 +1,187 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  bounce.cpp
+  Bounce, MCPC 2012 Problem H
+  C++ solution by Michael Goldwasser
+*/</span>
+
+<span class=comment>/*
+  Algorithm: For every starting point in the top row, trace
+  every possible walk of length n to establish the repeating
+  pattern. With at most 6 starting positions in the top row,
+  and then four subsequent moves, each of which has at most 5
+  choices of unused neighbors, there are at most 6*5*5*5*5 = 3750
+  possible starting paths.
+
+  Then make an attempt to extend paths using the same pattern,
+  such that it is only a success if it reaches bottom, and
+  then ends at the top.  Note as well that when reaching the
+  bottom row, the very next step must either be rightward, or
+  upward-right (assuming that wasn't the previous).
+
+  We will use 64-bit integer to track what locations were already
+  used, with location (j,k) mapping to bit: j*(c+1) + k.  For a
+  particular pattern, we can rely on a dynamic programming approach
+  memoizing a state with a &lt;long long, loc&gt; pair, specifying what
+  locations have been used and what location was the most recently
+  used. For convenience, we also keep an integer specifying the number
+  of used cells, so that we do not need to compute from the bitmap.
+  (admittedly, for the judge's inputs, the dynamic programming is
+  unnecessary efficiency.)
+*/</span>
+
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=pp>#include</span> &lt;algorithm&gt;
+<span class=pp>#include</span> &lt;map&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+ifstream fin(&quot;bounce.in&quot;);
+<span class=keyword>int</span> r,c,n;
+<span class=keyword>char</span> grid[7][8];  <span class=comment>// we will index as grid[j][k] with 0 &lt;= j &lt; r as row and 0 &lt;= k &lt; c' as column
+</span><span class=keyword>long</span> <span class=keyword>long</span> goalUsed;   <span class=comment>// will be the minimum bitfield such that row r-1 is touched
+</span>
+<span class=comment>// convert j,k pair to appropriate bit within &quot;used&quot; bitfield
+</span><span class=keyword>int</span> toIndex(<span class=keyword>int</span> j, <span class=keyword>int</span> k) {
+    <span class=keyword>return</span> j*(c+1) + k;
+}
+
+<span class=comment>// see if j,k pair is within grid, given current r,c values
+</span><span class=keyword>bool</span> isvalid(<span class=keyword>int</span> j, <span class=keyword>int</span> k) {
+    <span class=keyword>return</span> (j &gt;= 0) &amp;&amp; (j &lt; r) &amp;&amp; (k &gt;= 0) &amp;&amp; (k &lt; c + j%2);
+}
+
+vector&lt;pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; &gt; hex_neighbors(<span class=keyword>int</span> j, <span class=keyword>int</span> k) {
+    vector&lt;pair&lt;<span class=keyword>int</span>, <span class=keyword>int</span>&gt; &gt; answers;
+    <span class=keyword>int</span> steps[6][2] = { {j-1,k}, {j-1,k+1-(j%2)*2},   <span class=comment>// upward
+</span>                        {j,k-1}, {j,k+1},             <span class=comment>// horizontal
+</span>                        {j+1,k}, {j+1,k+1-(j%2)*2}};  <span class=comment>// downward
+</span>    <span class=keyword>for</span> (<span class=keyword>int</span> z=0; z&lt;6; z++) {
+        <span class=keyword>int</span> a(steps[z][0]), b(steps[z][1]);
+        <span class=keyword>if</span> (isvalid(a,b))
+            answers.push_back(make_pair(a,b));
+    }
+    <span class=keyword>return</span> answers;
+}
+
+<span class=keyword>struct</span> Path {
+    string pattern;  <span class=comment>// (partial) starting pattern up to n characters long
+</span>    <span class=keyword>int</span> j,k;         <span class=comment>// indicies of most recent location used (j=row, k=column)
+</span>    <span class=keyword>int</span> length;      <span class=comment>// length of path, thus far
+</span>    <span class=keyword>long</span> <span class=keyword>long</span> used;  <span class=comment>// bitmap of actual cells used with (j,k) -&gt; bit (j*(c+1) + k)
+</span>
+    Path() : pattern(&quot;&quot;), length(0), used(0) {}
+
+    Path(<span class=keyword>int</span> j, <span class=keyword>int</span> k, <span class=keyword>const</span> Path&amp; prev=Path()) : j(j), k(k) {
+        length = 1 + prev.length;
+        used = prev.used | (1LL&lt;&lt;toIndex(j,k));
+        pattern = prev.pattern;
+        <span class=keyword>if</span> (pattern.size() &lt; n)
+            pattern += grid[j][k];
+    }
+
+    <span class=comment>// allow for use as a key (assuming patterns are equal)
+</span>    <span class=keyword>bool</span> <span class=keyword>operator</span>&lt;(<span class=keyword>const</span> Path&amp; other) <span class=keyword>const</span> {
+        <span class=keyword>if</span> (used &lt; other.used)
+            <span class=keyword>return</span> <span class=keyword>true</span>;
+        <span class=keyword>if</span> (used &gt; other.used)
+            <span class=keyword>return</span> <span class=keyword>false</span>;
+        <span class=keyword>if</span> (j &lt; other.j || (j == other.j &amp;&amp; k &lt; other.k));
+    }
+
+    vector&lt;Path&gt; neighbors() <span class=keyword>const</span> {
+        vector&lt;Path&gt; answers;
+        vector&lt;pair&lt;<span class=keyword>int</span>,<span class=keyword>int</span>&gt; &gt; candidates = hex_neighbors(j,k);
+        <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i &lt; candidates.size(); i++) {
+            <span class=keyword>int</span> a=candidates[i].first;
+            <span class=keyword>int</span> b=candidates[i].second;
+            <span class=keyword>int</span> bit = toIndex(a,b);
+            <span class=comment>// ensure that (a,b) is unused
+</span>            <span class=keyword>if</span> ((used &amp; (1LL&lt;&lt;bit)) == 0) {
+                <span class=comment>// ensure that grid[a][b] matches the expected character
+</span>                <span class=keyword>if</span> (length &lt; n || (grid[a][b] == pattern[length%n])) {
+                    <span class=comment>// ensure that if at bottom, we only allow escape to right of current path (for extra pruning)
+</span>                    <span class=keyword>int</span> trk = k+1-(j%2);  <span class=comment>// column of topright neighbor
+</span>                    <span class=keyword>if</span> (j &lt; r-1 || ((a==r-1 &amp;&amp; b==k+1) || (a==r-2 &amp;&amp; (b==trk || !isvalid(r-2,trk) || (used &amp; (1LL&lt;&lt;toIndex(r-2,trk)) == 0))))) {
+                        answers.push_back(Path(a,b,*<span class=keyword>this</span>));
+                    }   
+                }                   
+            }
+        }
+        <span class=keyword>return</span> answers;
+    }
+};
+
+<span class=comment>// store known results for completing current path.
+</span>map&lt;Path, string&gt; memory;
+
+<span class=comment>// return -1 if unable to complete, else return number of repetitions
+</span><span class=comment>// of pattern that were used.
+</span>string complete(<span class=keyword>const</span> Path&amp; current) {
+    <span class=keyword>if</span> (current.length == n)
+        memory.clear();        <span class=comment>// restart memoization based on current path
+</span>
+    <span class=keyword>if</span> (current.length &gt; n) {
+        map&lt;Path, string&gt;::const_iterator ans = memory.find(current);
+        <span class=keyword>if</span> (ans != memory.end())
+            <span class=keyword>return</span> ans-&gt;second;
+    }
+
+    string best;
+
+    <span class=keyword>if</span> (current.pattern.size() == n &amp;&amp;
+        current.length % current.pattern.size() == 0 &amp;&amp;
+        current.j == 0 &amp;&amp;
+        current.used &gt;= goalUsed) {
+        <span class=comment>// found solution
+</span>        <span class=keyword>while</span> (best.size() &lt; current.length)
+            best += current.pattern;
+    } <span class=keyword>else</span> {
+        vector&lt;Path&gt; neigh = current.neighbors();
+        <span class=keyword>for</span> (<span class=keyword>int</span> i=0; i &lt; neigh.size(); i++) {
+            string temp = complete(neigh[i]);
+            <span class=keyword>if</span> (temp != &quot;&quot; &amp;&amp; (best ==&quot;&quot; || temp.size() &lt; best.size()))
+                best = temp;
+        }
+    }
+
+    <span class=comment>// memoize
+</span>    <span class=keyword>if</span> (current.length &gt; n) memory[current] = best;
+    <span class=keyword>return</span> best;
+}
+
+<span class=keyword>int</span> main() {
+    <span class=keyword>while</span> (<span class=keyword>true</span>) {
+        fin &gt;&gt; r;
+        <span class=keyword>if</span> (r == 0) <span class=keyword>break</span>;
+        fin &gt;&gt; c &gt;&gt; n;
+        <span class=comment>// read grid
+</span>        <span class=keyword>for</span> (<span class=keyword>int</span> j=0; j &lt; r; j++)
+            <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; c + j%2; k++)
+                fin &gt;&gt; grid[j][k];
+
+        <span class=comment>// time to solve the problem
+</span>        string shortest;
+        goalUsed = (1LL &lt;&lt; toIndex(r-1,0));
+        <span class=keyword>for</span> (<span class=keyword>int</span> k=0; k &lt; c-1; k++) {
+            string temp = complete(Path(0,k));
+            <span class=keyword>if</span> (temp != &quot;&quot; &amp;&amp; (shortest == &quot;&quot; || temp.size() &lt; shortest.size()))
+                shortest = temp;
+        }
+        <span class=keyword>if</span> (shortest == &quot;&quot;)
+            cout &lt;&lt; &quot;no solution&quot; &lt;&lt; endl;
+        <span class=keyword>else</span>
+            cout &lt;&lt; shortest &lt;&lt; endl;
+    }
+}
+</pre></body>
+</html>

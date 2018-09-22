@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Michael Goldwasser">
+    <title>Sokoban</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      img.floatRight {
+          float: right;
+          margin: 14px;
+      }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.illus td
+      {
+          padding: 0 40px;
+          text-align: center;
+          font-size: 80%;
+          font-style: italic;
+      }
+      table.enumerate
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.enumerate td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem G: Sokoban</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>sokoban.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>sokoban.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+    <img class="floatRight" width="200" src="example.png"> 
+    Soko-ban is a Japanese word for a warehouse worker, and the name
+    of a classic computer game created in the 1980s.
+    It is a one-player game with the following premise. A single
+    worker is in an enclosed warehouse with one or more boxes.
+    The goal is to move those boxes to a set of target locations, with
+    the number of target locations equalling the number of boxes.
+    The player indicates a direction of motion for the worker using
+    the arrow keys (up, down, left, right), according to the following
+    rules. 
+    <ul>
+      <li>
+	  If the indicated direction of motion for the worker leads to
+	  an empty location (i.e., one that does not have a box or
+	  wall), the worker advances by one step in that direction.
+      </li>
+	  <p>
+      <li>
+	  If the indicated direction of motion would 
+	  cause the worker to move into a box, and the location on the
+	  other side of the box is empty,
+	  then both the worker and the box move one spot in that
+	  direction (i.e., the worker pushes the box).
+      </li>
+	  <p>
+      <li>
+	  If the indicated direction of motion for a move would cause
+	  the worker to move into a wall, or to move into a box that
+	  has another box or a wall on its opposite side, then no
+	  motion takes place for that keystroke.
+      </li>
+    </ul>
+    The goal is to simultaneously have all boxes on the target
+    locations. In that case, the player is successful (and as a
+    formality, all further keystrokes will be ignored).
+    </p>
+
+    <p>
+    The game has been studied by computer scientists (in fact,
+    one graduate student wrote his entire Ph.D. dissertation about the
+    analysis of sokoban).  Unfortunately, it turns out that finding a solution
+    is very difficult in general, as it is both NP-hard
+    and PSPACE-complete. Therefore, your goal will be a simpler task:
+    simulating the progress of a game based upon a player's sequence of
+    keystrokes.  For the sake of input and output,
+    we describe the state of a game using the following symbols:
+    <table class="enumerate">
+      <thead>
+        <tr>
+	  <td><b>Symbol</b></td>
+	  <td><b>Meaning</b></td>
+	</tr>
+      </thead>
+      <tbody>
+	<tr>
+	  <td><tt>.</tt></td>
+	  <td>empty space</td>
+	</tr>
+	<tr>
+	  <td><tt>#</tt></td>
+	  <td>wall</td>
+	</tr>
+	<tr>
+	  <td><tt>+</tt></td>
+	  <td>empty target location</td>
+	</tr>
+	<tr>
+	  <td><tt>b</tt></td>
+	  <td>box</td>
+	</tr>
+	<tr>
+	  <td><tt>B</tt></td>
+	  <td>box on a target location</td>
+	</tr>
+	<tr>
+	  <td><tt>w</tt></td>
+	  <td>worker</td>
+	</tr>
+	<tr>
+	  <td><tt>W</tt></td>
+	  <td>worker on a target location</td>
+	</tr>
+      </tbody>
+    </table>
+    </p>
+    <p>
+    For example, the initial configuration diagrammed at the beginning
+    of this problem appears as the first input case below.
+    </p>
+
+
+    <p>
+      <b>Input:</b>&nbsp; Each game begins with a line containing
+      integers <var>R</var> and <var>C</var>,
+      where
+      4&nbsp;&le;&nbsp;<var>R</var>&nbsp;&le;&nbsp;15 represents the
+      number of rows, and 4&nbsp;&le;&nbsp;<var>C</var>&nbsp;&le;&nbsp;15 represents the
+      number of columns.
+      Next will be <var>R</var>&nbsp;lines
+      representing the <var>R</var>&nbsp;rows from top to bottom, with each
+      line having precisely <var>C</var>&nbsp;characters, from
+      left-to-right. Finally, 
+      there is a line containing at most 50&nbsp;characters
+      describing the player's sequence of keystrokes, using the symbols
+      <tt>U</tt>, <tt>D</tt>, <tt>L</tt>, and <tt>R</tt> respectively
+      for up, down, left, and right.
+      You must read that
+      entire sequence from the input, even though a particular game
+      might end successfully prior to the end of the sequence.
+      The data set ends with the <nobr>line <tt>0 0</tt></nobr>.
+    </p>
+    <p>
+      We will guarantee that each game has precisely one worker, an
+      equal number of boxes and locations, at least one initially
+      misplaced box, and an outermost boundary consisting entirely of walls.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; For each game, you should first output a
+      line identifying the game number, beginning at 1,
+      and either the word <tt>complete</tt> or <tt>incomplete</tt>,
+      designating whether or not the player successfully completed that
+      game.  Following that should be a representation of the final
+      board configuration.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>8 9
+#########
+#...#...#
+#..bb.b.#
+#...#w#.#
+#...#b#.#
+#...++++#
+#...#..##
+#########
+ULRURDDDUULLDDD
+6 7
+#######
+#..####
+#.+.+.#
+#.bb#w#
+##....#
+#######
+DLLUDLULUURDRDDLUDRR
+0 0</td>
+          <td>Game 1: incomplete
+#########
+#...#...#
+#..bb...#
+#...#.#.#
+#...#.#.#
+#...+W+B#
+#...#b.##
+#########
+Game 2: complete
+#######
+#..####
+#.B.B.#
+#.w.#.#
+##....#
+#######
+</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </body>
+</html>

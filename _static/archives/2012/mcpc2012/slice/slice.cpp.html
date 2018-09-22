@@ -1,0 +1,206 @@
+<html>
+<head>
+<style>
+.keyword{color:rgb(0,0,255);}
+.comment{color:rgb(0,128,0);}
+.pp{color:rgb(0,0,255);}
+</style>
+</head>
+<body>
+<pre style="font-family:courier;font-size:10pt"><span class=comment>/*
+  slice.cpp
+  Any Way You Slice It, MCPC 2012 Problem C
+  C++ solution by Gabriel Foust
+*/</span>
+
+<span class=pp>#include</span> &lt;fstream&gt;
+<span class=pp>#include</span> &lt;iostream&gt;
+<span class=pp>#include</span> &lt;cmath&gt;
+<span class=pp>#include</span> &lt;vector&gt;
+<span class=keyword>using</span> <span class=keyword>namespace</span> std;
+
+<span class=pp>#define</span> VERIFY
+
+ifstream fin( &quot;slice.in&quot; );
+
+<span class=keyword>struct</span> Vector;
+
+<span class=keyword>struct</span> Point
+{
+  <span class=keyword>double</span> x, y;
+
+  Point() { }
+  Point( <span class=keyword>double</span> x, <span class=keyword>double</span> y ) : x( x ), y( y ) { }
+
+  <span class=keyword>void</span> move( Vector&amp; dir, <span class=keyword>double</span> mag );
+};
+
+<span class=keyword>struct</span> Vector
+{
+  <span class=keyword>double</span> x, y;
+
+  Vector() { }
+  Vector( <span class=keyword>double</span> x, <span class=keyword>double</span> y ) : x( x ), y( y ) { }
+
+  Vector( Point&amp; p1, Point&amp; p2 )
+    : x( p2.x - p1.x ), y( p2.y - p1.y )
+  { }
+
+  <span class=keyword>void</span> turn( <span class=keyword>double</span> theta )
+  {
+    Vector old= *<span class=keyword>this</span>;
+    x=  old.x*cos( theta ) - old.y*sin( theta );
+    y=  old.x*sin( theta ) + old.y*cos( theta );
+  }
+
+  <span class=keyword>double</span> cross( <span class=keyword>const</span> Vector&amp; other )
+  {
+    <span class=keyword>return</span> x*other.y - other.x*y;
+  }
+};
+
+<span class=keyword>inline</span> <span class=keyword>void</span> Point::move( Vector&amp; dir, <span class=keyword>double</span> mag )
+{
+  x+= mag*dir.x;
+  y+= mag*dir.y;
+}
+
+<span class=keyword>struct</span> Line
+{
+  Point begin, end;
+
+  <span class=keyword>double</span> left() { <span class=keyword>return</span> min( begin.x, end.x ); }
+  <span class=keyword>double</span> right() { <span class=keyword>return</span> max( begin.x, end.x ); }
+  <span class=keyword>double</span> bottom() { <span class=keyword>return</span> min( begin.y, end.y ); }
+  <span class=keyword>double</span> top() { <span class=keyword>return</span> max( begin.y, end.y ); }
+
+  <span class=keyword>bool</span> intersect( Line other )
+  {
+    <span class=comment>// bounding boxes intersect
+</span>    <span class=keyword>if</span> (left() &gt; other.right() || right() &lt; other.left() ||
+    bottom() &gt; other.top() || top() &lt; other.bottom())
+      <span class=keyword>return</span> <span class=keyword>false</span>;
+
+    <span class=comment>// second crosses the first
+</span>    Vector v( begin, end );
+    <span class=keyword>double</span> cross1= v.cross( Vector( begin, other.begin ) );
+    <span class=keyword>double</span> cross2= v.cross( Vector( begin, other.end ) );
+    <span class=keyword>if</span> ((cross1 &gt; 0 &amp;&amp; cross2 &gt; 0) ||
+        (cross1 &lt; 0 &amp;&amp; cross2 &lt; 0)   )
+      <span class=keyword>return</span> <span class=keyword>false</span>;
+
+    <span class=comment>// first crosses the second
+</span>    Vector u( other.begin, other.end );
+    cross1= u.cross( Vector( other.begin, begin ) );
+    cross2= u.cross( Vector( other.begin, end ) );
+    <span class=keyword>return</span>
+      (cross1 &lt;= 0 &amp;&amp; cross2 &gt;= 0) ||
+      (cross1 &gt;= 0 &amp;&amp; cross2 &lt;= 0);
+  }
+};
+
+<span class=pp>#ifdef</span> VERIFY
+ostream&amp; <span class=keyword>operator</span>&lt;&lt;( ostream&amp; out, <span class=keyword>const</span> Line&amp; line )
+{
+  out &lt;&lt; '(' &lt;&lt; line.begin.x &lt;&lt; &quot;, &quot; &lt;&lt; line.begin.y &lt;&lt; &quot;)-(&quot;
+      &lt;&lt; line.end.x &lt;&lt; &quot;, &quot; &lt;&lt; line.end.y &lt;&lt; ')';
+}
+
+<span class=keyword>bool</span> verify( Line&amp; l1, Line&amp; l2, <span class=keyword>bool</span> intersect )
+{
+  <span class=keyword>const</span> <span class=keyword>double</span> eps= 0.0001;
+  Line a, b;
+  <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i &lt; 256; ++i)
+  {
+    a.begin.x= l1.begin.x + (i &amp; 1 ? eps : -eps);
+    a.begin.y= l1.begin.y + (i &amp; 2 ? eps : -eps);
+    a.end.x=   l1.end.x   + (i &amp; 4 ? eps : -eps);
+    a.end.y=   l1.end.y   + (i &amp; 8 ? eps : -eps);
+    b.begin.x= l2.begin.x + (i &amp; 16 ? eps : -eps);
+    b.begin.y= l2.begin.y + (i &amp; 32 ? eps : -eps);
+    b.end.x=   l2.end.x   + (i &amp; 64 ? eps : -eps);
+    b.end.y=   l2.end.y   + (i &amp; 128 ? eps : -eps);
+    <span class=keyword>if</span> (a.intersect( b ) != intersect)
+      <span class=keyword>return</span> <span class=keyword>false</span>;
+  }
+  <span class=keyword>return</span> <span class=keyword>true</span>;
+}
+
+<span class=keyword>int</span> ang( Vector dir )
+{
+  <span class=keyword>int</span> a= <span class=keyword>int</span>(atan( dir.y / dir.x )/M_PI*180);
+  <span class=keyword>if</span> (dir.x &lt; 0)
+    a+= 180;
+  <span class=keyword>return</span> a;
+}
+<span class=pp>#endif</span>
+
+<span class=keyword>int</span> main()
+{
+  <span class=keyword>int</span> count;
+
+  <span class=keyword>while</span> (fin &gt;&gt; count &amp;&amp; count &gt; 0)
+  {
+    vector&lt;Line&gt; lines;
+    Point loc( 0, 0 );
+    Vector dir( 0, 1 );
+    <span class=keyword>double</span> distance, angle;
+    <span class=keyword>int</span> intersection;
+
+    <span class=keyword>while</span> (count &gt; 0)
+    {
+      --count;
+      intersection= -1;
+
+      fin &gt;&gt; angle;
+      angle *= M_PI/180;
+      dir.turn( angle );
+
+      Line line;
+      line.begin= loc;
+      fin &gt;&gt; distance;
+      loc.move( dir, distance );
+      line.end= loc;
+
+<span class=pp>#ifdef</span> VERIFY
+      cerr &lt;&lt; ang(dir) &lt;&lt; &quot; (&quot; &lt;&lt; loc.x &lt;&lt; &quot;, &quot; &lt;&lt; loc.y &lt;&lt; &quot;)&quot; &lt;&lt; endl;
+<span class=pp>#endif</span>
+
+      <span class=keyword>for</span> (<span class=keyword>int</span> i= 0; i + 1 &lt; lines.size(); ++i)
+      {
+        <span class=keyword>bool</span> intersect= line.intersect( lines[i] );
+<span class=pp>#ifdef</span> VERIFY
+        <span class=keyword>if</span> (! verify( line, lines[i], intersect ))
+        {
+          cerr &lt;&lt; &quot;Getting a little too close: &quot; &lt;&lt; line &lt;&lt; &quot; &amp; &quot; &lt;&lt; lines[i] &lt;&lt; endl;
+        }
+<span class=pp>#endif</span>
+        <span class=keyword>if</span> (intersect)
+        {
+          intersection= lines.size() + 1;
+          <span class=keyword>break</span>;
+        }
+      }
+      <span class=keyword>if</span> (intersection &gt;= 0)
+        <span class=keyword>break</span>;
+
+      lines.push_back( line );
+    }
+
+    <span class=keyword>while</span> (count &gt; 0)
+    {
+      --count;
+      fin &gt;&gt; angle;
+      fin &gt;&gt; distance;
+    }
+
+    <span class=keyword>if</span> (intersection &lt; 0)
+      cout &lt;&lt; &quot;SAFE&quot; &lt;&lt; endl;
+    <span class=keyword>else</span>
+      cout &lt;&lt; intersection &lt;&lt; endl;
+  }
+
+  <span class=keyword>return</span> 0;
+}
+</pre></body>
+</html>

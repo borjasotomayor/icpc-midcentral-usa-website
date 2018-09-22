@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Problem 4: Self Numbers</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Problem 4: Self Numbers</H1>
+
+<CENTER><TABLE>
+<TR ALIGN=BOTTOM><TD>Source file:</TD><TD><TT>self.</TT>{<TT>c</TT>, <TT>cpp</TT>, <TT>pas</TT>}</TD></TR>
+<TR ALIGN=BOTTOM><TD>Input file:</TD><TD><I>none</I></TD></TR>
+<TR ALIGN=BOTTOM><TD>Output file:</TD><TD><TT>self.out</TT></TD></TR>
+</TABLE></CENTER>
+
+<P>In 1949 the Indian mathematician D.R. Kaprekar discovered a class
+of numbers called self-numbers. For any positive integer <I>n</I>, define
+<I>d</I>(<I>n</I>) to be <I>n</I> plus the sum of the digits of <I>n</I>. (The <I>d</I> stands
+for <I>digitadition</I>, a term coined by Kaprekar.) For example, <I>d</I>(75) = 75 + 7 + 5 = 87.  Given any positive integer <I>n</I> as a starting
+point, you can construct the infinite increasing sequence of integers
+<I>n</I>, <I>d</I>(<I>n</I>), <I>d</I>(<I>d</I>(<I>n</I>)), <I>d</I>(<I>d</I>(<I>d</I>(<I>n</I>))), .... For example, if you start with
+33, the next number is 33 + 3 + 3 = 39, the next is 39 + 3 + 9 = 51, the next
+is 51 + 5 + 1 = 57, and so you generate the sequence
+
+<BLOCKQUOTE>33, 39, 51, 57, 69, 84, 96, 111, 114, 120, 123, 129, 141, ...</BLOCKQUOTE>
+
+<P>The number <I>n</I> is called a <B><I>generator</I></B> of <I>d</I>(<I>n</I>).  In the
+sequence above, 33 is a generator of 39, 39 is a generator of 51, 51
+is a generator of 57, and so on.  Some numbers have more than one
+generator: for example, 101 has two generators, 91 and 100.  A number
+with <EM>no</EM> generators is a <B><I>self-number</I></B>. There are thirteen
+self-numbers less than 100: 1, 3, 5, 7, 9, 20, 31, 42, 53, 64, 75, 86,
+and 97.  
+
+<P>Write a program to output all positive self-numbers less than 10000
+in increasing order, one per line.
+
+<P><B>Output:</B>
+
+<BLOCKQUOTE><PRE>1
+3
+5
+7
+9
+20
+31
+42
+53
+64
+ |
+ |       &lt;-- a lot more numbers
+ |
+9903
+9914
+9925
+9927
+9938
+9949
+9960
+9971
+9982
+9993
+</PRE></BLOCKQUOTE>
+</BODY></HTML>

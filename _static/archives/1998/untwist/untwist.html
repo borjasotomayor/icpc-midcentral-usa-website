@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD><TITLE>Problem 5: Do the Untwist</TITLE></HEAD>
+<BODY>
+
+<H1 ALIGN=CENTER>Problem 5: Do the Untwist</H1>
+
+<CENTER><TABLE>
+<TR ALIGN=BOTTOM><TD>Source file:</TD><TD><TT>untwist.</TT>{<TT>c</TT>, <TT>cpp</TT>, <TT>pas</TT>}</TD></TR>
+<TR ALIGN=BOTTOM><TD>Input file:</TD><TD><TT>untwist.in</TT></TD></TR>
+<TR ALIGN=BOTTOM><TD>Output file:</TD><TD><TT>untwist.out</TT></TD></TR>
+</TABLE></CENTER>
+
+<P><B><I>Cryptography</I></B> deals with methods of secret communication that
+transform a message (the <B><I>plaintext</I></B>) into a disguised form (the
+<B><I>ciphertext</I></B>) so that no one seeing the ciphertext will be able
+to  figure out the plaintext except the intended recipient.
+Transforming the plaintext to the ciphertext is <B><I>encryption</I></B>;
+transforming the ciphertext to the plaintext is <B><I>decryption</I></B>.
+<B><I>Twisting</I></B> is a simple encryption method that requires that the
+sender and recipient both agree on a secret key <I>k</I>, which is a
+positive integer.
+
+<P>The twisting method uses four arrays: <I>plaintext</I> and <I>ciphertext</I>
+are arrays of characters, and <I>plaincode</I> and <I>ciphercode</I> are
+arrays of integers.  All arrays are of length <I>n</I>, where <I>n</I> is the
+length of the message to be encrypted.  Arrays are origin zero, so the
+elements are numbered from 0 to <I>n</I> <FONT FACE="Symbol">-</FONT> 1.  For this problem all
+messages will contain only lowercase letters, the period, and the
+underscore (representing a space).
+
+<P>The message to be encrypted is stored in <I>plaintext</I>.  Given a key
+<I>k</I>, the encryption method works as follows.  First convert the
+letters in <I>plaintext</I> to integer codes in <I>plaincode</I> according to
+the following rule: '<TT>_</TT>' = 0, '<TT>a</TT>' = 1, '<TT>b</TT>' = 2, ..., '<TT>z</TT>' = 26,
+and '<TT>.</TT>' = 27.  Next, convert each code in <I>plaincode</I> to an
+encrypted code in <I>ciphercode</I> according to the following formula: for all
+<I>i</I> from 0 to <I>n</I> <FONT FACE="Symbol">-</FONT> 1,
+
+<BLOCKQUOTE><I>ciphercode</I>[<I>i</I>] = (<I>plaincode</I>[<I>ki</I> mod <I>n</I>] <FONT FACE="Symbol">-</FONT> <I>i</I>) mod 28.</BLOCKQUOTE>
+
+<P>(Here <I>x</I> mod <I>y</I> is the positive remainder when <I>x</I> is divided by <I>y</I>.
+For example, 3 mod 7 = 3, 22 mod 8 = 6, and -1 mod 28 = 27.  You
+can use the C '<TT>%</TT>' operator or Pascal '<TT>mod</TT>' operator to compute
+this as long as you add <I>y</I> if the result is negative.)
+Finally, convert the codes in <I>ciphercode</I> back to letters in
+<I>ciphertext</I> according to the rule listed above.  The final twisted
+message is in <I>ciphertext</I>. Twisting the message <TT>cat</TT> using the key 5
+yields the following:
+
+<P><CENTER><TABLE BORDER>
+<TR ALIGN=CENTER><TD ALIGN=LEFT>Array</TD> <TD>0</TD> <TD>1</TD> <TD>2</TD></TR>
+<TR ALIGN=CENTER><TD ALIGN=LEFT><I>plaintext</I></TD> <TD>'c'</TD> <TD>'a'</TD> <TD>'t'</TD></TR>
+<TR ALIGN=CENTER><TD ALIGN=LEFT><I>plaincode</I></TD> <TD>3</TD> <TD>1</TD> <TD>20</TD></TR>
+<TR ALIGN=CENTER><TD ALIGN=LEFT><I>ciphercode</I></TD> <TD>3</TD> <TD>19</TD> <TD>27</TD></TR>
+<TR ALIGN=CENTER><TD ALIGN=LEFT><I>ciphertext</I></TD> <TD>'c'</TD> <TD>'s'</TD> <TD>'.'</TD></TR>
+</TABLE></CENTER>
+
+<P>Your task is to write a program that can <EM>untwist</EM> messages,
+<I>i.e.</I>, convert the ciphertext back to the original
+plaintext given the key <I>k</I>.  For example, given the key 5 and
+ciphertext '<TT>cs.</TT>', your program must output the plaintext '<TT>cat</TT>'.
+
+<P>The input file contains one or more test cases, followed by a line
+containing only the number 0 that signals the end of the file.
+Each test case is on a line by itself and consists of the key <I>k</I>, a
+space, and then a twisted message containing at least one and at most 70
+characters.  The key <I>k</I> will be a positive integer not greater than
+300.  For each test case, output the untwisted message on a line
+by itself.
+
+<P><EM>Note</EM>: you can assume that untwisting a message always yields
+a unique result.  (For those of you with some knowledge of basic number
+theory or abstract algebra, this will be the case provided that the
+greatest common divisor of the key <I>k</I> and length <I>n</I> is 1, which it 
+will be for all test cases.)
+
+<P><BR>
+<P><BR>
+<P><BR>
+<P><BR>
+
+<P><B>Example input:</B>
+
+<BLOCKQUOTE><PRE>5 cs.
+101 thqqxw.lui.qswer
+3 b_ylxmhzjsys.virpbkr
+0
+</PRE></BLOCKQUOTE>
+
+<P><B>Example output:</B>
+
+<BLOCKQUOTE><PRE>cat
+this_is_a_secret
+beware._dogs_barking
+</PRE></BLOCKQUOTE>
+</BODY></HTML>

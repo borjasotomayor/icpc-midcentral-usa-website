@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <meta name="author" content="Gabriel Foust">
+    <title>Crash and Go(relians)</title>
+    <style type="text/css">
+      body { background-color: white; }
+      h1 { text-align: center; }
+      table.files{ margin: 0 auto; }
+      table.example
+      {
+          border-style: outset;
+          border-width: 1px;
+      }
+      table.example td
+      {
+          white-space: pre;
+          font-family: monospace;
+          vertical-align: top;
+          border-style: inset;
+          border-width: 1px;
+          padding: 10px;
+      }
+      table.figure
+      {
+          margin: auto;
+          border-spacing: 1em;
+      }
+      table.figure td
+      {
+          border: 1px solid black;
+          padding: 1em;
+          width: 220px;
+          text-align: center;
+      }
+      table.figure td.caption
+      {
+          border-style: none;
+          font-style: italic;
+          padding-top: 0;
+          vertical-align: top;
+          text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Problem H: Crash and Go(relians)</h1>
+    <table class="files">
+      <tbody>
+        <tr>
+          <td>Source file:</td>
+          <td>
+            <tt>crash.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}
+          </td>
+        </tr>
+        <tr>
+          <td>Input file:</td>
+          <td><tt>crash.in</tt></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The Gorelians are a warlike race that travel the universe conquering new
+      worlds as a form of recreation.  Generally, their space battles are
+      fairly one-sided, but occasionally even the Gorelians get the worst of
+      an encounter.  During one such losing battle, the Gorelians&rsquo; space
+      ship became so damaged that the Gorelians had to evacuate to the planet
+      below.  Because of the chaos (and because escape pods are not very
+      accurate) the Gorelians were scattered across a large area of the
+      planet (yet a small enough area that we can model the relevant planetary
+      surface as planar, not spherical).
+    Your job is to track their efforts to regroup.  Fortunately,
+      each escape pod was equipped with a locator that can tell the Gorelian
+      his current coordinates on the planet, as well as with a radio that can
+      be used to communicate with other Gorelians.  Unfortunately, the range
+      on the radios is fairly limited according to how much power one has.
+    </p>
+    <p>
+      When a Gorelian lands on the alien planet, the first thing he does is
+      check the radio to see if he can communicate with any other Gorelians.
+      If he can, then he arranges a meeting point with them, and then they
+      converge on that point.  Once together, they are able to combine the
+      power sources from their radios, which gives them a larger radio range.
+      They then repeat the process&mdash;see who they can reach, arrange a
+      meeting point, combine their radios&mdash;until they finally cannot
+      contact any more Gorelians.
+    </p>
+    <p>
+    Gorelian technology allows two-way communication as long as <em>at least one
+      of them</em> has a radio with enough range to cover the distance between
+      them.  For example, suppose Alice has a radio with a range of 40 km, and
+      Bob has a range of 30 km, but they are 45 km apart (Figure 1).  Since
+      neither has a radio with enough range to reach the other, they cannot
+      talk.  However, suppose they were only 35 km apart (Figure 2).
+      Bob&rsquo;s radio still does not have enough range to reach Alice, but
+      that does not matter&mdash;they can still talk because Alice&rsquo;s
+      radio has enough range to reach Bob.
+    </p>
+    <table class="figure">
+      <tr>
+        <td>
+          <img src="range1.png"/>
+        </td>
+        <td>
+          <img src="range2.png"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 1: Alice and Bob can <strong>not</strong> talk</td>
+        <td class="caption">Figure 2: Alice and Bob can talk</td>
+      </tr>
+    </table>
+    <p>
+      If a Gorelian successfully contacts other Gorelians, they will meet at
+      the point that is the average of all their locations.  In the case of
+      Alice and Bob, this would simply be the midpoint of A and B (Figure 3).
+      Note that the Gorelians turn off their radios while traveling; they will
+      not attempt to communicate with anyone else until they have all gathered
+      at the meeting point.  Once the Gorelians meet, they combine their
+      radios to make a new radio with a larger range.  In particular,
+      the <em>area</em> covered by the new radio is equal to the sum of
+      the <em>areas</em> covered by the old radio.  In our example, Alice had
+      a range of 40 km, so her radio covered an area of 1600&pi; km.
+      Bob&rsquo;s radio covered an area of 900&pi; km.  So when they combine
+      their radios they can cover 2500&pi; km&mdash;meaning they have a range
+      of 50 km.  At this point they will try again to contact other Gorelians.
+    </p>
+    <table class="figure">
+      <tr>
+        <td>
+          <img src="merge1.png"/>
+        </td>
+        <td>
+          <img src="merge2.png"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 3: Alice and Bob agree to meet at the midpoint</td>
+        <td class="caption">Figure 4: Alice and Bob combine their radios</td>
+      </tr>
+    </table>
+    <p>
+      This process continues until no more Gorelians can be contacted.  As
+      an example, suppose the following Gorelians have all landed and
+      all have a radio range of 30&nbsp;km:&nbsp; Alice (100, 100), Bob (130,
+      80), Cathy (80, 60), and Dave (120, 150).  At this point, none of the
+      Gorelians can contact anyone else (Figure 5).  Now Eddy lands at
+      position (90, 80) (Figure 6).  Eddy can contact Alice and Cathy, so they
+      arrange to meet at (90, 80), which is the average of their locations.
+      Combining their radios gives them a range of &radic;2700 &asymp; 51.96
+      km (Figure 7).
+    </p>
+    <table class="figure">
+      <tr>
+        <td>
+          <img src="cascade1.png"/>
+        </td>
+        <td>
+          <img src="cascade2.png"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 5: Nobody can talk</td>
+        <td class="caption">Figure 6: Eddy joins the group</td>
+      </tr>
+    </table>
+    <p>
+      Now they check again with their new improved range and find that they
+      can reach Bob.  So they meet Bob at (110, 80) and combine their radios
+      to get a new radio with a range of 60 (Figure 8).  Unfortunately, this
+      is not far enough to be able to reach Dave, so Dave remains isolated.
+    </p>
+    <table class="figure">
+      <tr>
+        <td>
+          <img src="cascade3.png"/>
+        </td>
+        <td>
+          <img src="cascade4.png"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="caption">Figure 7: Alice, Cathy, and Eddy team up</td>
+        <td class="caption">Figure 8: Bob joins the group</td>
+      </tr>
+    </table>
+    <p>
+      <b>Input:</b>&nbsp; The input will consist of one or more data sets.
+      Each data set will begin with an integer <var>N</var> representing the
+      number of Gorelians for this dataset
+      (1&nbsp;&le;&nbsp;<var>N</var>&nbsp;&le;&nbsp;100).  A value of
+      <var>N</var>&nbsp;=&nbsp;0 will signify the end of the input.
+    </p>
+    <p>
+      Next will come <var>N</var> lines each containing three
+      integers <var>X</var>, <var>Y</var>, and <var>R</var> representing the
+      x- and y-coordinate where the Gorelian lands and the range of the radio
+      (0&nbsp;&le;&nbsp;<var>X</var>&nbsp;&le;&nbsp;1000,
+      0&nbsp;&le;&nbsp;<var>Y</var>&nbsp;&le;&nbsp;1000, and
+      1&nbsp;&le;&nbsp;<var>R</var>&nbsp;&le;&nbsp;1000).
+
+      Note that only the Gorelians' <em>initial</em> coordinates/range
+      will be integral; after merging with other Gorelians they may no longer
+      be integral.  <em>You should use double-precision arithmetic for
+      all computations.</em>
+    </p>
+    <p>
+      The Gorelians land in the order in which they appear in the input
+      file.  When a Gorelian lands, he merges with any Gorelians he can
+      contact, and the process keeps repeating until no further merges can be
+      made.  The next Gorelian does not land until all previous merges have been
+      completed.
+    </p>
+    <p>
+      <b>Output:</b>&nbsp; The output will be one line per data set,
+      reporting the number of independent groups of Gorelians
+      that remain at the end of the process.
+    </p>
+    <table class="example">
+      <thead>
+        <tr>
+          <td><b>Example input:</b></td>
+          <td><b>Example output:</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>5
+100 100 30
+130 80 30
+80 60 30
+120 150 30
+90 80 30
+6
+100 100 50
+145 125 10
+60 140 15
+160 145 20
+130 135 25
+80 80 30
+0
+          </td>
+          <td>2
+3</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

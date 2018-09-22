@@ -1,0 +1,13 @@
+This is an easy problem in theory and there are many unit cost calculations that yield a valid solution:
+cost/(PI*r*r)
+cost/(r*r)
+cost/(d*d)
+
+Calculations that fail are:
+cost/d
+cost/r
+using integer division either as cost/(d*d) or d*d/cost
+
+For the astute, it is possible to use integer calculations throughout
+(as shown in pizza.cpp). But the closest price differential of all
+tests is between the 10-inch and 12-inch pizzas on the first example.

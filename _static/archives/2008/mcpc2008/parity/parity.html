@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+
+<title>Parity</title>
+<meta name="author" content="Eric Shade">
+</head>
+<body style="background-color: white;" lang="EN-US">
+<h1 style="text-align: center;" align="center">Problem A: Parity</h1>
+
+<center>
+<table>
+<tbody>
+<tr>
+<td>Source file:</td>
+<td><tt>parity.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+</tr>
+
+<tr>
+<td>Input file:</td>
+<td><tt>parity.in</tt></td>
+</tr>
+</tbody>
+</table>
+</center>
+
+<p>A bit string has <dfn>odd parity</dfn> if the number of 1's is odd.
+A bit string has <dfn>even parity</dfn> if the number of 1's is even.
+Zero is considered to be an even number, so a bit string with no 1's
+has even parity.  Note that the number of 0's does not affect the
+parity of a bit string.</p>
+
+<p><b>Input:</b> The input consists of one or more strings, each on a
+line by itself, followed by a line containing only "#" that signals
+the end of the input.  Each string contains 1&ndash;31 bits followed
+by either a lowercase letter 'e' or a lowercase letter 'o'.</p>
+
+<p><b>Output:</b> Each line of output must look just like the
+corresponding line of input, except that the letter at the end is
+replaced by the correct bit so that the entire bit string has even
+parity (if the letter was 'e') or odd parity (if the letter was 'o').</p>
+
+<table border="1" cellpadding="10">
+<thead>
+<tr>
+<td><b>Example input:</b></td>
+<td><b>Example output:</b></td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="font-family: monospace;">
+101e<br>
+010010o<br>
+1e<br>
+000e<br>
+110100101o<br>
+#
+</td>
+
+<td style="font-family: monospace;" valign="top">
+1010<br>
+0100101<br>
+11<br>
+0000<br>
+1101001010
+</td>
+</tr>
+</tbody>
+</table>
+
+<p><small><i>Last modified on October 7, 2008 at 5:28 PM.</i></small></p>
+</body></html>

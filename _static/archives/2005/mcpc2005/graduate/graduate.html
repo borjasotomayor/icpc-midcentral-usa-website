@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <title>Time to Graduate</title>
+  <meta name="Author" content="Wen Hsin">
+  <meta content="Wen Hsin" name="author">
+  <meta content="Park University" name="description">
+</head>
+<body style="background-color: white;" lang="EN-US">
+<h1 style="text-align: center;" align="center">Problem E: Time to
+Graduate<br>
+</h1>
+<center>
+<table>
+  <tbody>
+    <tr>
+      <td>Source file:</td>
+      <td><tt>graduate.</tt>{<tt>c</tt>, <tt>cpp</tt>, <tt>java</tt>}</td>
+    </tr>
+    <tr>
+      <td>Input file:</td>
+      <td><tt>graduate.in</tt></td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<p> </p>
+<p>A prospective CS student is investigating how many semesters it will
+take to graduate from a variety of different universities. Each
+university provides a list of required courses, their prerequisites,
+and
+when each course is offered. Given this information, determine the
+minimum number of semesters to graduate.</p>
+<p>Consider the following example. A student is required to take 4
+courses, <span style="font-style: italic;">mt42</span>, <span
+ style="font-style: italic;">cs123</span>, <span
+ style="font-style: italic;">cs456</span>, and <span
+ style="font-style: italic;">cs789</span>. <span
+ style="font-style: italic;">mt42 </span>is only offered in the fall
+semester and has no prerequisites. Similarly, <span
+ style="font-style: italic;">cs123 </span>is only offered in the
+spring semester and has no prerequisites. <span
+ style="font-style: italic;">cs456 </span>is only offered in the
+spring semester and has both <span style="font-style: italic;">cs123 </span>and<span
+ style="font-style: italic;"> mt42 </span>as prerequisites. Finally, <span
+ style="font-style: italic;">cs789 </span>is offered in both fall and
+spring and has <span style="font-style: italic;">cs456 </span>as its
+only prerequisite. The shortest time to graduate is 5 semesters, by
+taking <span style="font-style: italic;">mt42 </span>in the fall, <span
+ style="font-style: italic;">cs123</span> in the next spring, <span
+ style="font-style: italic;">cs456 </span>the following spring (since
+it is not offered in the fall) and finally <span
+ style="font-style: italic;">cs789 </span>the following fall.<br>
+</p>
+<p>For this problem, there are only two semesters, fall and spring.
+Always start counting semesters from the fall. <br>
+</p>
+<p>In addition to the fall/spring scheduling issues, there is one
+slight complication. In order to keep the dormitories full, each
+university limits the number of courses that can be taken in any
+semester. This limit appears as part of the input data. The third
+example below illustrates this issue.<br>
+</p>
+<span style="font-weight: bold;">Input:</span> There are one to
+twenty-five
+data sets, followed by a final line containing only the integers -1 -1.
+A
+data set starts with a line containing two positive integers <span
+ style="font-style: italic;">n</span>,<span style="font-style: italic;"></span>
+1 &#8804; <span style="font-style: italic;">n</span> &#8804; 12, which is the
+number of
+courses in this data set and <span style="font-style: italic;">m</span>,
+2 &#8804; <span style="font-style: italic;">m</span> &#8804; 6,
+which is the maximum number of courses that can be taken in any single
+semester. The next line contains the <span style="font-style: italic;">n</span>
+course identifiers. Each is a 1-5
+character string from the set {a-z, 0-9}. Following the course
+identifiers is the individual course information. This consists of <span
+ style="font-style: italic;">n</span> lines, one
+line for each course, containing the course identifier, semester
+offered ('<span style="font-family: monospace;">F</span>'=Fall, '<span
+ style="font-family: monospace;">S</span>'=Spring, '<span
+ style="font-family: monospace;">B</span>'=Both semesters), the
+number of prerequisite courses, <span style="font-style: italic;">p</span>,
+0 &#8804; <span style="font-style: italic;">p</span> &#8804; 5, and finally <span
+ style="font-style: italic;">p</span> prerequisite course identifiers.
+The
+first example data set below corresponds to the problem described above.<br>
+<span style="font-weight: bold;"><br>
+Output:</span> The output contains one line for each data set,
+formatted
+as shown in the sample output.<br>
+<p><span style="font-weight: bold;"> <span style="font-style: italic;"></span></span></p>
+<span style="font-weight: bold;"></span>
+<table border="1" cellpadding="2">
+  <thead> <tr>
+    <td> <b>Example input:</b> </td>
+    <td style="vertical-align: top;"> <b>Example output:</b> </td>
+  </tr>
+  </thead> <tbody>
+    <tr>
+      <td>
+      <pre>4 6<br>cs123 mt42 cs456 cs789<br>mt42 F 0<br>cs123 S 0<br>cs456 S 2 cs123 mt42<br>cs789 B 1 cs456<br>3 6<br>math1 comp2 comp3<br>comp3 S 1 comp2<br>math1 S 0<br>comp2 F 1 math1<br>4 3<br>m10 m20 c33 c44<br>m10 B 0<br>m20 B 0<br>c33 B 0<br>c44 B 0<br>-1 -1<br></pre>
+      </td>
+      <td style="vertical-align: top;">
+      <pre>The minimum number of semesters required to graduate is 5.<br>The minimum number of semesters required to graduate is 4.<br>The minimum number of semesters required to graduate is 2.<br><br></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><small><i>Last modified on October 29, 2005 at 11:04 PM.</i></small></p>
+</body>
+</html>
