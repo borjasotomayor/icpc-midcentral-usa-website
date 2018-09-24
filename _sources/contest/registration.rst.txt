@@ -6,7 +6,7 @@ To register a team, please do the following:
 * Register the team on the `ICPC Registration System <https://icpc.baylor.edu/regionals/finder/Mid-Central-USA-2018>`_.
 * Pay the registration fee on this site: <https://ser.cs.fit.edu/midcentral2018/fee.php>`_ (the Southeast ICPC region is generously letting us use their payment processing system)
 
-The early registration deadline is **11:59pm, Tuesday, October 9**.
+The early registration deadline is **11:59pm, Saturday, October 6**.
 
 You must register by the early registration deadline to be guaranteed an ICPC t-shirt. If you miss the early registration deadline, you can still register by 11:59pm, Friday, October 19 (but you may not get a t-shirt on the day of the contest)
 
