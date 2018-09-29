@@ -3,7 +3,7 @@ Information for Site Directors
 
 This page contains information for Site Directors. If you have any
 questions on getting your site ready, make sure you reach out to the
-`*Regional Contest Director* <contacts.html>`__.
+`*Regional Contest Director* <../contact.html>`__.
 
 Preparing for the Contest
 -------------------------

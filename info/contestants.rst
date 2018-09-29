@@ -87,7 +87,7 @@ Java
 -  The *java.util.regex* classes *Matcher* and *Pattern*.
 -  The *java.math* class *BigInteger*.
 
-Python
+Python 2/3
 
 -  For standard input: read, readline, readlines
 -  Basic data structures: list, dict, set, tuple
@@ -119,6 +119,15 @@ techniques will be useful.
 -  Basic parsing techniques such as recursive descent, operator
    precedence, or infix-to-postfix conversion.
 
+You should also practice with a variety of different types of problems.
+Mid-Central usually includes some combination of the following:
+
+- Short problems with elementary coding, 
+- Longer problems, but where the instruction sequence is laid out for you;
+  you just have to make sure you make no mistakes when coding it!
+- Problems requiring basic data structures
+- Problems with fairly direct applications of upper level algorithms
+- Problems requiring a very creative solution, no matter how many algorithm classes you have taken
 
 .. _math:
 

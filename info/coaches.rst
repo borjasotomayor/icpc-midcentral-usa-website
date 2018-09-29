@@ -15,6 +15,7 @@ sure you've done the following:
    determine whether a contestant is eligible to participate in ICPC.
 #. Fully :doc:`register <../contest/registration>` your team(s) before the deadline. 
    You must provide complete team member information before the deadline, or the registration will be cancelled.
+#. Pay the registration fees for your team (the link for this is also included in the :doc:`Registration <../contest/registration>` page)
 #. Understand the regional contest :doc:`rules <../contest/rules>`.
 #. Study the :doc:`notes to teams <../contest/notes>`.
 #. Be familiar with your :doc:`site's facilities <../contest/site_facilities>`.
