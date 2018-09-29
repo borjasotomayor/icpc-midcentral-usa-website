@@ -45,8 +45,9 @@ submitted to the Kattis site.
 
 -  **Python**
 
-   The official Python 3.5 interpreter (as available on Python.org) must
-   be installed. Alternative interpreters like PyPy are not acceptable.
+   The official Python 2.7 and 3.5 interpreters (as available on Python.org) must
+   be installed. For Python 2.7, the Pypy interpreter may be used, as that is
+   the one used on Kattis.
 
 If your site includes multiple version of a given compiler, your site-specific documentation
 must specify how to invoke the correct compiler.

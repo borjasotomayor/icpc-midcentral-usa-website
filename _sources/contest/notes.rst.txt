@@ -26,7 +26,7 @@ Using Kattis
 ------------
 
 Your site will provide you with login credentials and the Kattis
-competition web URL.  Your must write your code in Java, C++, C, or
+competition web URL.  Your must write your code in Java, C++, C, Python 2, or
 Python 3 and submit the code to Kattis. Kattis will then compile your
 code and run it on some secret input. After some careful deliberation,
 you will get a judgement informing you whether your code behaved as
@@ -77,8 +77,8 @@ Program structure
 - If your program’s exit status is not zero, Kattis will judge it as a
   runtime error. C11, C++, Java, and Python all default to returning
   zero if you do not specify an explicit exit code.
-- Java programmers: You are not recommended to put your code in a
-  package (a line like "package hello;" at the top of your source
+- Java programmers: Do not put your code in a
+  package (i.e., do not put a line like "package hello;" at the top of your source
   file). Be careful, by default an IDE may add a package line
   automatically.  A package declaration unnecessarily complicates
   submission (below) or causes a run-time error. 
@@ -97,9 +97,8 @@ Java users: You must also enter the Main Class - the name of the class
 containing the ``main`` method.  Caution:  This is not the file name
 but the class name.  If your file hello.java has the class ``hello``
 containing your ``main`` method, you indicate that the Main Class is
-just ``hello``.  If you misspell this (including incorrectly locating
-a class with a package declaration), you will get a compiler error
-saying tyou have an "Unknown mainclass".
+just ``hello``.  If you misspell this, you will get a compiler error
+saying you have an "Unknown mainclass".
 
 How does Kattis handle a submitted program?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -309,8 +308,8 @@ be run:
 * `C <https://open.kattis.com/help/c>`__
 * `C++ <https://open.kattis.com/help/cpp>`__
 * `Java <https://open.kattis.com/help/java>`__
+* `Python 2 <https://open.kattis.com/help/python2>`__
 * `Python 3 <https://open.kattis.com/help/python3>`__
-
 
 System libraries
 ~~~~~~~~~~~~~~~~

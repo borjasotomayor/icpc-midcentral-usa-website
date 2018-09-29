@@ -130,7 +130,7 @@ from competing in the Mid-Central Region. Some examples of such actions are:</p>
 <div class="section" id="using-kattis">
 <h2>Using Kattis<a class="headerlink" href="#using-kattis" title="Permalink to this headline">¶</a></h2>
 <p>Your site will provide you with login credentials and the Kattis
-competition web URL.&nbsp; Your must write your code in Java, C++, C, or
+competition web URL.&nbsp; Your must write your code in Java, C++, C, Python 2, or
 Python 3 and submit the code to Kattis. Kattis will then compile your
 code and run it on some secret input. After some careful deliberation,
 you will get a judgement informing you whether your code behaved as
@@ -181,8 +181,8 @@ flags listed below.</li>
 <li>If your program’s exit status is not zero, Kattis will judge it as a
 runtime error. C11, C++, Java, and Python all default to returning
 zero if you do not specify an explicit exit code.</li>
-<li>Java programmers: You are not recommended to put your code in a
-package (a line like “package hello;” at the top of your source
+<li>Java programmers: Do not put your code in a
+package (i.e., do not put a line like “package hello;” at the top of your source
 file). Be careful, by default an IDE may add a package line
 automatically.&nbsp; A package declaration unnecessarily complicates
 submission (below) or causes a run-time error.</li>
@@ -200,9 +200,8 @@ not have to match the problem ID.</p>
 containing the <code class="docutils literal notranslate"><span class="pre">main</span></code> method.&nbsp; Caution:&nbsp; This is not the file name
 but the class name.&nbsp; If your file hello.java has the class <code class="docutils literal notranslate"><span class="pre">hello</span></code>
 containing your <code class="docutils literal notranslate"><span class="pre">main</span></code> method, you indicate that the Main Class is
-just <code class="docutils literal notranslate"><span class="pre">hello</span></code>.&nbsp; If you misspell this (including incorrectly locating
-a class with a package declaration), you will get a compiler error
-saying tyou have an “Unknown mainclass”.</p>
+just <code class="docutils literal notranslate"><span class="pre">hello</span></code>.&nbsp; If you misspell this, you will get a compiler error
+saying you have an “Unknown mainclass”.</p>
 </div>
 <div class="section" id="how-does-kattis-handle-a-submitted-program">
 <h3>How does Kattis handle a submitted program?<a class="headerlink" href="#how-does-kattis-handle-a-submitted-program" title="Permalink to this headline">¶</a></h3>
@@ -392,6 +391,7 @@ be run:</p>
 <li><a class="reference external" href="https://open.kattis.com/help/c">C</a></li>
 <li><a class="reference external" href="https://open.kattis.com/help/cpp">C++</a></li>
 <li><a class="reference external" href="https://open.kattis.com/help/java">Java</a></li>
+<li><a class="reference external" href="https://open.kattis.com/help/python2">Python 2</a></li>
 <li><a class="reference external" href="https://open.kattis.com/help/python3">Python 3</a></li>
 </ul>
 </div>
