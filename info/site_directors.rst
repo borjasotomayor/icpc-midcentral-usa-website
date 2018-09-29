@@ -33,8 +33,8 @@ on-site:
 
 * Kattis login sheet (1 per team). The login sheets will be sent to the site directors the week before the contest. 
 * :doc:`Notes to Teams <../contest/notes>` (1 per team)
--  Practice Problem set (3 per team). This problem set will be available
-   the week before the contest.
+* Practice Problem set (3 per team). This problem set will be available
+  the week before the contest.
 
 If necessary you should provide *site-specific instructions*. Here are
 some aspects on which you may need to provide site-specific
