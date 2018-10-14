@@ -18,7 +18,7 @@ What does a "programming contest" involve?
 ------------------------------------------
 
 ICPC-style programming contests are five-hour on-site contests where each team
-(composed of three students) must solve 8-11 programming problems (for example,
+(composed of three students) must solve some number of programming problems (for example,
 see our `problem archive <archive>`_). Each team has a single computer, with no
 access to the Internet and limited access to online reference materials (some
 contests, like the Mid-Central regional do allow teams to bring unlimited
