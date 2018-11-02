@@ -57,7 +57,7 @@ University of Chicago
 
 **Site director**: `Borja Sotomayor <mailto:borja@cs.uchicago.edu>`__
 
-**Site website**: https://icpc.cs.uchicago.edu/mcpc2018
+**Site website**: http://icpc.cs.uchicago.edu/mcpc2018
 
 **Operating system**: Ubuntu 16.04
 
@@ -97,4 +97,10 @@ Webster University
 ------------------
 
 **Site director**: `Xiaoyuan Suo (Sue) <mailto:xiaoyuansuo51@webster.edu>`__
+
+**Operating system**: Windows 10
+
+**Software Environment**: Eclipse for C++/Java, Python 2.7, Python 3.6, NetBeans 8.2
+
+Note: In this site, each team is given an individual room to participate in.
 
