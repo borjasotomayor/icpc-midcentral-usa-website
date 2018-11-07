@@ -1,10 +1,17 @@
 Problem Archive
 ===============
 
+2018
+----
+* `Problem set <../_static/archives/2018/mcpc2018.pdf>`__  
+* `Judges' data and solutions <../_static/archives/2018/mcpc2018.zip>`__  
+* `Detailed Standings <https://mcpc18.kattis.com/standings>`__
+
 2017
 ----
 * `Problem set <../_static/archives/2017/mcpc2017.pdf>`__  
 * `Judges' data and solutions <../_static/archives/2017/mcpc2017.zip>`__  
+* `Detailed Standings <https://mcpc17.kattis.com/standings>`__
 
 2016
 ----
